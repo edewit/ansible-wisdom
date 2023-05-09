@@ -1,21 +1,28 @@
-import { AuthenticatedUser, License, LicenseService, User } from "../service";
+import {
+  AuthenticatedUser,
+  License,
+  LicenseService,
+  TokenFunction,
+  User,
+  header,
+} from "../service";
 import {
   LicensesServiceIdBody,
   licenseServiceGetLicense,
   licenseServiceGetSeats,
   licenseServiceModifySeats,
 } from "./ciam-authz";
-import * as Oazapfts from "oazapfts/lib/runtime";
 
 export class CiamAuthz implements LicenseService {
-  private opts: Oazapfts.RequestOpts = { headers: { Authorization: "token" } };
+  private baseUrl: string;
 
   constructor(baseUrl?: string) {
-    this.opts.baseUrl = baseUrl || "";
+    this.baseUrl = baseUrl || "";
   }
 
-  async get({ orgId, serviceId }: AuthenticatedUser): Promise<License> {
-    const result = await licenseServiceGetLicense(orgId, serviceId, this.opts);
+  async get({ orgId, serviceId, token }: AuthenticatedUser): Promise<License> {
+    const opts = await this.requestHeader(token);
+    const result = await licenseServiceGetLicense(orgId, serviceId, opts);
     return {
       available: result.seatsAvailable || 0,
       total: result.seatsTotal || 0,
@@ -23,14 +30,15 @@ export class CiamAuthz implements LicenseService {
   }
 
   async seats(
-    { orgId, serviceId }: AuthenticatedUser,
+    { orgId, serviceId, token }: AuthenticatedUser,
     assigned: boolean | undefined = true
   ): Promise<User[]> {
+    const opts = await this.requestHeader(token);
     const result = await licenseServiceGetSeats(
       orgId,
       serviceId,
       { filter: assigned ? "assigned" : "assignable" },
-      this.opts
+      opts
     );
     return (
       result.users?.map(({ id, displayName, assigned }) => ({
@@ -40,6 +48,12 @@ export class CiamAuthz implements LicenseService {
       })) || []
     );
   }
+
+  
+  private async requestHeader(token: TokenFunction) {
+    return await header(token, this.baseUrl);
+  }
+  
 
   async assign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
     const body: LicensesServiceIdBody = { assign: userIds };
@@ -54,9 +68,10 @@ export class CiamAuthz implements LicenseService {
   }
 
   private async modify(
-    { orgId, serviceId }: AuthenticatedUser,
+    { orgId, serviceId, token }: AuthenticatedUser,
     body: LicensesServiceIdBody
   ): Promise<any> {
-    return licenseServiceModifySeats(orgId, serviceId, body, this.opts);
+    const opts = await this.requestHeader(token);
+    return licenseServiceModifySeats(orgId, serviceId, body, opts);
   }
 }

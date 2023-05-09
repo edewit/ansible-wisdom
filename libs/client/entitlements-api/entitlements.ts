@@ -1,6 +1,11 @@
-import { AuthenticatedUser, License, LicenseService, User } from "../service";
+import {
+  AuthenticatedUser,
+  License,
+  LicenseService,
+  User,
+  header,
+} from "../service";
 import { deleteSeatsById, getSeats, postSeats } from "./entitlements-service";
-import * as Oazapfts from "oazapfts/lib/runtime";
 import { listPrincipals } from "./rbac";
 import { Principal } from "./rbac";
 
@@ -11,14 +16,8 @@ export class EntitlementsService implements LicenseService {
     this.baseUrl = baseUrl || "";
   }
 
-  private async header(user: AuthenticatedUser): Promise<Oazapfts.RequestOpts> {
-    const token = await user.token();
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      baseUrl: this.baseUrl,
-    };
+  private async requestHeader(user: AuthenticatedUser) {
+    return await header(user.token, this.baseUrl);
   }
 
   async get(user: AuthenticatedUser): Promise<License> {
@@ -27,7 +26,7 @@ export class EntitlementsService implements LicenseService {
         limit: 10,
         offset: 0,
       },
-      await this.header(user)
+      await this.requestHeader(user)
     );
     return {
       available: result.allowed || 0,
@@ -40,7 +39,7 @@ export class EntitlementsService implements LicenseService {
     assigned?: boolean | undefined
   ): Promise<User[]> {
     if (assigned) {
-      const result = await getSeats({}, await this.header(user));
+      const result = await getSeats({}, await this.requestHeader(user));
 
       return result.data.map(({ subscription_id, account_username }) => ({
         id: subscription_id || "",
@@ -48,10 +47,8 @@ export class EntitlementsService implements LicenseService {
         assigned: true,
       }));
     } else {
-      const result = await listPrincipals(
-        { usernameOnly: false },
-        await this.header(user)
-      );
+      const header = await this.requestHeader(user);
+      const result = await listPrincipals({ usernameOnly: false }, header);
 
       return (result.data as Principal[]).map(
         ({ username, first_name, last_name }) => ({
@@ -66,7 +63,7 @@ export class EntitlementsService implements LicenseService {
   async assign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
     await Promise.all(
       userIds.map(async (id) =>
-        postSeats({ account_username: id }, await this.header(user))
+        postSeats({ account_username: id }, await this.requestHeader(user))
       )
     );
     return Promise.resolve();
@@ -74,7 +71,9 @@ export class EntitlementsService implements LicenseService {
 
   async unAssign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
     await Promise.all(
-      userIds.map(async (id) => deleteSeatsById(id, await this.header(user)))
+      userIds.map(async (id) =>
+        deleteSeatsById(id, await this.requestHeader(user))
+      )
     );
     return Promise.resolve();
   }
