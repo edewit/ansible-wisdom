@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from "@storybook/react";
 import { rest } from "msw";
 import { AddUsersPage as AddUsersPageComp } from "./AddUsersPage";
-import { ServiceContextProvider } from "../../../Components/ServiceProvider";
+import { ServiceContextProvider } from "../Components/ServiceProvider";
 
 export default {
   component: AddUsersPageComp,

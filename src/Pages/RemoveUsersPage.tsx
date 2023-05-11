@@ -4,10 +4,10 @@ import {
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { User, License } from "client";
+import { User, License } from "../client/service";
 import { useCallback, useState } from "react";
-import { useService } from "../../../Components/ServiceProvider";
-import { UsersPickerTable } from "../../../Components/UsersPickerTable";
+import { useService } from "../Components/ServiceProvider";
+import { UsersPickerTable } from "../Components/UsersPickerTable";
 import { useHistory } from "react-router-dom";
 import { PageParams } from "./AddUsersPage";
 

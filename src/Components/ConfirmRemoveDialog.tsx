@@ -12,7 +12,7 @@ import {
   Thead,
   Tr,
 } from "@patternfly/react-table";
-import { User } from "client";
+import { User } from "../client/service";
 import { useState } from "react";
 
 type ConfirmRemoveDialogProps = {

@@ -1,5 +1,5 @@
 import { Context, createContext, PropsWithChildren, useContext } from "react";
-import { getService, LicenseService } from "client";
+import { getService, LicenseService } from "../client/service";
 
 type ServiceContextProps = {
   serviceName: string;

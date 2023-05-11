@@ -1,6 +1,6 @@
 import type { TableViewProps } from '@rhoas/app-services-ui-components';
 import { TableView } from '@rhoas/app-services-ui-components';
-import { User } from 'client';
+import { User } from '../client/service';
 import {
   EmptyStateNoResults,
   EmptyStateNoResultsProps,
