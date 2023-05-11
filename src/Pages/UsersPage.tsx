@@ -6,13 +6,13 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { EmptyStateNoSubscription } from "../Components/EmptyStateNoSubscription";
-import { RemoveUsersModal } from "../Components/RemoveUsersModal";
-import { SeatsHeader } from "../Components/SeatsHeader";
-import { useService } from "../Components/ServiceProvider";
-import { UsersWithSeatTable } from "../Components/UsersWithSeatTable";
+import { EmptyStateNoSubscription } from "../../../Components/EmptyStateNoSubscription";
+import { RemoveUsersModal } from "../../../Components/RemoveUsersModal";
+import { SeatsHeader } from "../../../Components/SeatsHeader";
+import { useService } from "../../../Components/ServiceProvider";
+import { UsersWithSeatTable } from "../../../Components/UsersWithSeatTable";
 import { User, License } from "client";
-import { ConfirmRemoveDialog } from "../Components/ConfirmRemoveDialog";
+import { ConfirmRemoveDialog } from "../../../Components/ConfirmRemoveDialog";
 import { PageParams } from "./AddUsersPage";
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;

@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from "@storybook/react";
 import { rest } from "msw";
 import { RemoveUsersPage as RemoveUsersPageComp } from "./RemoveUsersPage";
-import { ServiceContextProvider } from "../Components/ServiceProvider";
+import { ServiceContextProvider } from "../../../Components/ServiceProvider";
 
 export default {
   component: RemoveUsersPageComp,

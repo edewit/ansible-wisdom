@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from "@storybook/react";
 import { rest } from "msw";
-import { ServiceContextProvider } from "../Components/ServiceProvider";
+import { ServiceContextProvider } from "../../../Components/ServiceProvider";
 import { UsersPage } from "./UsersPage";
 
 export default {
