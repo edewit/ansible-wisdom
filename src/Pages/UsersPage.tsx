@@ -11,7 +11,7 @@ import { RemoveUsersModal } from "../Components/RemoveUsersModal";
 import { SeatsHeader } from "../Components/SeatsHeader";
 import { useService } from "../Components/ServiceProvider";
 import { UsersWithSeatTable } from "../Components/UsersWithSeatTable";
-import { User, License } from "client";
+import { User, License } from "../client/service";
 import { ConfirmRemoveDialog } from "../Components/ConfirmRemoveDialog";
 import { PageParams } from "./AddUsersPage";
 

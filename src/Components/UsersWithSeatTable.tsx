@@ -2,7 +2,7 @@ import { Button } from "@patternfly/react-core";
 import { ActionsColumn } from "@patternfly/react-table";
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import { TableView } from "@rhoas/app-services-ui-components";
-import { User } from "client";
+import { User } from "../client/service";
 import { Link } from "react-router-dom";
 import { EmptyStateNoAssignedSeat } from "./EmptyStateNoAssignedSeat";
 import {

@@ -3,16 +3,15 @@ import { getBaseName } from '@redhat-cloud-services/frontend-components-utilitie
 import { InvalidObject } from '@redhat-cloud-services/frontend-components/InvalidObject';
 import React, { Suspense } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import {
-  AddUsersPage,
-  RemoveUsersPage,
-  ServiceContextProvider,
-  UsersPage,
-} from 'components';
+
 import { useDispatch } from 'react-redux';
 import { addNotification } from '@redhat-cloud-services/frontend-components-notifications/redux';
 import useChrome from '@redhat-cloud-services/frontend-components/useChrome';
-import { AuthenticatedUser } from 'client';
+import { AuthenticatedUser } from './client/service';
+import { ServiceContextProvider } from './Components/ServiceProvider';
+import { UsersPage } from './Pages/UsersPage';
+import { AddUsersPage } from './Pages/AddUsersPage';
+import { RemoveUsersPage } from './Pages/RemoveUsersPage';
 
 export const Routes = () => {
   const dispatch = useDispatch();
