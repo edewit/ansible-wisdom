@@ -66,9 +66,7 @@ export const UsersPickerTable = ({
       }}
       isColumnSortable={isColumnSortable}
       isRowChecked={({ row }) => isUserChecked(row)}
-      onCheck={({row}, isChecked) =>
-        onCheckUser(row, isChecked)
-      }
+      onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
       toolbarBreakpoint={breakpoint}
       filters={{
         ['Username']: {

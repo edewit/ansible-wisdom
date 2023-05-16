@@ -1,22 +1,22 @@
-import { Button, ButtonVariant, Modal } from "@patternfly/react-core";
+import { Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import {
   usePaginationSearchParams,
   useURLSearchParamsChips,
-} from "@rhoas/app-services-ui-components";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { User, License } from "../client/service";
-import { useCallback, useState } from "react";
-import { useService } from "../Components/ServiceProvider";
-import { UsersPickerTable } from "../Components/UsersPickerTable";
-import { useHistory } from "react-router-dom";
-import { PageParams } from "./AddUsersPage";
+} from '@rhoas/app-services-ui-components';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { License, User } from '../client/service';
+import { useCallback, useState } from 'react';
+import { useService } from '../Components/ServiceProvider';
+import { UsersPickerTable } from '../Components/UsersPickerTable';
+import { useHistory } from 'react-router-dom';
+import { PageParams } from './AddUsersPage';
 
 export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const history = useHistory();
   const service = useService();
 
   const subscriptions = useQuery<License>({
-    queryKey: ["subscriptions"],
+    queryKey: ['subscriptions'],
     queryFn: () => service.get(user),
   });
 
@@ -28,13 +28,16 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   );
 
   const usernameChips = useURLSearchParamsChips(
-    "username",
+    'username',
     resetPaginationQuery
   );
 
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
-    queryKey: ["assignedUsers", { page, perPage, usernames: usernameChips.chips }],
+    queryKey: [
+      'assignedUsers',
+      { page, perPage, usernames: usernameChips.chips },
+    ],
     queryFn: () => service.seats(user),
   });
 
@@ -50,16 +53,16 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     },
     {
       onSuccess: () => {
-        onSuccess("Successfully removed users");
-        queryClient.invalidateQueries({queryKey: ["users", "assignedUsers"]})
+        onSuccess('Successfully removed users');
+        queryClient.invalidateQueries({ queryKey: ['users', 'assignedUsers'] });
       },
       onError: (error) => {
-        onError("there was an error: " + error);
+        onError('there was an error: ' + error);
       },
     }
   );
 
-  const close = () => history.push("/");
+  const close = () => history.push('/');
 
   return (
     <Modal
@@ -69,6 +72,7 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
       onClose={close}
       actions={[
         <Button
+          key="remove"
           onClick={() => mutate()}
           isDisabled={checkedUsers.length > assignedSeats}
           isLoading={isLoading}
@@ -76,6 +80,7 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
           Remove
         </Button>,
         <Button
+          key="cancel"
           onClick={close}
           variant={ButtonVariant.link}
           isDisabled={isLoading}

@@ -31,9 +31,9 @@ const RemoveUsersModal: VoidFunctionComponent<RemoveUsersModalProps> = ({
         </Button>,
       ]}
     >
-      Your organization has decreased the amount of seats
-      available. Please remove {usersToRemove} users from their
-      seats to continue the subscription.
+      Your organization has decreased the amount of seats available. Please
+      remove {usersToRemove} users from their seats to continue the
+      subscription.
     </Modal>
   );
 };

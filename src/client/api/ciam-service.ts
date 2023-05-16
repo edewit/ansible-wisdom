@@ -5,19 +5,19 @@ import {
   TokenFunction,
   User,
   header,
-} from "../service";
+} from '../service';
 import {
   LicensesServiceIdBody,
   licenseServiceGetLicense,
   licenseServiceGetSeats,
   licenseServiceModifySeats,
-} from "./ciam-authz";
+} from './ciam-authz';
 
 export class CiamAuthz implements LicenseService {
   private baseUrl: string;
 
   constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl || "";
+    this.baseUrl = baseUrl || '';
   }
 
   async get({ orgId, serviceId, token }: AuthenticatedUser): Promise<License> {
@@ -37,23 +37,21 @@ export class CiamAuthz implements LicenseService {
     const result = await licenseServiceGetSeats(
       orgId,
       serviceId,
-      { filter: assigned ? "assigned" : "assignable" },
+      { filter: assigned ? 'assigned' : 'assignable' },
       opts
     );
     return (
       result.users?.map(({ id, displayName, assigned }) => ({
-        id: id || "",
-        name: displayName || "",
+        id: id || '',
+        name: displayName || '',
         assigned: !!assigned,
       })) || []
     );
   }
 
-  
   private async requestHeader(token: TokenFunction) {
     return await header(token, this.baseUrl);
   }
-  
 
   async assign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
     const body: LicensesServiceIdBody = { assign: userIds };

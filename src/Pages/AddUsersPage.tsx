@@ -1,14 +1,14 @@
-import { Alert, Button, ButtonVariant, Modal } from "@patternfly/react-core";
+import { Alert, Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import {
   usePaginationSearchParams,
   useURLSearchParamsChips,
-} from "@rhoas/app-services-ui-components";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { License, User, AuthenticatedUser } from "../client/service";
-import { useCallback, useState } from "react";
-import { useService } from "../Components/ServiceProvider";
-import { UsersPickerTable } from "../Components/UsersPickerTable";
-import { useHistory } from "react-router-dom";
+} from '@rhoas/app-services-ui-components';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AuthenticatedUser, License, User } from '../client/service';
+import { useCallback, useState } from 'react';
+import { useService } from '../Components/ServiceProvider';
+import { UsersPickerTable } from '../Components/UsersPickerTable';
+import { useHistory } from 'react-router-dom';
 
 export type PageParams = {
   user: AuthenticatedUser;
@@ -20,10 +20,10 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const history = useHistory();
   const service = useService();
 
-  const close = () => history.push("/");
+  const close = () => history.push('/');
 
   const subscriptions = useQuery<License>({
-    queryKey: ["subscriptions"],
+    queryKey: ['subscriptions'],
     queryFn: () => service.get(user),
   });
   const { page, perPage, setPagination, setPaginationQuery } =
@@ -33,10 +33,13 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     [perPage, setPaginationQuery]
   );
 
-  const usernameChips = useURLSearchParamsChips("name", resetPaginationQuery);
+  const usernameChips = useURLSearchParamsChips('name', resetPaginationQuery);
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
-    queryKey: ["availableUsers", { page, perPage, usernames: usernameChips.chips }],
+    queryKey: [
+      'availableUsers',
+      { page, perPage, usernames: usernameChips.chips },
+    ],
     queryFn: () => service.seats(user, false),
   });
 
@@ -45,11 +48,13 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     {
       onSuccess: () => {
         close();
-        onSuccess("Successfully assigned users");
-        queryClient.invalidateQueries({queryKey: ["users", "availableUsers"]})
+        onSuccess('Successfully assigned users');
+        queryClient.invalidateQueries({
+          queryKey: ['users', 'availableUsers'],
+        });
       },
       onError: (error) => {
-        onError("there was an error: " + error);
+        onError('there was an error: ' + error);
       },
     }
   );

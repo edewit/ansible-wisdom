@@ -3,7 +3,7 @@ import {
   Modal,
   Pagination,
   PaginationVariant,
-} from "@patternfly/react-core";
+} from '@patternfly/react-core';
 import {
   TableComposable,
   Tbody,
@@ -11,9 +11,9 @@ import {
   Th,
   Thead,
   Tr,
-} from "@patternfly/react-table";
-import { User } from "../client/service";
-import { useState } from "react";
+} from '@patternfly/react-table';
+import { User } from '../client/service';
+import { useState } from 'react';
 
 type ConfirmRemoveDialogProps = {
   users: User[];
@@ -39,10 +39,10 @@ export const ConfirmRemoveDialog = ({
       isOpen
       variant="small"
       actions={[
-        <Button variant="danger" onClick={() => onConfirm()}>
+        <Button key="remove" variant="danger" onClick={() => onConfirm()}>
           Remove user(s)
         </Button>,
-        <Button variant="link" onClick={() => onCancel()}>
+        <Button key="cancel" variant="link" onClick={() => onCancel()}>
           Cancel
         </Button>,
       ]}
@@ -73,9 +73,9 @@ export const ConfirmRemoveDialog = ({
             page={page}
             variant={PaginationVariant.bottom}
             perPageOptions={[
-              { title: "5", value: 5 },
-              { title: "10", value: 10 },
-              { title: "20", value: 20 },
+              { title: '5', value: 5 },
+              { title: '10', value: 10 },
+              { title: '20', value: 20 },
             ]}
             onPerPageSelect={(_, pageSize) => {
               setPageSize(pageSize);
@@ -92,7 +92,7 @@ export const ConfirmRemoveDialog = ({
           {users.map((user, i) => (
             <>
               <b>{user.name}</b>
-              {i !== users.length - 1 ? ", " : ""}
+              {i !== users.length - 1 ? ', ' : ''}
             </>
           ))}
         </p>

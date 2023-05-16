@@ -1,5 +1,5 @@
 import { Page } from '@patternfly/react-core';
-import type { Meta,StoryFn } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { EmptyStateNoSubscription as EmptyStateNoSubscriptionComponent } from './EmptyStateNoSubscription';
 
 export default {
@@ -7,9 +7,7 @@ export default {
   args: {},
 } as Meta<typeof EmptyStateNoSubscriptionComponent>;
 
-const Template: StoryFn<typeof EmptyStateNoSubscriptionComponent> = (
-  args
-) => (
+const Template: StoryFn<typeof EmptyStateNoSubscriptionComponent> = (args) => (
   <Page>
     <EmptyStateNoSubscriptionComponent {...args} />
   </Page>
