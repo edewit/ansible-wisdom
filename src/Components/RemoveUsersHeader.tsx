@@ -33,8 +33,7 @@ export const RemoveUsersHeader: VoidFunctionComponent<
           <Split>
             <SplitItem isFilled={true}>
               <Title headingLevel={'h1'}>
-                Remove {usersToRemove} users from their assigned seats
-                seats
+                Remove {usersToRemove} users from their assigned seats seats
               </Title>
             </SplitItem>
             <Button isDisabled={isRemoveDisabled} onClick={onRemove}>

@@ -1,7 +1,7 @@
-import type { Meta, StoryFn } from "@storybook/react";
-import { rest } from "msw";
-import { RemoveUsersPage as RemoveUsersPageComp } from "./RemoveUsersPage";
-import { ServiceContextProvider } from "../Components/ServiceProvider";
+import type { Meta, StoryFn } from '@storybook/react';
+import { rest } from 'msw';
+import { RemoveUsersPage as RemoveUsersPageComp } from './RemoveUsersPage';
+import { ServiceContextProvider } from '../Components/ServiceProvider';
 
 export default {
   component: RemoveUsersPageComp,
@@ -18,7 +18,7 @@ export const RemoveUsersPage = Template.bind({});
 RemoveUsersPage.parameters = {
   msw: {
     handlers: [
-      rest.get("/aw-api/subscriptions", (req, res, ctx) => {
+      rest.get('/aw-api/subscriptions', (req, res, ctx) => {
         return res(
           ctx.delay(150),
           ctx.json({
@@ -27,7 +27,7 @@ RemoveUsersPage.parameters = {
           })
         );
       }),
-      rest.get("/aw-api/users", (req, res, ctx) => {
+      rest.get('/aw-api/users', (req, res, ctx) => {
         return res(
           ctx.delay(450),
           ctx.json(

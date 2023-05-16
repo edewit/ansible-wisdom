@@ -4,16 +4,16 @@ import {
   LicenseService,
   User,
   header,
-} from "../service";
-import { deleteSeatsById, getSeats, postSeats } from "./entitlements-service";
-import { listPrincipals } from "./rbac";
-import { Principal } from "./rbac";
+} from '../service';
+import { deleteSeatsById, getSeats, postSeats } from './entitlements-service';
+import { listPrincipals } from './rbac';
+import { Principal } from './rbac';
 
 export class EntitlementsService implements LicenseService {
   private baseUrl: string;
 
   constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl || "";
+    this.baseUrl = baseUrl || '';
   }
 
   private async requestHeader(user: AuthenticatedUser) {
@@ -44,8 +44,8 @@ export class EntitlementsService implements LicenseService {
       const result = await getSeats({}, await this.requestHeader(user));
 
       return result.data.map(({ subscription_id, account_username }) => ({
-        id: subscription_id || "",
-        name: account_username || "",
+        id: subscription_id || '',
+        name: account_username || '',
         assigned: true,
       }));
     } else {

@@ -1,19 +1,19 @@
-import { Alert, Page, PageSection } from "@patternfly/react-core";
+import { Alert, Page, PageSection } from '@patternfly/react-core';
 import {
   usePaginationSearchParams,
   useURLSearchParamsChips,
-} from "@rhoas/app-services-ui-components";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { EmptyStateNoSubscription } from "../Components/EmptyStateNoSubscription";
-import { RemoveUsersModal } from "../Components/RemoveUsersModal";
-import { SeatsHeader } from "../Components/SeatsHeader";
-import { useService } from "../Components/ServiceProvider";
-import { UsersWithSeatTable } from "../Components/UsersWithSeatTable";
-import { User, License } from "../client/service";
-import { ConfirmRemoveDialog } from "../Components/ConfirmRemoveDialog";
-import { PageParams } from "./AddUsersPage";
+} from '@rhoas/app-services-ui-components';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { EmptyStateNoSubscription } from '../Components/EmptyStateNoSubscription';
+import { RemoveUsersModal } from '../Components/RemoveUsersModal';
+import { SeatsHeader } from '../Components/SeatsHeader';
+import { useService } from '../Components/ServiceProvider';
+import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
+import { License, User } from '../client/service';
+import { ConfirmRemoveDialog } from '../Components/ConfirmRemoveDialog';
+import { PageParams } from './AddUsersPage';
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
@@ -21,7 +21,7 @@ export const UsersPage = ({
   user,
   onSuccess,
   onError,
-}: Optional<PageParams, "onSuccess" | "onError">) => {
+}: Optional<PageParams, 'onSuccess' | 'onError'>) => {
   const history = useHistory();
   const [checkedUsers, setCheckedUsers] = useState<User[]>([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -34,7 +34,7 @@ export const UsersPage = ({
   );
 
   const usernameChips = useURLSearchParamsChips(
-    "username",
+    'username',
     resetPaginationQuery
   );
 
@@ -42,12 +42,12 @@ export const UsersPage = ({
   const queryClient = useQueryClient();
 
   const subscriptions = useQuery<License>({
-    queryKey: ["subscriptions"],
+    queryKey: ['subscriptions'],
     queryFn: () => service.get(user),
   });
 
   const users = useQuery<User[]>({
-    queryKey: ["users", { page, perPage, usernames: usernameChips.chips }],
+    queryKey: ['users', { page, perPage, usernames: usernameChips.chips }],
     queryFn: () => service.seats(user),
   });
 
@@ -68,11 +68,11 @@ export const UsersPage = ({
     },
     {
       onSuccess: () => {
-        onSuccess && onSuccess("Successfully removed users");
-        queryClient.invalidateQueries({ queryKey: ["users"] });
+        onSuccess && onSuccess('Successfully removed users');
+        queryClient.invalidateQueries({ queryKey: ['users'] });
       },
       onError: (error) => {
-        onError && onError("there was an error: " + error);
+        onError && onError('there was an error: ' + error);
       },
     }
   );
@@ -86,7 +86,7 @@ export const UsersPage = ({
       {negativeSeats && usersToRemove && (
         <RemoveUsersModal
           usersToRemove={usersToRemove}
-          onOk={() => history.push("/remove-users")}
+          onOk={() => history.push('/remove-users')}
         />
       )}
       {confirmOpen && (
@@ -122,7 +122,7 @@ export const UsersPage = ({
             onClearAllFilters={usernameChips.clear}
             getUrlForUser={(user) => `#${user.name}`}
             onAddUser={() => {
-              history.push("/add-users");
+              history.push('/add-users');
             }}
             isUserChecked={(user) => checkedUsers.includes(user)}
             onCheckUser={(user, isChecked) => {

@@ -1,12 +1,10 @@
-import { Page, PageSection } from "@patternfly/react-core";
-import { Meta, StoryFn } from "@storybook/react";
-import { ConfirmRemoveDialog as ConfirmRemoveDialogComponent } from "./ConfirmRemoveDialog";
-
+import { Page, PageSection } from '@patternfly/react-core';
+import { Meta, StoryFn } from '@storybook/react';
+import { ConfirmRemoveDialog as ConfirmRemoveDialogComponent } from './ConfirmRemoveDialog';
 
 export default {
   component: ConfirmRemoveDialogComponent,
-  args: {
-  },
+  args: {},
 } as Meta<typeof ConfirmRemoveDialogComponent>;
 
 const Template: StoryFn<typeof ConfirmRemoveDialogComponent> = (args) => (
@@ -23,18 +21,22 @@ const Template: StoryFn<typeof ConfirmRemoveDialogComponent> = (args) => (
 
 export const ConfirmRemove4Users = Template.bind({});
 ConfirmRemove4Users.args = {
-  users: Array(4).fill(0).map((_, i) => ({
-    id: `${i}`,
-    name: `Bob Robert ${i}`,
-    assigned: true
-  }))
+  users: Array(4)
+    .fill(0)
+    .map((_, i) => ({
+      id: `${i}`,
+      name: `Bob Robert ${i}`,
+      assigned: true,
+    })),
 };
 
 export const ConfirmRemoveMoreUsers = Template.bind({});
 ConfirmRemoveMoreUsers.args = {
-  users: Array(23).fill(0).map((_, i) => ({
-    id: `${i}`,
-    name: `Cork Captain ${i}`,
-    assigned: true
-  }))
+  users: Array(23)
+    .fill(0)
+    .map((_, i) => ({
+      id: `${i}`,
+      name: `Cork Captain ${i}`,
+      assigned: true,
+    })),
 };

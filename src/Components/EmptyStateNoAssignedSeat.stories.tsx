@@ -7,9 +7,7 @@ export default {
   args: {},
 } as Meta<typeof EmptyStateNoAssignedSeatComponent>;
 
-const Template: StoryFn<typeof EmptyStateNoAssignedSeatComponent> = (
-  args
-) => (
+const Template: StoryFn<typeof EmptyStateNoAssignedSeatComponent> = (args) => (
   <Page>
     <EmptyStateNoAssignedSeatComponent {...args} />
   </Page>

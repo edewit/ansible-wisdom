@@ -1,8 +1,7 @@
-import { MockService } from "./api/mock-service";
-import { CiamAuthz } from "./api/ciam-service";
-import { EntitlementsService } from "./entitlements-api/entitlements";
-import * as Oazapfts from "oazapfts/lib/runtime";
-
+import { MockService } from './api/mock-service';
+import { CiamAuthz } from './api/ciam-service';
+import { EntitlementsService } from './entitlements-api/entitlements';
+import * as Oazapfts from 'oazapfts/lib/runtime';
 
 export type License = {
   available: number;
@@ -51,13 +50,13 @@ export function getService(
   baseUrl?: string
 ): LicenseService {
   switch (serviceKey) {
-    case "CIAM_Authz":
+    case 'CIAM_Authz':
       return new CiamAuthz(baseUrl);
-    case "entitlements":
+    case 'entitlements':
       return new EntitlementsService(baseUrl);
-    case "mock":
+    case 'mock':
       return new MockService();
     default:
-      throw new Error("no implementation found for " + serviceKey);
+      throw new Error('no implementation found for ' + serviceKey);
   }
 }

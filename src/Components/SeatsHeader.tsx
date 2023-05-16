@@ -24,8 +24,8 @@ export const SeatsHeader: VoidFunctionComponent<SeatsHeaderProps> = ({
         <Level>
           <LevelItem>
             <Text>
-              This group contains all users assigned seats within
-              your organization.
+              This group contains all users assigned seats within your
+              organization.
             </Text>
           </LevelItem>
           {totalSeats > 0 && (

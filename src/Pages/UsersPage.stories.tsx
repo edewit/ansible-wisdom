@@ -1,7 +1,7 @@
-import type { Meta, StoryFn } from "@storybook/react";
-import { rest } from "msw";
-import { ServiceContextProvider } from "../Components/ServiceProvider";
-import { UsersPage } from "./UsersPage";
+import type { Meta, StoryFn } from '@storybook/react';
+import { rest } from 'msw';
+import { ServiceContextProvider } from '../Components/ServiceProvider';
+import { UsersPage } from './UsersPage';
 
 export default {
   component: UsersPage,
@@ -18,7 +18,7 @@ export const NoSubscription = Template.bind({});
 NoSubscription.parameters = {
   msw: {
     handlers: [
-      rest.get("/aw-api/subscriptions", (req, res, ctx) => {
+      rest.get('/aw-api/subscriptions', (req, res, ctx) => {
         return res(
           ctx.delay(150),
           ctx.json({
@@ -27,7 +27,7 @@ NoSubscription.parameters = {
           })
         );
       }),
-      rest.get("/aw-api/users", (req, res, ctx) => {
+      rest.get('/aw-api/users', (req, res, ctx) => {
         return res(ctx.delay(450), ctx.json([]));
       }),
     ],
@@ -38,7 +38,7 @@ export const SeatsAvailable = Template.bind({});
 SeatsAvailable.parameters = {
   msw: {
     handlers: [
-      rest.get("/aw-api/subscriptions", (req, res, ctx) => {
+      rest.get('/aw-api/subscriptions', (req, res, ctx) => {
         return res(
           ctx.delay(150),
           ctx.json({
@@ -48,7 +48,7 @@ SeatsAvailable.parameters = {
           })
         );
       }),
-      rest.get("/aw-api/users", (req, res, ctx) => {
+      rest.get('/aw-api/users', (req, res, ctx) => {
         return res(
           ctx.delay(450),
           ctx.json(
@@ -70,7 +70,7 @@ export const ZeroSeatsAvailable = Template.bind({});
 ZeroSeatsAvailable.parameters = {
   msw: {
     handlers: [
-      rest.get("/aw-api/subscriptions", (req, res, ctx) => {
+      rest.get('/aw-api/subscriptions', (req, res, ctx) => {
         return res(
           ctx.delay(150),
           ctx.json({
@@ -79,7 +79,7 @@ ZeroSeatsAvailable.parameters = {
           })
         );
       }),
-      rest.get("/aw-api/users", (req, res, ctx) => {
+      rest.get('/aw-api/users', (req, res, ctx) => {
         return res(
           ctx.delay(450),
           ctx.json(
@@ -89,7 +89,7 @@ ZeroSeatsAvailable.parameters = {
                 id: `${i}`,
                 name: `John ${i} Woo`,
                 assigned: true,
-              })),
+              }))
           )
         );
       }),
@@ -101,7 +101,7 @@ export const NegativeSeats = Template.bind({});
 NegativeSeats.parameters = {
   msw: {
     handlers: [
-      rest.get("/aw-api/subscriptions", (req, res, ctx) => {
+      rest.get('/aw-api/subscriptions', (req, res, ctx) => {
         return res(
           ctx.delay(150),
           ctx.json({
@@ -110,16 +110,17 @@ NegativeSeats.parameters = {
           })
         );
       }),
-      rest.get("/aw-api/users", (req, res, ctx) => {
+      rest.get('/aw-api/users', (req, res, ctx) => {
         return res(
           ctx.delay(450),
-          ctx.json(Array(10)
+          ctx.json(
+            Array(10)
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
                 name: `John ${i} Woo`,
                 assigned: true,
-              })),
+              }))
           )
         );
       }),
