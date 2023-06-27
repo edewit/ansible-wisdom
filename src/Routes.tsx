@@ -1,7 +1,7 @@
 import { Bullseye, Spinner } from '@patternfly/react-core';
 import { getBaseName } from '@redhat-cloud-services/frontend-components-utilities/helpers';
 import { InvalidObject } from '@redhat-cloud-services/frontend-components/InvalidObject';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ import { AddUsersPage } from './Pages/AddUsersPage';
 import { RemoveUsersPage } from './Pages/RemoveUsersPage';
 
 export const Routes = () => {
+  const [user, setUser] = useState<AuthenticatedUser>();
   const dispatch = useDispatch();
   const handleAlert = (
     message: string,
@@ -35,14 +36,28 @@ export const Routes = () => {
   const handleError = (message: string) => handleAlert(message, 'danger');
 
   const {
-    auth: { getToken },
+    auth: { getToken, getUser },
   } = useChrome();
 
-  const user = {
-    orgId: 'o1',
-    serviceId: 'smarts',
-    token: getToken,
-  } as AuthenticatedUser;
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      if (user)
+        setUser({
+          orgId: user.identity.org_id,
+          serviceId: 'smarts',
+          token: getToken,
+        } as AuthenticatedUser);
+    })();
+  }, []);
+
+  if (!user) {
+    return (
+      <Bullseye>
+        <Spinner />
+      </Bullseye>
+    );
+  }
 
   return (
     <Suspense
