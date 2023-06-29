@@ -49,10 +49,11 @@ export const UsersPickerTable = ({
   const breakpoint = 'lg';
 
   const isFiltered = usernames.length > 0;
+  const startIndex = (page - 1) * (perPage || 20);
 
   return (
     <TableView
-      data={users}
+      data={users?.slice(startIndex, startIndex + (perPage || 20))}
       columns={Columns}
       renderHeader={({ column, Th, key }) => (
         <Th key={key}>{labels[column]}</Th>
@@ -75,7 +76,7 @@ export const UsersPickerTable = ({
           onSearch: onSearchUsername,
           onRemoveChip: onRemoveUsernameChip,
           onRemoveGroup: onRemoveUsernameChips,
-          validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
+          validate: (value) => /./.test(value),
           errorMessage: 'Invalid string',
         },
       }}
