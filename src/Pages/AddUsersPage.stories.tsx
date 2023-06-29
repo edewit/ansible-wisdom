@@ -31,7 +31,7 @@ AddUsersPage.parameters = {
         return res(
           ctx.delay(450),
           ctx.json(
-            Array(20)
+            Array(50)
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
