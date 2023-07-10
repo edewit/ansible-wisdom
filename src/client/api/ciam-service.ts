@@ -24,8 +24,8 @@ export class CiamAuthz implements LicenseService {
     const opts = await this.requestHeader(token);
     const result = await licenseServiceGetLicense(orgId, serviceId, opts);
     return {
-      available: result.seatsAvailable || 0,
-      total: result.seatsTotal || 0,
+      available: Number(result.seatsAvailable) || 0,
+      total: Number(result.seatsTotal) || 0,
     };
   }
 
