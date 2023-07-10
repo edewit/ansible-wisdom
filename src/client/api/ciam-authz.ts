@@ -34,8 +34,8 @@ export type RpcStatus = {
   details?: ProtobufAny[];
 };
 export type V1AlphaGetLicenseResponse = {
-  seatsTotal?: number;
-  seatsAvailable?: number;
+  seatsTotal?: string;
+  seatsAvailable?: string;
 };
 export type LicensesServiceIdBody = {
   assign?: string[];
