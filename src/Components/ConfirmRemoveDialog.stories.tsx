@@ -25,7 +25,9 @@ ConfirmRemove4Users.args = {
     .fill(0)
     .map((_, i) => ({
       id: `${i}`,
-      name: `Bob Robert ${i}`,
+      userName: `bob.robert${i}`,
+      firstName: `Bob ${i}`,
+      lastName: `Robert ${i}`,
       assigned: true,
     })),
 };
@@ -36,7 +38,9 @@ ConfirmRemoveMoreUsers.args = {
     .fill(0)
     .map((_, i) => ({
       id: `${i}`,
-      name: `Cork Captain ${i}`,
+      userName: `cork.captain${i}`,
+      firstName: `Cork ${i}`,
+      lastName: `Captain ${i}`,
       assigned: true,
     })),
 };
