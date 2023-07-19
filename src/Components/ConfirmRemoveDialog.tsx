@@ -60,7 +60,9 @@ export const ConfirmRemoveDialog = ({
             <Tbody>
               {usersPage.map((user) => (
                 <Tr key={user.id}>
-                  <Td dataLabel="Name">{user.name}</Td>
+                  <Td dataLabel="Name">
+                    {user.firstName} {user.lastName}
+                  </Td>
                 </Tr>
               ))}
             </Tbody>
@@ -91,7 +93,9 @@ export const ConfirmRemoveDialog = ({
         <p className="pf-u-pt-md">
           {users.map((user, i) => (
             <>
-              <b>{user.name}</b>
+              <b>
+                {user.firstName} {user.lastName}
+              </b>
               {i !== users.length - 1 ? ', ' : ''}
             </>
           ))}
