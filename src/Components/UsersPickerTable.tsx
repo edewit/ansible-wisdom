@@ -53,13 +53,11 @@ export const UsersPickerTable = ({
       renderHeader={({ column, Th, key }) => (
         <Th key={key}>{labels[column]}</Th>
       )}
-      renderCell={({ column, row, Td, key }) => {
-        return (
-          <Td key={key} dataLabel={labels[column]}>
-            {row[column]}
-          </Td>
-        );
-      }}
+      renderCell={({ column, row, Td, key }) => (
+        <Td key={key} dataLabel={labels[column]}>
+          {row[column]}
+        </Td>
+      )}
       isColumnSortable={isColumnSortable}
       isRowChecked={({ row }) => isUserChecked(row)}
       onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
