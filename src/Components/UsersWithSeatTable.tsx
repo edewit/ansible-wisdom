@@ -12,6 +12,7 @@ import {
 
 import './users-with-seat-table.css';
 
+export const Columns = ['userName', 'firstName', 'lastName'] as const;
 
 export const labels: { [key in (typeof Columns)[number]]: string } = {
   userName: 'Username',
