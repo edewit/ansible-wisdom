@@ -35,7 +35,9 @@ RemoveUsersPage.parameters = {
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
-                name: `John ${i} Woo ${i}`,
+                userName: `john.woo${i}`,
+                firstName: `John ${i}`,
+                lastName: ` Woo ${i}`,
                 assigned: true,
               }))
           )

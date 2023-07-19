@@ -2,11 +2,8 @@ import { Page } from '@patternfly/react-core';
 import { useSortableSearchParams } from '@rhoas/app-services-ui-components';
 import type { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
-import {
-  Columns,
-  UsersPickerTable as UsersPickerTableComponent,
-  labels,
-} from './UsersPickerTable';
+import { UsersPickerTable as UsersPickerTableComponent } from './UsersPickerTable';
+import { Columns, labels } from './UsersWithSeatTable';
 
 export default {
   component: UsersPickerTableComponent,
@@ -16,19 +13,23 @@ export default {
 } as Meta<typeof UsersPickerTableComponent>;
 
 const Template: StoryFn<typeof UsersPickerTableComponent> = (args) => {
-  const [isColumnSortable] = useSortableSearchParams(Columns, labels, 'name');
+  const [isColumnSortable] = useSortableSearchParams(
+    Columns,
+    labels,
+    'userName'
+  );
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   return (
     <Page>
       <UsersPickerTableComponent
         isColumnSortable={isColumnSortable}
         {...args}
-        isUserChecked={(user) => checkedUsers.includes(user.name)}
+        isUserChecked={(user) => checkedUsers.includes(user.id)}
         onCheckUser={(user, isChecked) => {
           setCheckedUsers(
             isChecked
-              ? [...checkedUsers, user.name]
-              : checkedUsers.filter((u) => u !== user.name)
+              ? [...checkedUsers, user.id]
+              : checkedUsers.filter((u) => u !== user.id)
           );
         }}
       />
@@ -41,37 +42,51 @@ SomeUsersWithPagination.args = {
   users: [
     {
       id: 'FooBar1',
-      name: 'Foo1',
+      userName: 'foo.bar1',
+      firstName: 'Foo1',
+      lastName: 'Bar1',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar2',
+      firstName: 'Foo2',
+      lastName: 'Bar2',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      name: 'Foo3',
+      userName: 'foo.bar3',
+      firstName: 'Foo3',
+      lastName: 'Bar3',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar4',
+      firstName: 'Foo4',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar5',
-      name: 'Foo5',
+      userName: 'foo.bar5',
+      firstName: 'Foo5',
+      lastName: 'Bar5',
       assigned: true,
     },
     {
       id: 'FooBar6',
-      name: 'Foo6',
+      userName: 'foo.bar6',
+      firstName: 'Foo6',
+      lastName: 'Bar6',
       assigned: true,
     },
     {
       id: 'FooBar7',
-      name: 'Foo7',
+      userName: 'foo.bar7',
+      firstName: 'Foo7',
+      lastName: 'Bar7',
       assigned: true,
     },
   ],

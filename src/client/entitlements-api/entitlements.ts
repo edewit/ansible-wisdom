@@ -45,7 +45,9 @@ export class EntitlementsService implements LicenseService {
 
       return result.data.map(({ subscription_id, account_username }) => ({
         id: subscription_id || '',
-        name: account_username || '',
+        userName: account_username || '',
+        firstName: '',
+        lastName: '',
         assigned: true,
       }));
     } else {
@@ -55,7 +57,9 @@ export class EntitlementsService implements LicenseService {
       return (result.data as Principal[]).map(
         ({ username, first_name, last_name }) => ({
           id: username,
-          name: `${first_name} ${last_name}`,
+          firstName: first_name || '',
+          lastName: last_name || '',
+          userName: username,
           assigned: false,
         })
       );

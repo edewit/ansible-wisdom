@@ -7,14 +7,10 @@
 import * as Oazapfts from 'oazapfts/lib/runtime';
 import * as QS from 'oazapfts/lib/runtime/query';
 export const defaults: Oazapfts.RequestOpts = {
-  baseUrl:
-    'https://ciam-authz-hw-ciam-authz--runtime-ext.apps.ext.spoke.preprod.us-east-1.aws.paas.redhat.com/',
+  baseUrl: '/',
 };
 const oazapfts = Oazapfts.runtime(defaults);
-export const servers = {
-  server1:
-    'https://ciam-authz-hw-ciam-authz--runtime-ext.apps.ext.spoke.preprod.us-east-1.aws.paas.redhat.com/',
-};
+export const servers = {};
 export type V1AlphaCheckPermissionRequest = {
   subject?: string;
   operation?: string;
@@ -26,26 +22,32 @@ export type V1AlphaCheckPermissionResponse = {
   description?: string;
 };
 export type ProtobufAny = {
-  [key: string]: object;
+  '@type'?: string;
+  [key: string]: any;
 };
 export type RpcStatus = {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
 };
+export type V1AlphaEmpty = object;
+export type EntitleOrgResponseIsTheResponseWhenEntitlingAnOrg = object;
+export type ImportOrgResponse = {
+  importedUsersCount?: string;
+  notImportedUsersCount?: string;
+};
 export type V1AlphaGetLicenseResponse = {
   seatsTotal?: string;
   seatsAvailable?: string;
-};
-export type LicensesServiceIdBody = {
-  assign?: string[];
-  unassign?: string[];
 };
 export type V1AlphaModifySeatsResponse = object;
 export type V1AlphaGetSeatsUserRepresentation = {
   displayName?: string;
   id?: string;
   assigned?: boolean;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
 };
 export type V1AlphaGetSeatsResponse = {
   users?: V1AlphaGetSeatsUserRepresentation[];
@@ -65,15 +67,15 @@ export function checkPermissionCheckPermission(
         }
       | {
           status: 401;
-          data: object;
+          data: any;
         }
       | {
           status: 403;
-          data: object;
+          data: any;
         }
       | {
           status: 500;
-          data: object;
+          data: any;
         }
       | {
           status: number;
@@ -85,6 +87,119 @@ export function checkPermissionCheckPermission(
         ...opts,
         method: 'POST',
         body: v1AlphaCheckPermissionRequest,
+      })
+    )
+  );
+}
+/**
+ * Health check for the AuthZ service.
+ */
+export function healthCheckServiceHealthCheck(opts?: Oazapfts.RequestOpts) {
+  return oazapfts.ok(
+    oazapfts.fetchJson<
+      | {
+          status: 200;
+          data: V1AlphaEmpty;
+        }
+      | {
+          status: 401;
+          data: any;
+        }
+      | {
+          status: 403;
+          data: any;
+        }
+      | {
+          status: 500;
+          data: any;
+        }
+      | {
+          status: number;
+          data: RpcStatus;
+        }
+    >('/v1alpha/healthcheck', {
+      ...opts,
+    })
+  );
+}
+/**
+ * Entitle an Org access through a seat based license for a service.
+ */
+export function licenseServiceEntitleOrg(
+  orgId: string,
+  serviceId: string,
+  body: {
+    maxSeats?: string;
+  },
+  opts?: Oazapfts.RequestOpts
+) {
+  return oazapfts.ok(
+    oazapfts.fetchJson<
+      | {
+          status: 200;
+          data: EntitleOrgResponseIsTheResponseWhenEntitlingAnOrg;
+        }
+      | {
+          status: 401;
+          data: any;
+        }
+      | {
+          status: 403;
+          data: any;
+        }
+      | {
+          status: 500;
+          data: any;
+        }
+      | {
+          status: number;
+          data: RpcStatus;
+        }
+    >(
+      `/v1alpha/orgs/${encodeURIComponent(
+        orgId
+      )}/entitlements/${encodeURIComponent(serviceId)}`,
+      oazapfts.json({
+        ...opts,
+        method: 'POST',
+        body,
+      })
+    )
+  );
+}
+export function importServiceImportOrg(
+  orgId: string,
+  body: object,
+  opts?: Oazapfts.RequestOpts
+) {
+  return oazapfts.ok(
+    oazapfts.fetchJson<
+      | {
+          status: 200;
+          data: ImportOrgResponse;
+        }
+      | {
+          status: 401;
+          data: any;
+        }
+      | {
+          status: 403;
+          data: any;
+        }
+      | {
+          status: 500;
+          data: any;
+        }
+      | {
+          status: number;
+          data: RpcStatus;
+        }
+    >(
+      `/v1alpha/orgs/${encodeURIComponent(orgId)}/import`,
+      oazapfts.json({
+        ...opts,
+        method: 'POST',
+        body,
       })
     )
   );
@@ -105,15 +220,15 @@ export function licenseServiceGetLicense(
         }
       | {
           status: 401;
-          data: object;
+          data: any;
         }
       | {
           status: 403;
-          data: object;
+          data: any;
         }
       | {
           status: 500;
-          data: object;
+          data: any;
         }
       | {
           status: number;
@@ -135,7 +250,10 @@ export function licenseServiceGetLicense(
 export function licenseServiceModifySeats(
   orgId: string,
   serviceId: string,
-  licensesServiceIdBody: LicensesServiceIdBody,
+  body: {
+    assign?: string[];
+    unassign?: string[];
+  },
   opts?: Oazapfts.RequestOpts
 ) {
   return oazapfts.ok(
@@ -146,15 +264,15 @@ export function licenseServiceModifySeats(
         }
       | {
           status: 401;
-          data: object;
+          data: any;
         }
       | {
           status: 403;
-          data: object;
+          data: any;
         }
       | {
           status: 500;
-          data: object;
+          data: any;
         }
       | {
           status: number;
@@ -167,7 +285,7 @@ export function licenseServiceModifySeats(
       oazapfts.json({
         ...opts,
         method: 'POST',
-        body: licensesServiceIdBody,
+        body,
       })
     )
   );
@@ -195,15 +313,15 @@ export function licenseServiceGetSeats(
         }
       | {
           status: 401;
-          data: object;
+          data: any;
         }
       | {
           status: 403;
-          data: object;
+          data: any;
         }
       | {
           status: 500;
-          data: object;
+          data: any;
         }
       | {
           status: number;

@@ -35,7 +35,9 @@ AddUsersPage.parameters = {
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
-                name: `Bob ${i} Brown`,
+                userName: 'bob.brown',
+                firstName: `Bob ${i}`,
+                lastName: 'Brown',
                 assigned: true,
               }))
           )

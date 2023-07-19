@@ -20,7 +20,11 @@ export default {
 } as Meta<typeof UsersWithSeatTableComponent>;
 
 const Template: StoryFn<typeof UsersWithSeatTableComponent> = (args) => {
-  const [isColumnSortable] = useSortableSearchParams(Columns, labels, 'name');
+  const [isColumnSortable] = useSortableSearchParams(
+    Columns,
+    labels,
+    'userName'
+  );
   return (
     <Page>
       <UsersWithSeatTableComponent
@@ -58,22 +62,30 @@ SomeUsers.args = {
   users: [
     {
       id: 'FooBar1',
-      name: 'Foo1',
+      userName: 'foo.bar1',
+      firstName: 'Foo1',
+      lastName: 'Bar1',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar2',
+      firstName: 'Foo2',
+      lastName: 'Bar2',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      name: 'Foo3',
+      userName: 'foo.bar3',
+      firstName: 'Foo3',
+      lastName: 'Bar3',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar4',
+      firstName: 'Foo4',
+      lastName: 'Bar4',
       assigned: true,
     },
   ],
@@ -87,82 +99,114 @@ SomeUsersWithPagination.args = {
   users: [
     {
       id: 'FooBar1',
-      name: 'Foo1',
+      userName: 'foo.bar1',
+      firstName: 'Foo1',
+      lastName: 'Bar1',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar2',
+      firstName: 'Foo2',
+      lastName: 'Bar2',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      name: 'Foo3',
+      userName: 'foo.bar3',
+      firstName: 'Foo3',
+      lastName: 'Bar3',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar4',
+      firstName: 'Foo4',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar1',
-      name: 'Foo1',
+      userName: 'foo.bar1',
+      firstName: 'Foo1',
+      lastName: 'Bar2',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar2',
+      firstName: 'Foo2',
+      lastName: 'Bar3',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      name: 'Foo3',
+      userName: 'foo.bar3',
+      firstName: 'Foo3',
+      lastName: 'Bar2',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar4',
+      firstName: 'Foo4',
+      lastName: 'Bar42',
       assigned: true,
     },
     {
       id: 'FooBar10',
-      name: 'Foo10',
+      userName: 'foo.bar14',
+      firstName: 'Foo14',
+      lastName: 'Bar14',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar12',
+      firstName: 'Foo12',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar30',
-      name: 'Foo30',
+      userName: 'foo.bar30',
+      firstName: 'Foo30',
+      lastName: 'Bar30',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar34',
+      firstName: 'Foo34',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar1',
-      name: 'Foo1',
+      userName: 'foo.bar11',
+      firstName: 'Foo41',
+      lastName: 'Bar14',
       assigned: true,
     },
     {
       id: 'FooBar2',
-      name: 'Foo2',
+      userName: 'foo.bar55',
+      firstName: 'Foo45',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      name: 'Foo3',
+      userName: 'foo.bar56',
+      firstName: 'Foo4',
+      lastName: 'Bar4',
       assigned: true,
     },
     {
       id: 'FooBar4',
-      name: 'Foo4',
+      userName: 'foo.bar55',
+      firstName: 'Foo4',
+      lastName: 'Bar4',
       assigned: true,
     },
   ],
