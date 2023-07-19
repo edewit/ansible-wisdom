@@ -69,7 +69,7 @@ export const UsersPickerTable = ({
           onSearch: onSearchUsername,
           onRemoveChip: onRemoveUsernameChip,
           onRemoveGroup: onRemoveUsernameChips,
-          validate: (value) => /.*/.test(value),
+          validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
           errorMessage: 'Invalid string',
         },
       }}
