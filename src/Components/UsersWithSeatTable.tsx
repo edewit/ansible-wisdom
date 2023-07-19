@@ -10,7 +10,8 @@ import {
   EmptyStateNoResultsProps,
 } from './EmptyStateNoResults';
 
-export const Columns = ['userName', 'firstName', 'lastName'] as const;
+import './users-with-seat-table.css';
+
 
 export const labels: { [key in (typeof Columns)[number]]: string } = {
   userName: 'Username',
