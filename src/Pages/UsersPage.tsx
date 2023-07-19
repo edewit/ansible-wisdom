@@ -120,7 +120,7 @@ export const UsersPage = ({
             onRemoveUsernameChip={usernameChips.remove}
             onRemoveUsernameChips={usernameChips.clear}
             onClearAllFilters={usernameChips.clear}
-            getUrlForUser={(user) => `#${user.name}`}
+            getUrlForUser={(user) => `#${user.id}`}
             onAddUser={() => {
               history.push('/add-users');
             }}

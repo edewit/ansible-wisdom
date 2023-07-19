@@ -73,31 +73,29 @@ export const UsersWithSeatTable = ({
       renderHeader={({ column, Th, key }) => (
         <Th key={key}>{labels[column]}</Th>
       )}
-      renderCell={({ column, row, Td, key }) => {
-        return (
-          <Td key={key} dataLabel={labels[column]}>
-            {(() => {
-              switch (column) {
-                case 'name':
-                  return (
-                    <Button
-                      variant="link"
-                      component={(props) => (
-                        <Link to={getUrlForUser(row)} {...props}>
-                          {row.name}
-                        </Link>
-                      )}
-                      isInline
-                    />
-                  );
+      renderCell={({ column, row, Td, key }) => (
+        <Td key={key} dataLabel={labels[column]}>
+          {(() => {
+            switch (column) {
+              case 'userName':
+                return (
+                  <Button
+                    variant="link"
+                    component={(props) => (
+                      <Link to={getUrlForUser(row)} {...props}>
+                        {row.userName}
+                      </Link>
+                    )}
+                    isInline
+                  />
+                );
 
-                default:
-                  return row[column];
-              }
-            })()}
-          </Td>
-        );
-      }}
+              default:
+                return row[column];
+            }
+          })()}
+        </Td>
+      )}
       renderActions={({ row }) => {
         return (
           <ActionsColumn
