@@ -10,10 +10,12 @@ import {
   EmptyStateNoResultsProps,
 } from './EmptyStateNoResults';
 
-export const Columns = ['name'] as const;
+export const Columns = ['userName', 'firstName', 'lastName'] as const;
 
 export const labels: { [key in (typeof Columns)[number]]: string } = {
-  name: 'Username',
+  userName: 'Username',
+  firstName: 'First name',
+  lastName: 'Last name',
 };
 
 export type UsersWithSeatTableProps = {

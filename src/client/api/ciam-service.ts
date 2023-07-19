@@ -7,7 +7,6 @@ import {
   header,
 } from '../service';
 import {
-  LicensesServiceIdBody,
   licenseServiceGetLicense,
   licenseServiceGetSeats,
   licenseServiceModifySeats,
@@ -41,9 +40,11 @@ export class CiamAuthz implements LicenseService {
       opts
     );
     return (
-      result.users?.map(({ id, displayName, assigned }) => ({
+      result.users?.map(({ id, firstName, lastName, username, assigned }) => ({
         id: id || '',
-        name: displayName || '',
+        firstName: firstName || '',
+        lastName: lastName || '',
+        userName: username || '',
         assigned: !!assigned,
       })) || []
     );
@@ -54,20 +55,20 @@ export class CiamAuthz implements LicenseService {
   }
 
   async assign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
-    const body: LicensesServiceIdBody = { assign: userIds };
+    const body = { assign: userIds };
     await this.modify(user, body);
     return;
   }
 
   async unAssign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
-    const body: LicensesServiceIdBody = { unassign: userIds };
+    const body = { unassign: userIds };
     await this.modify(user, body);
     return;
   }
 
   private async modify(
     { orgId, serviceId, token }: AuthenticatedUser,
-    body: LicensesServiceIdBody
+    body: any
   ): Promise<any> {
     const opts = await this.requestHeader(token);
     return licenseServiceModifySeats(orgId, serviceId, body, opts);

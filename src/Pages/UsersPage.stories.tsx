@@ -56,7 +56,9 @@ SeatsAvailable.parameters = {
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
-                name: `John ${i} Woo`,
+                userName: `john.woo${i}`,
+                firstName: `John ${i}`,
+                lastName: ` Woo ${i}`,
                 assigned: true,
               }))
           )
@@ -87,7 +89,9 @@ ZeroSeatsAvailable.parameters = {
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
-                name: `John ${i} Woo`,
+                userName: `john.woo${i}`,
+                firstName: `John ${i}`,
+                lastName: ` Woo ${i}`,
                 assigned: true,
               }))
           )
@@ -118,7 +122,9 @@ NegativeSeats.parameters = {
               .fill(0)
               .map((_, i) => ({
                 id: `${i}`,
-                name: `John ${i} Woo`,
+                userName: `john.woo${i}`,
+                firstName: `John ${i}`,
+                lastName: ` Woo ${i}`,
                 assigned: true,
               }))
           )

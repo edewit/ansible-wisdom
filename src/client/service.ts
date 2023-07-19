@@ -10,7 +10,9 @@ export type License = {
 
 export type User = {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
   assigned: boolean;
 };
 

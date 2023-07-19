@@ -5,12 +5,7 @@ import {
   EmptyStateNoResults,
   EmptyStateNoResultsProps,
 } from './EmptyStateNoResults';
-
-export const Columns = ['name'] as const;
-
-export const labels: { [key in (typeof Columns)[number]]: string } = {
-  name: 'Display name',
-};
+import { Columns, labels } from './UsersWithSeatTable';
 
 export type UsersPickerTableProps = {
   users: Array<User> | undefined | null;
