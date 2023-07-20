@@ -1,10 +1,16 @@
-import type { TableViewProps } from '@rhoas/app-services-ui-components';
-import { TableView } from '@rhoas/app-services-ui-components';
-import { User } from '../client/service';
+import { Toolbar } from '@patternfly/react-core';
 import {
-  EmptyStateNoResults,
-  EmptyStateNoResultsProps,
-} from './EmptyStateNoResults';
+  TableComposable,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@patternfly/react-table';
+import type { TableViewProps } from '@rhoas/app-services-ui-components';
+import { Pagination } from '@rhoas/app-services-ui-components';
+import { User } from '../client/service';
+import { EmptyStateNoResultsProps } from './EmptyStateNoResults';
 import { Columns, labels } from './UsersWithSeatTable';
 
 export type UsersPickerTableProps = {
@@ -31,59 +37,66 @@ export const UsersPickerTable = ({
   itemCount,
   page,
   perPage,
-  usernames,
-  isColumnSortable,
   isUserChecked,
   onPageChange,
-  onSearchUsername,
-  onRemoveUsernameChip,
-  onRemoveUsernameChips,
-  onClearAllFilters,
   onCheckUser,
 }: UsersPickerTableProps) => {
-  const breakpoint = 'lg';
-
-  const isFiltered = usernames.length > 0;
   const startIndex = (page - 1) * (perPage || 20);
 
   return (
-    <TableView
-      data={users?.slice(startIndex, startIndex + (perPage || 20))}
-      columns={Columns}
-      renderHeader={({ column, Th, key }) => (
-        <Th key={key}>{labels[column]}</Th>
-      )}
-      renderCell={({ column, row, Td, key }) => (
-        <Td key={key} dataLabel={labels[column]}>
-          {row[column]}
-        </Td>
-      )}
-      isColumnSortable={isColumnSortable}
-      isRowChecked={({ row }) => isUserChecked(row)}
-      onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
-      toolbarBreakpoint={breakpoint}
-      filters={{
-        ['Username']: {
-          type: 'search',
-          chips: usernames,
-          onSearch: onSearchUsername,
-          onRemoveChip: onRemoveUsernameChip,
-          onRemoveGroup: onRemoveUsernameChips,
-          validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
-          errorMessage: 'Invalid string',
-        },
-      }}
-      itemCount={itemCount}
-      page={page}
-      perPage={perPage}
-      onPageChange={onPageChange}
-      onClearAllFilters={onClearAllFilters}
-      ariaLabel={'Seats Administration users'}
-      isFiltered={isFiltered}
-      emptyStateNoData={<>{/* this can't happen */}</>}
-      emptyStateNoResults={
-        <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />
-      }
-    />
+    <>
+      <Toolbar>
+        <Pagination
+          itemCount={itemCount || 0}
+          page={page}
+          perPage={perPage || 20}
+          onChange={onPageChange}
+          isCompact
+          variant="top"
+        />
+      </Toolbar>
+      <TableComposable aria-label="Seats Administration users">
+        <Thead>
+          <Tr>
+            <Th />
+            {Columns.map((column) => (
+              <Th key={column}>{labels[column]}</Th>
+            ))}
+          </Tr>
+        </Thead>
+
+        <Tbody>
+          {users
+            ?.slice(startIndex, startIndex + (perPage || 20))
+            .map((row, rowIndex) => (
+              <Tr key={row.id}>
+                <Td
+                  select={{
+                    rowIndex,
+                    onSelect: (_event, isChecked) =>
+                      onCheckUser(row, isChecked),
+                    isSelected: isUserChecked(row),
+                  }}
+                />
+                {Columns.map((column) => (
+                  <Td key={`${row.id}-${column}`} dataLabel={labels[column]}>
+                    {row[column]}
+                  </Td>
+                ))}
+              </Tr>
+            ))}
+        </Tbody>
+      </TableComposable>
+      <Toolbar>
+        <Pagination
+          itemCount={itemCount || 0}
+          page={page}
+          perPage={perPage || 20}
+          onChange={onPageChange}
+          isCompact
+          variant="bottom"
+        />
+      </Toolbar>
+    </>
   );
 };
