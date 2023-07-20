@@ -114,17 +114,6 @@ export const UsersWithSeatTable = ({
         }}
         isColumnSortable={isColumnSortable}
         toolbarBreakpoint={breakpoint}
-        filters={{
-          ['Username']: {
-            type: 'search',
-            chips: usernames,
-            onSearch: onSearchUsername,
-            onRemoveChip: onRemoveUsernameChip,
-            onRemoveGroup: onRemoveUsernameChips,
-            validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
-            errorMessage: 'Invalid string',
-          },
-        }}
         actions={[
           ...(canAddUser
             ? [
