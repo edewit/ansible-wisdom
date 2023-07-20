@@ -1,9 +1,3 @@
-#seatTable .pf-c-button.pf-m-primary {
+#seatTable .pf-c-button {
   margin-left: 10px;
-}
-
-#seatTable .pf-c-button.pf-m-primary:nth-child(2) {
-  --pf-c-button--after--BorderColor: var(--pf-c-button--m-secondary--after--BorderColor);
-  color: var(--pf-c-button--m-secondary--Color);
-  background-color: var(--pf-c-button--m-secondary--BackgroundColor);
 }
