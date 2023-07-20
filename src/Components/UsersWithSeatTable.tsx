@@ -59,9 +59,6 @@ export const UsersWithSeatTable = ({
   onPageChange,
   onRemoveSeat,
   onAddUser,
-  onSearchUsername,
-  onRemoveUsernameChip,
-  onRemoveUsernameChips,
   onClearAllFilters,
 }: UsersWithSeatTableProps) => {
   const breakpoint = 'lg';
