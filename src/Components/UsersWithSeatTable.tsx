@@ -69,96 +69,98 @@ export const UsersWithSeatTable = ({
   const isFiltered = usernames.length > 0;
 
   return (
-    <TableView
-      data={users}
-      columns={Columns}
-      renderHeader={({ column, Th, key }) => (
-        <Th key={key}>{labels[column]}</Th>
-      )}
-      renderCell={({ column, row, Td, key }) => (
-        <Td key={key} dataLabel={labels[column]}>
-          {(() => {
-            switch (column) {
-              case 'userName':
-                return (
-                  <Button
-                    variant="link"
-                    component={(props) => (
-                      <Link to={getUrlForUser(row)} {...props}>
-                        {row.userName}
-                      </Link>
-                    )}
-                    isInline
-                  />
-                );
+    <div id="seatTable">
+      <TableView
+        data={users}
+        columns={Columns}
+        renderHeader={({ column, Th, key }) => (
+          <Th key={key}>{labels[column]}</Th>
+        )}
+        renderCell={({ column, row, Td, key }) => (
+          <Td key={key} dataLabel={labels[column]}>
+            {(() => {
+              switch (column) {
+                case 'userName':
+                  return (
+                    <Button
+                      variant="link"
+                      component={(props) => (
+                        <Link to={getUrlForUser(row)} {...props}>
+                          {row.userName}
+                        </Link>
+                      )}
+                      isInline
+                    />
+                  );
 
-              default:
-                return row[column];
-            }
-          })()}
-        </Td>
-      )}
-      renderActions={({ row }) => {
-        return (
-          <ActionsColumn
-            rowData={hackZIndex}
-            items={[
-              {
-                title: 'Remove seat',
-                onClick: () => onRemoveSeat(row),
-              },
-            ]}
+                default:
+                  return row[column];
+              }
+            })()}
+          </Td>
+        )}
+        renderActions={({ row }) => {
+          return (
+            <ActionsColumn
+              rowData={hackZIndex}
+              items={[
+                {
+                  title: 'Remove seat',
+                  onClick: () => onRemoveSeat(row),
+                },
+              ]}
+            />
+          );
+        }}
+        isColumnSortable={isColumnSortable}
+        toolbarBreakpoint={breakpoint}
+        filters={{
+          ['Username']: {
+            type: 'search',
+            chips: usernames,
+            onSearch: onSearchUsername,
+            onRemoveChip: onRemoveUsernameChip,
+            onRemoveGroup: onRemoveUsernameChips,
+            validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
+            errorMessage: 'Invalid string',
+          },
+        }}
+        actions={[
+          ...(canAddUser
+            ? [
+                {
+                  label: 'Assign user(s)',
+                  onClick: onAddUser,
+                  isPrimary: true,
+                },
+              ]
+            : []),
+          {
+            label: 'Remove user(s)',
+            onClick: () => onRemoveSeat(),
+            isPrimary: false,
+          },
+        ]}
+        itemCount={itemCount}
+        page={page}
+        perPage={perPage}
+        onPageChange={onPageChange}
+        onClearAllFilters={onClearAllFilters}
+        ariaLabel={'Seats Administration users'}
+        isFiltered={isFiltered}
+        isRowChecked={({ row }) => isUserChecked(row)}
+        onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
+        emptyStateNoData={
+          <EmptyStateNoAssignedSeat
+            totalSeats={totalSeats || 0}
+            onAddUsers={onAddUser}
           />
-        );
-      }}
-      isColumnSortable={isColumnSortable}
-      toolbarBreakpoint={breakpoint}
-      filters={{
-        ['Username']: {
-          type: 'search',
-          chips: usernames,
-          onSearch: onSearchUsername,
-          onRemoveChip: onRemoveUsernameChip,
-          onRemoveGroup: onRemoveUsernameChips,
-          validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
-          errorMessage: 'Invalid string',
-        },
-      }}
-      actions={[
-        ...(canAddUser
-          ? [
-              {
-                label: 'Assign user(s)',
-                onClick: onAddUser,
-                isPrimary: true,
-              },
-            ]
-          : []),
-        {
-          label: 'Remove user(s)',
-          onClick: () => onRemoveSeat(),
-          isPrimary: false,
-        },
-      ]}
-      itemCount={itemCount}
-      page={page}
-      perPage={perPage}
-      onPageChange={onPageChange}
-      onClearAllFilters={onClearAllFilters}
-      ariaLabel={'Seats Administration users'}
-      isFiltered={isFiltered}
-      isRowChecked={({ row }) => isUserChecked(row)}
-      onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
-      emptyStateNoData={
-        <EmptyStateNoAssignedSeat
-          totalSeats={totalSeats || 0}
-          onAddUsers={onAddUser}
-        />
-      }
-      emptyStateNoResults={
-        <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />
-      }
-    />
+        }
+        emptyStateNoResults={
+          <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />
+        }
+      />
+    </div>
   );
 };
 
