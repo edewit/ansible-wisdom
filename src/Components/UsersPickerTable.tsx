@@ -35,9 +35,9 @@ export const UsersPickerTable = ({
   isColumnSortable,
   isUserChecked,
   onPageChange,
-  onSearchUsername,
-  onRemoveUsernameChip,
-  onRemoveUsernameChips,
+  // onSearchUsername,
+  // onRemoveUsernameChip,
+  // onRemoveUsernameChips,
   onClearAllFilters,
   onCheckUser,
 }: UsersPickerTableProps) => {

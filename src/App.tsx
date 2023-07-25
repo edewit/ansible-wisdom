@@ -4,7 +4,6 @@ import { notificationsReducer } from '@redhat-cloud-services/frontend-components
 import { getRegistry } from '@redhat-cloud-services/frontend-components-utilities/Registry';
 import { useChrome } from '@redhat-cloud-services/frontend-components/useChrome';
 import React, { Fragment, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Reducer } from 'redux';
 import './App.scss';
 
