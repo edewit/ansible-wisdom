@@ -11,27 +11,13 @@ import './App.scss';
 import { Routes } from './Routes';
 
 const App = () => {
-  const { updateDocumentTitle, on } = useChrome();
-  const history = useHistory();
+  const { updateDocumentTitle } = useChrome();
 
   useEffect(() => {
     const registry = getRegistry();
     registry.register({ notifications: notificationsReducer as Reducer });
     // You can use directly the name of your app
-    updateDocumentTitle('Starter app');
-
-    const unregister = on('APP_NAVIGATION', (event) => {
-      console.dir(event);
-      if (event.navId) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        history.push(event.navId);
-      }
-    });
-    return () => {
-      if (unregister) {
-        unregister();
-      }
-    };
+    updateDocumentTitle('Seats Administration');
   }, []);
 
   return (
