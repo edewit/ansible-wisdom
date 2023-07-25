@@ -62,17 +62,17 @@ export const UsersPickerTable = ({
       isRowChecked={({ row }) => isUserChecked(row)}
       onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
       toolbarBreakpoint={breakpoint}
-      filters={{
-        ['Username']: {
-          type: 'search',
-          chips: usernames,
-          onSearch: onSearchUsername,
-          onRemoveChip: onRemoveUsernameChip,
-          onRemoveGroup: onRemoveUsernameChips,
-          validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
-          errorMessage: 'Invalid string',
-        },
-      }}
+      // filters={{
+      //   ['Username']: {
+      //     type: 'search',
+      //     chips: usernames,
+      //     onSearch: onSearchUsername,
+      //     onRemoveChip: onRemoveUsernameChip,
+      //     onRemoveGroup: onRemoveUsernameChips,
+      //     validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
+      //     errorMessage: 'Invalid string',
+      //   },
+      // }}
       itemCount={itemCount}
       page={page}
       perPage={perPage}
