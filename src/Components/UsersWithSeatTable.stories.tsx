@@ -69,16 +69,16 @@ SomeUsers.args = {
     },
     {
       id: 'FooBar2',
-      userName: 'foo.bar2',
-      firstName: 'Foo2',
-      lastName: 'Bar2',
+      userName: 'foo.bar3',
+      firstName: 'Foo4',
+      lastName: 'Bar8',
       assigned: true,
     },
     {
       id: 'FooBar3',
-      userName: 'foo.bar3',
+      userName: 'foo.bar8',
       firstName: 'Foo3',
-      lastName: 'Bar3',
+      lastName: 'Bar2',
       assigned: true,
     },
     {

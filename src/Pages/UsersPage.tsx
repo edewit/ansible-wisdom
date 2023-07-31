@@ -132,6 +132,7 @@ export const UsersPage = ({
                   : checkedUsers.filter((u) => u !== user)
               );
             }}
+            setSelectedUser={(users) => setCheckedUsers(users)}
             onRemoveSeat={(user) => {
               if (user) setCheckedUsers([user]);
               setConfirmOpen(true);
