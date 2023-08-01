@@ -1,10 +1,7 @@
 import { Alert, Page, PageSection } from '@patternfly/react-core';
-import {
-  usePaginationSearchParams,
-  useURLSearchParamsChips,
-} from '@rhoas/app-services-ui-components';
+import { usePaginationSearchParams } from '@rhoas/app-services-ui-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { EmptyStateNoSubscription } from '../Components/EmptyStateNoSubscription';
 import { RemoveUsersModal } from '../Components/RemoveUsersModal';
@@ -26,17 +23,7 @@ export const UsersPage = ({
   const [checkedUsers, setCheckedUsers] = useState<User[]>([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const { page, perPage, setPagination, setPaginationQuery } =
-    usePaginationSearchParams();
-  const resetPaginationQuery = useCallback(
-    () => setPaginationQuery(1, perPage),
-    [perPage, setPaginationQuery]
-  );
-
-  const usernameChips = useURLSearchParamsChips(
-    'username',
-    resetPaginationQuery
-  );
+  const { page, perPage, setPagination } = usePaginationSearchParams();
 
   const service = useService();
   const queryClient = useQueryClient();
@@ -47,7 +34,7 @@ export const UsersPage = ({
   });
 
   const users = useQuery<User[]>({
-    queryKey: ['users', { page, perPage, usernames: usernameChips.chips }],
+    queryKey: ['users', { page, perPage }],
     queryFn: () => service.seats(user),
   });
 
@@ -115,12 +102,6 @@ export const UsersPage = ({
             page={page}
             perPage={perPage}
             onPageChange={setPagination}
-            usernames={usernameChips.chips}
-            onSearchUsername={usernameChips.add}
-            onRemoveUsernameChip={usernameChips.remove}
-            onRemoveUsernameChips={usernameChips.clear}
-            onClearAllFilters={usernameChips.clear}
-            getUrlForUser={(user) => `#${user.id}`}
             onAddUser={() => {
               history.push('/add-users');
             }}
