@@ -3,7 +3,9 @@ import {
   ButtonVariant,
   Modal,
   ModalVariant,
+  Title,
 } from '@patternfly/react-core';
+import { ExclamationTriangleIcon } from '@patternfly/react-icons';
 import { VoidFunctionComponent } from 'react';
 
 export type RemoveUsersModalProps = {
@@ -19,10 +21,19 @@ const RemoveUsersModal: VoidFunctionComponent<RemoveUsersModalProps> = ({
     <Modal
       id="remove-users-modal"
       variant={ModalVariant.small}
-      isOpen={true}
-      aria-label={'Remove users from seats'}
-      title={'Remove users from seats'}
-      titleIconVariant="warning"
+      isOpen
+      aria-label="Remove users from Ansible Lightspeed with Watson Code Assistant"
+      header={
+        <Title headingLevel="h1" style={{ display: 'flex' }}>
+          <ExclamationTriangleIcon
+            size="lg"
+            style={{ color: 'var(--pf-global--warning-color--100)' }}
+          />
+          <span className="pf-u-ml-md">
+            Remove users from Ansible Lightspeed with Watson Code Assistant.
+          </span>
+        </Title>
+      }
       showClose={false}
       aria-describedby="modal-message"
       actions={[
@@ -31,9 +42,10 @@ const RemoveUsersModal: VoidFunctionComponent<RemoveUsersModalProps> = ({
         </Button>,
       ]}
     >
-      Your organization has decreased the amount of seats available. Please
-      remove {usersToRemove} users from their seats to continue the
-      subscription.
+      Your organization has reduced the number of users in Opt in to Ansible
+      Lightspeed with Watson Code Assistant to {usersToRemove}. Please remove{' '}
+      {usersToRemove} users to continue using the Opt in to Ansible Lightspeed
+      with Watson Code Assistant subscription.
     </Modal>
   );
 };

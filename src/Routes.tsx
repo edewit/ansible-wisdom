@@ -74,6 +74,7 @@ export const Routes = () => {
         <Router basename={getBaseName(window.location.pathname) + '/seats'}>
           <Switch>
             <Route path="/add-users">
+              <UsersPage user={user} />
               <AddUsersPage
                 user={user}
                 onSuccess={handleAlert}
@@ -81,6 +82,7 @@ export const Routes = () => {
               />
             </Route>
             <Route path="/remove-users">
+              <UsersPage user={user} />
               <RemoveUsersPage
                 user={user}
                 onSuccess={handleAlert}

@@ -33,7 +33,6 @@ import {
   useTranslation,
 } from '@rhoas/app-services-ui-components';
 import filter from 'lodash.filter';
-import includes from 'lodash.includes';
 import orderBy from 'lodash.orderBy';
 import { VoidFunctionComponent, useMemo, useState } from 'react';
 import { User } from '../client/service';
@@ -43,7 +42,7 @@ import { EmptyStateNoResults } from './EmptyStateNoResults';
 export const Columns = ['userName', 'firstName', 'lastName'] as const;
 type ColumnTypes = (typeof Columns)[number];
 
-export const labels: { [key in (typeof Columns)[number]]: string } = {
+export const labels: { [key in ColumnTypes]: string } = {
   userName: 'Username',
   firstName: 'First name',
   lastName: 'Last name',
@@ -52,14 +51,15 @@ export const labels: { [key in (typeof Columns)[number]]: string } = {
 export type UsersWithSeatTableProps = {
   users: Array<User> | undefined | null;
   totalSeats: number | undefined;
-  canAddUser: boolean;
-  onAddUser: () => void;
+  canAddUser?: boolean;
+  onAddUser?: () => void;
   isUserChecked: (user: User) => boolean;
   onCheckUser: (user: User, isChecked: boolean) => void;
-  setSelectedUser: (users: User[]) => void;
-  onRemoveSeat: (row?: User) => void;
+  setSelectedUser?: (users: User[]) => void;
+  onRemoveSeat?: (row?: User) => void;
+  isPicker?: boolean;
 } & Pick<
-  TableViewProps<User, (typeof Columns)[number]>,
+  TableViewProps<User, ColumnTypes>,
   'itemCount' | 'page' | 'perPage' | 'onPageChange'
 >;
 
@@ -158,13 +158,14 @@ export const UsersWithSeatTable = ({
   page,
   perPage,
   totalSeats,
-  canAddUser,
+  canAddUser = false,
   isUserChecked,
   onCheckUser,
   setSelectedUser,
   onPageChange,
   onRemoveSeat,
   onAddUser,
+  isPicker = false,
 }: UsersWithSeatTableProps) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
   const [activeSortDirection, setActiveSortDirection] = useState<
@@ -172,6 +173,7 @@ export const UsersWithSeatTable = ({
   >();
 
   const [filterColumn, setFilterColumn] = useState<ColumnTypes>(Columns[0]);
+  const [search, setSearch] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
 
@@ -184,8 +186,8 @@ export const UsersWithSeatTable = ({
     }
 
     if (filterValue !== '') {
-      page = filter(page, (user: { [x: string]: any }) =>
-        includes(user[filterColumn], filterValue)
+      page = filter(page, (user: User) =>
+        user[filterColumn].includes(filterValue)
       );
     }
     return page!;
@@ -201,11 +203,11 @@ export const UsersWithSeatTable = ({
   if (users === null) {
     return <Loading />;
   }
-  if (users?.length === 0 && filterValue !== '') {
+  if (users?.length === 0 && filterValue !== '' && !isPicker) {
     return (
       <EmptyStateNoAssignedSeat
         totalSeats={totalSeats || 0}
-        onAddUsers={onAddUser}
+        onAddUsers={() => onAddUser?.()}
       />
     );
   }
@@ -214,24 +216,26 @@ export const UsersWithSeatTable = ({
     <>
       <Toolbar clearAllFilters={() => setFilterValue('')}>
         <ToolbarContent>
-          <ToolbarItem>
-            <BulkSelectToolbar
-              perPage={perPage || 20}
-              itemCount={itemCount || 0}
-              select={(option) => {
-                switch (option) {
-                  case 'all':
-                    setSelectedUser(users || []);
-                    break;
-                  case 'page':
-                    setSelectedUser(data || []);
-                    break;
-                  default:
-                    setSelectedUser([]);
-                }
-              }}
-            />
-          </ToolbarItem>
+          {!isPicker && (
+            <ToolbarItem>
+              <BulkSelectToolbar
+                perPage={perPage || 20}
+                itemCount={itemCount || 0}
+                select={(option) => {
+                  switch (option) {
+                    case 'all':
+                      setSelectedUser?.(users || []);
+                      break;
+                    case 'page':
+                      setSelectedUser?.(data || []);
+                      break;
+                    default:
+                      setSelectedUser?.([]);
+                  }
+                }}
+              />
+            </ToolbarItem>
+          )}
           <ToolbarToggleGroup toggleIcon={<FilterIcon />} breakpoint="xl">
             <ToolbarGroup variant="filter-group">
               <ToolbarItem>
@@ -271,11 +275,13 @@ export const UsersWithSeatTable = ({
                 deleteChip={() => setFilterValue('')}
                 deleteChipGroup={() => setFilterValue('')}
                 categoryName={labels[filterColumn]}
+                widths={isPicker ? { default: '500px' } : undefined}
               >
                 <SearchInput
                   aria-label="Filter table based on column"
-                  onChange={(_event, value) => setFilterValue(value)}
-                  value={filterValue}
+                  onChange={(_event, value) => setSearch(value)}
+                  onSearch={(_, value) => setFilterValue(value)}
+                  value={search}
                   onClear={() => {
                     setFilterValue('');
                   }}
@@ -283,29 +289,33 @@ export const UsersWithSeatTable = ({
               </ToolbarFilter>
             </ToolbarGroup>
           </ToolbarToggleGroup>
-          {canAddUser && (
+          {!isPicker && canAddUser && (
             <ToolbarItem>
               <Button onClick={onAddUser}>Assign user(s)</Button>
             </ToolbarItem>
           )}
-          <ToolbarItem>
-            <Button onClick={() => onRemoveSeat()} variant="secondary">
-              Remove user(s)
-            </Button>
-          </ToolbarItem>
-          <ToolbarItem alignment={{ default: 'alignRight' }}>
-            <Pagination
-              itemCount={itemCount || 0}
-              page={page}
-              perPage={perPage || 20}
-              onChange={onPageChange}
-              isCompact
-              variant="top"
-            />
-          </ToolbarItem>
+          {!isPicker && (
+            <>
+              <ToolbarItem>
+                <Button onClick={() => onRemoveSeat?.()} variant="secondary">
+                  Remove user(s)
+                </Button>
+              </ToolbarItem>
+              <ToolbarItem alignment={{ default: 'alignRight' }}>
+                <Pagination
+                  itemCount={itemCount || 0}
+                  page={page}
+                  perPage={perPage || 20}
+                  onChange={onPageChange}
+                  isCompact
+                  variant="top"
+                />
+              </ToolbarItem>
+            </>
+          )}
         </ToolbarContent>
       </Toolbar>
-      <TableComposable aria-label="Seats Administration users">
+      <TableComposable aria-label="Ansible Lightspeed with Watson Code Assistant users">
         <Thead>
           <Tr>
             <Th />
@@ -349,16 +359,18 @@ export const UsersWithSeatTable = ({
                   {row[column]}
                 </Td>
               ))}
-              <Td isActionCell>
-                <ActionsColumn
-                  items={[
-                    {
-                      title: 'Remove user',
-                      onClick: () => onRemoveSeat(row),
-                    },
-                  ]}
-                />
-              </Td>
+              {!isPicker && (
+                <Td isActionCell>
+                  <ActionsColumn
+                    items={[
+                      {
+                        title: 'Remove user',
+                        onClick: () => onRemoveSeat?.(row),
+                      },
+                    ]}
+                  />
+                </Td>
+              )}
             </Tr>
           ))}
           {data?.length === 0 && (

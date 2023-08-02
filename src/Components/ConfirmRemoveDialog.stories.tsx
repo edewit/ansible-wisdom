@@ -19,17 +19,17 @@ const Template: StoryFn<typeof ConfirmRemoveDialogComponent> = (args) => (
   </Page>
 );
 
-export const ConfirmRemove4Users = Template.bind({});
-ConfirmRemove4Users.args = {
-  users: Array(4)
-    .fill(0)
-    .map((_, i) => ({
-      id: `${i}`,
-      userName: `bob.robert${i}`,
-      firstName: `Bob ${i}`,
-      lastName: `Robert ${i}`,
+export const ConfirmRemove1Users = Template.bind({});
+ConfirmRemove1Users.args = {
+  users: [
+    {
+      id: `bob`,
+      userName: `bob.robert1`,
+      firstName: `Bob`,
+      lastName: `Robert`,
       assigned: true,
-    })),
+    },
+  ],
 };
 
 export const ConfirmRemoveMoreUsers = Template.bind({});

@@ -5,8 +5,6 @@ import { UsersWithSeatTable as UsersWithSeatTableComponent } from './UsersWithSe
 export default {
   component: UsersWithSeatTableComponent,
   args: {
-    getUrlForUser: () => '',
-    usernames: [],
     availableSeats: 5,
     totalSeats: 10,
     canAddUser: true,
@@ -30,7 +28,6 @@ FirstLoadShowsSpinner.args = {
 export const LoadingDataAfterFilteringShowsASkeleton = Template.bind({});
 LoadingDataAfterFilteringShowsASkeleton.args = {
   users: undefined,
-  usernames: ['foo'],
 };
 
 export const NoInitialDataShowsTheRightEmptyState = Template.bind({});
@@ -41,7 +38,6 @@ NoInitialDataShowsTheRightEmptyState.args = {
 export const NoDataWithAFilterShowsTheRightEmptyState = Template.bind({});
 NoDataWithAFilterShowsTheRightEmptyState.args = {
   users: [],
-  usernames: ['foo'],
 };
 
 export const SomeUsers = Template.bind({});
@@ -78,7 +74,6 @@ SomeUsers.args = {
   ],
   page: 1,
   itemCount: 5,
-  usernames: ['foo'],
 };
 
 export const SomeUsersWithPagination = Template.bind({});
@@ -199,7 +194,6 @@ SomeUsersWithPagination.args = {
   ],
   page: 1,
   itemCount: 56,
-  usernames: ['foo'],
 };
 
 export const CantAddUsers = Template.bind({});

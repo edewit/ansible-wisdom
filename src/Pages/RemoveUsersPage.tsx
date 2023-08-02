@@ -7,9 +7,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { License, User } from '../client/service';
 import { useCallback, useState } from 'react';
 import { useService } from '../Components/ServiceProvider';
-import { UsersPickerTable } from '../Components/UsersPickerTable';
 import { useHistory } from 'react-router-dom';
 import { PageParams } from './AddUsersPage';
+import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
 
 export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const history = useHistory();
@@ -91,17 +91,14 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         </Button>,
       ]}
     >
-      <UsersPickerTable
+      <UsersWithSeatTable
+        isPicker
+        totalSeats={subscriptions.data?.total}
         users={users.data}
         itemCount={users.data?.length}
         page={page}
         perPage={perPage}
         onPageChange={setPagination}
-        usernames={usernameChips.chips}
-        onSearchUsername={usernameChips.add}
-        onRemoveUsernameChip={usernameChips.remove}
-        onRemoveUsernameChips={usernameChips.clear}
-        onClearAllFilters={usernameChips.clear}
         isUserChecked={(user) => checkedUsers.includes(user.id)}
         onCheckUser={(user, isChecked) => {
           setCheckedUsers(

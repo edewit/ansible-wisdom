@@ -20,7 +20,9 @@ export const SeatsHeader: VoidFunctionComponent<SeatsHeaderProps> = ({
   return (
     <PageSection variant={'light'} hasShadowBottom={true}>
       <TextContent>
-        <Title headingLevel={'h1'}>Seats Administration</Title>
+        <Title headingLevel={'h1'}>
+          Ansible Lightspeed with Watson Code Assistant
+        </Title>
         <Level>
           <LevelItem>
             <Text>

@@ -83,16 +83,17 @@ export const UsersPage = ({
           onCancel={() => setConfirmOpen(false)}
         />
       )}
-      <PageSection isFilled>
-        {cantAddUsers ? (
+      {cantAddUsers ? (
+        <PageSection style={{ paddingBottom: 0 }}>
           <Alert
             title={
-              "There are 0 seats left in your organization's subscription. Contact Red Hat to manage your Seats Administration license."
+              "There are 0 seats left in your organization's subscription. Contact Red Hat to manage your Ansible Lightspeed with Watson Code Assistant license."
             }
             variant="warning"
-            isInline
           />
-        ) : null}
+        </PageSection>
+      ) : null}
+      <PageSection>
         {subscriptions.data?.total !== 0 && (
           <UsersWithSeatTable
             totalSeats={subscriptions.data?.total}
