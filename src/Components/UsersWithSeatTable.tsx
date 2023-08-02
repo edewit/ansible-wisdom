@@ -33,7 +33,7 @@ import {
   useTranslation,
 } from '@rhoas/app-services-ui-components';
 import filter from 'lodash.filter';
-import orderBy from 'lodash.orderBy';
+import orderBy from 'lodash.orderby';
 import { VoidFunctionComponent, useMemo, useState } from 'react';
 import { User } from '../client/service';
 import { EmptyStateNoAssignedSeat } from './EmptyStateNoAssignedSeat';
