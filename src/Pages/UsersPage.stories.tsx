@@ -22,8 +22,8 @@ NoSubscription.parameters = {
         return res(
           ctx.delay(150),
           ctx.json({
-            total: 0,
-            available: 0,
+            totalSeats: 0,
+            availableSeats: 0,
           })
         );
       }),
@@ -76,8 +76,8 @@ ZeroSeatsAvailable.parameters = {
         return res(
           ctx.delay(150),
           ctx.json({
-            total: 30,
-            available: 0,
+            totalSeats: 30,
+            availableSeats: 0,
           })
         );
       }),
@@ -109,8 +109,8 @@ NegativeSeats.parameters = {
         return res(
           ctx.delay(150),
           ctx.json({
-            total: 5,
-            available: -2,
+            totalSeats: 5,
+            availableSeats: -2,
           })
         );
       }),

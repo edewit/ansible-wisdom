@@ -7,8 +7,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthenticatedUser, License, User } from '../client/service';
 import { useCallback, useState } from 'react';
 import { useService } from '../Components/ServiceProvider';
-import { UsersPickerTable } from '../Components/UsersPickerTable';
 import { useHistory } from 'react-router-dom';
+import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
 
 export type PageParams = {
   user: AuthenticatedUser;
@@ -94,20 +94,17 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         <Alert
           variant="warning"
           isInline
-          title="Your organization does not have enough Project Wisdom seats for the assignments below"
+          title="Your organization does not have enough Ansible Lightspeed with Watson Code Assistant seats available for the assignments below"
         />
       )}
-      <UsersPickerTable
+      <UsersWithSeatTable
+        isPicker
+        totalSeats={subscriptions.data?.total}
         users={users.data}
         itemCount={users.data?.length}
         page={page}
         perPage={perPage}
         onPageChange={setPagination}
-        usernames={usernameChips.chips}
-        onSearchUsername={usernameChips.add}
-        onRemoveUsernameChip={usernameChips.remove}
-        onRemoveUsernameChips={usernameChips.clear}
-        onClearAllFilters={usernameChips.clear}
         isUserChecked={(user) => checkedUsers.includes(user.id)}
         onCheckUser={(user, isChecked) => {
           setCheckedUsers(

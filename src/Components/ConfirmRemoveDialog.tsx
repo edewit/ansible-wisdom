@@ -48,8 +48,9 @@ export const ConfirmRemoveDialog = ({
       ]}
       onClose={onCancel}
     >
-      Are you sure you want to remove the user(s) below from Project Wisdom
-      {users.length > 5 ? (
+      Are you sure you want to remove the user(s) below from Ansible Lightspeed
+      with Watson Code Assistant?
+      {users.length > 1 ? (
         <>
           <TableComposable variant="compact">
             <Thead>

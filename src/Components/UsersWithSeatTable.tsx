@@ -1,20 +1,48 @@
-import { Button } from '@patternfly/react-core';
-import { ActionsColumn } from '@patternfly/react-table';
-import type { TableViewProps } from '@rhoas/app-services-ui-components';
-import { TableView } from '@rhoas/app-services-ui-components';
-import { User } from '../client/service';
-import { Link } from 'react-router-dom';
-import { EmptyStateNoAssignedSeat } from './EmptyStateNoAssignedSeat';
 import {
-  EmptyStateNoResults,
-  EmptyStateNoResultsProps,
-} from './EmptyStateNoResults';
-
-import './users-with-seat-table.css';
+  Button,
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuList,
+  MenuToggle,
+  MenuToggleCheckbox,
+  Popper,
+  SearchInput,
+  Skeleton,
+  Toolbar,
+  ToolbarContent,
+  ToolbarFilter,
+  ToolbarGroup,
+  ToolbarItem,
+  ToolbarToggleGroup,
+} from '@patternfly/react-core';
+import FilterIcon from '@patternfly/react-icons/dist/esm/icons/filter-icon';
+import {
+  ActionsColumn,
+  TableComposable,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from '@patternfly/react-table';
+import type { TableViewProps } from '@rhoas/app-services-ui-components';
+import {
+  Loading,
+  Pagination,
+  useTranslation,
+} from '@rhoas/app-services-ui-components';
+import filter from 'lodash.filter';
+import orderBy from 'lodash.orderBy';
+import { VoidFunctionComponent, useMemo, useState } from 'react';
+import { User } from '../client/service';
+import { EmptyStateNoAssignedSeat } from './EmptyStateNoAssignedSeat';
+import { EmptyStateNoResults } from './EmptyStateNoResults';
 
 export const Columns = ['userName', 'firstName', 'lastName'] as const;
+type ColumnTypes = (typeof Columns)[number];
 
-export const labels: { [key in (typeof Columns)[number]]: string } = {
+export const labels: { [key in ColumnTypes]: string } = {
   userName: 'Username',
   firstName: 'First name',
   lastName: 'Last name',
@@ -22,150 +50,350 @@ export const labels: { [key in (typeof Columns)[number]]: string } = {
 
 export type UsersWithSeatTableProps = {
   users: Array<User> | undefined | null;
-  getUrlForUser: (row: User) => string;
   totalSeats: number | undefined;
-  usernames: string[];
-  canAddUser: boolean;
-  onAddUser: () => void;
+  canAddUser?: boolean;
+  onAddUser?: () => void;
   isUserChecked: (user: User) => boolean;
   onCheckUser: (user: User, isChecked: boolean) => void;
-  onSearchUsername: (value: string) => void;
-  onRemoveUsernameChip: (value: string) => void;
-  onRemoveUsernameChips: () => void;
-  onRemoveSeat: (row?: User) => void;
+  setSelectedUser?: (users: User[]) => void;
+  onRemoveSeat?: (row?: User) => void;
+  isPicker?: boolean;
 } & Pick<
-  TableViewProps<User, (typeof Columns)[number]>,
-  | 'itemCount'
-  | 'page'
-  | 'perPage'
-  | 'onPageChange'
-  | 'isColumnSortable'
-  | 'onClearAllFilters'
-> &
-  EmptyStateNoResultsProps;
+  TableViewProps<User, ColumnTypes>,
+  'itemCount' | 'page' | 'perPage' | 'onPageChange'
+>;
+
+const TableSkeleton: VoidFunctionComponent<{
+  columns: number;
+  rows: number;
+}> = ({ columns, rows }) => {
+  const { t } = useTranslation();
+  const skeletonCells = new Array(columns).fill(0).map((_, index) => {
+    return (
+      <Td key={`cell_${index}`}>
+        <Skeleton
+          screenreaderText={
+            index === 0
+              ? t('common:skeleton_loader_screenreader_text')
+              : undefined
+          }
+        />
+      </Td>
+    );
+  });
+  const skeletonRows = new Array(rows)
+    .fill(0)
+    .map((_, index) => <Tr key={`row_${index}`}>{skeletonCells}</Tr>);
+  return <>{skeletonRows}</>;
+};
+
+type SelectOption = 'all' | 'none' | 'page';
+
+type BulkSelectToolbarProps = {
+  perPage: number;
+  itemCount: number;
+  select: (option: SelectOption) => void;
+};
+
+const BulkSelectToolbar = ({
+  perPage,
+  itemCount,
+  select,
+}: BulkSelectToolbarProps) => {
+  const [isBulkSelectOpen, setIsBulkSelectOpen] = useState(false);
+  const [menuToggleCheckmark, setMenuToggleCheckmark] = useState(false);
+
+  return (
+    <Popper
+      trigger={
+        <MenuToggle
+          onClick={() => setIsBulkSelectOpen(!isBulkSelectOpen)}
+          isExpanded={isBulkSelectOpen}
+          splitButtonOptions={{
+            items: [
+              <MenuToggleCheckbox
+                id="select-all"
+                key="select-all"
+                aria-label="Select all"
+                isChecked={menuToggleCheckmark}
+                onChange={(checked) => {
+                  setMenuToggleCheckmark(checked);
+                  select(checked ? 'all' : 'none');
+                }}
+              />,
+            ],
+          }}
+          aria-label="Full table selection checkbox"
+        />
+      }
+      popper={
+        <Menu
+          id="select"
+          onSelect={(_ev, itemId) => {
+            setMenuToggleCheckmark(itemId === 1 || itemId === 2);
+            select(itemId === 1 ? 'page' : itemId === 2 ? 'all' : 'none');
+            setIsBulkSelectOpen(!isBulkSelectOpen);
+          }}
+        >
+          <MenuContent>
+            <MenuList>
+              <MenuItem itemId={0}>Select none (0 items)</MenuItem>
+              <MenuItem itemId={1}>
+                Select page ({perPage > itemCount ? itemCount : perPage} items)
+              </MenuItem>
+              <MenuItem itemId={2}>Select all ({itemCount} items)</MenuItem>
+            </MenuList>
+          </MenuContent>
+        </Menu>
+      }
+      isVisible={isBulkSelectOpen}
+      popperMatchesTriggerWidth={false}
+    />
+  );
+};
 
 export const UsersWithSeatTable = ({
   users,
   itemCount,
   page,
   perPage,
-  usernames,
   totalSeats,
-  getUrlForUser,
-  isColumnSortable,
-  canAddUser,
+  canAddUser = false,
   isUserChecked,
   onCheckUser,
+  setSelectedUser,
   onPageChange,
   onRemoveSeat,
   onAddUser,
-  // onSearchUsername,
-  // onRemoveUsernameChip,
-  // onRemoveUsernameChips,
-  onClearAllFilters,
+  isPicker = false,
 }: UsersWithSeatTableProps) => {
-  const breakpoint = 'lg';
+  const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
+  const [activeSortDirection, setActiveSortDirection] = useState<
+    'asc' | 'desc' | undefined
+  >();
 
-  const isFiltered = usernames.length > 0;
+  const [filterColumn, setFilterColumn] = useState<ColumnTypes>(Columns[0]);
+  const [search, setSearch] = useState('');
+  const [filterValue, setFilterValue] = useState('');
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const startIndex = (page - 1) * (perPage || 20);
+
+  const data = useMemo<User[]>(() => {
+    let page = users?.slice(startIndex, startIndex + (perPage || 20));
+    if (activeSortIndex !== undefined) {
+      page = orderBy(page, Columns[activeSortIndex], activeSortDirection);
+    }
+
+    if (filterValue !== '') {
+      page = filter(page, (user: User) =>
+        user[filterColumn].includes(filterValue)
+      );
+    }
+    return page!;
+  }, [
+    startIndex,
+    perPage,
+    activeSortIndex,
+    activeSortDirection,
+    filterValue,
+    filterColumn,
+  ]);
+
+  if (users === null) {
+    return <Loading />;
+  }
+  if (users?.length === 0 && filterValue !== '' && !isPicker) {
+    return (
+      <EmptyStateNoAssignedSeat
+        totalSeats={totalSeats || 0}
+        onAddUsers={() => onAddUser?.()}
+      />
+    );
+  }
 
   return (
-    <div id="seatTable">
-      <TableView
-        data={users}
-        columns={Columns}
-        renderHeader={({ column, Th, key }) => (
-          <Th key={key}>{labels[column]}</Th>
-        )}
-        renderCell={({ column, row, Td, key }) => (
-          <Td key={key} dataLabel={labels[column]}>
-            {(() => {
-              switch (column) {
-                case 'userName':
-                  return (
-                    <Button
-                      variant="link"
-                      component={(props) => (
-                        <Link to={getUrlForUser(row)} {...props}>
-                          {row.userName}
-                        </Link>
-                      )}
-                      isInline
-                    />
-                  );
+    <>
+      <Toolbar clearAllFilters={() => setFilterValue('')}>
+        <ToolbarContent>
+          {!isPicker && (
+            <ToolbarItem>
+              <BulkSelectToolbar
+                perPage={perPage || 20}
+                itemCount={itemCount || 0}
+                select={(option) => {
+                  switch (option) {
+                    case 'all':
+                      setSelectedUser?.(users || []);
+                      break;
+                    case 'page':
+                      setSelectedUser?.(data || []);
+                      break;
+                    default:
+                      setSelectedUser?.([]);
+                  }
+                }}
+              />
+            </ToolbarItem>
+          )}
+          <ToolbarToggleGroup toggleIcon={<FilterIcon />} breakpoint="xl">
+            <ToolbarGroup variant="filter-group">
+              <ToolbarItem>
+                <Popper
+                  isVisible={filterOpen}
+                  trigger={
+                    <MenuToggle
+                      onClick={() => setFilterOpen(!filterOpen)}
+                      isExpanded={filterOpen}
+                      icon={<FilterIcon />}
+                    >
+                      {labels[filterColumn]}
+                    </MenuToggle>
+                  }
+                  popper={
+                    <Menu
+                      onSelect={(_ev, itemId) => {
+                        setFilterColumn(itemId?.toString() as ColumnTypes);
+                        setFilterOpen(false);
+                      }}
+                    >
+                      <MenuContent>
+                        <MenuList>
+                          {Columns.map((column) => (
+                            <MenuItem key={column} itemId={column}>
+                              {labels[column]}
+                            </MenuItem>
+                          ))}
+                        </MenuList>
+                      </MenuContent>
+                    </Menu>
+                  }
+                />
+              </ToolbarItem>
+              <ToolbarFilter
+                chips={filterValue !== '' ? [filterValue] : ([] as string[])}
+                deleteChip={() => setFilterValue('')}
+                deleteChipGroup={() => setFilterValue('')}
+                categoryName={labels[filterColumn]}
+                widths={isPicker ? { default: '500px' } : undefined}
+              >
+                <SearchInput
+                  aria-label="Filter table based on column"
+                  onChange={(_event, value) => setSearch(value)}
+                  onSearch={(_, value) => setFilterValue(value)}
+                  value={search}
+                  onClear={() => {
+                    setFilterValue('');
+                  }}
+                />
+              </ToolbarFilter>
+            </ToolbarGroup>
+          </ToolbarToggleGroup>
+          {!isPicker && canAddUser && (
+            <ToolbarItem>
+              <Button onClick={onAddUser}>Assign user(s)</Button>
+            </ToolbarItem>
+          )}
+          {!isPicker && (
+            <>
+              <ToolbarItem>
+                <Button onClick={() => onRemoveSeat?.()} variant="secondary">
+                  Remove user(s)
+                </Button>
+              </ToolbarItem>
+              <ToolbarItem alignment={{ default: 'alignRight' }}>
+                <Pagination
+                  itemCount={itemCount || 0}
+                  page={page}
+                  perPage={perPage || 20}
+                  onChange={onPageChange}
+                  isCompact
+                  variant="top"
+                />
+              </ToolbarItem>
+            </>
+          )}
+        </ToolbarContent>
+      </Toolbar>
+      <TableComposable aria-label="Ansible Lightspeed with Watson Code Assistant users">
+        <Thead>
+          <Tr>
+            <Th />
+            {Columns.map((column, index) => (
+              <Th
+                key={column}
+                sort={{
+                  sortBy: {
+                    index: activeSortIndex,
+                    direction: activeSortDirection,
+                    defaultDirection: 'asc',
+                  },
+                  onSort: (_event, index, direction) => {
+                    setActiveSortIndex(index);
+                    setActiveSortDirection(direction);
+                  },
+                  columnIndex: index,
+                }}
+              >
+                {labels[column]}
+              </Th>
+            ))}
+          </Tr>
+        </Thead>
 
-                default:
-                  return row[column];
-              }
-            })()}
-          </Td>
-        )}
-        renderActions={({ row }) => {
-          return (
-            <ActionsColumn
-              rowData={hackZIndex}
-              items={[
-                {
-                  title: 'Remove seat',
-                  onClick: () => onRemoveSeat(row),
-                },
-              ]}
-            />
-          );
-        }}
-        isColumnSortable={isColumnSortable}
-        toolbarBreakpoint={breakpoint}
-        // filters={{
-        //   ['Username']: {
-        //     type: 'search',
-        //     chips: usernames,
-        //     onSearch: onSearchUsername,
-        //     onRemoveChip: onRemoveUsernameChip,
-        //     onRemoveGroup: onRemoveUsernameChips,
-        //     validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
-        //     errorMessage: 'Invalid string',
-        //   },
-        // }}
-        actions={[
-          ...(canAddUser
-            ? [
-                {
-                  label: 'Assign user(s)',
-                  onClick: onAddUser,
-                  isPrimary: true,
-                },
-              ]
-            : []),
-          {
-            label: 'Remove user(s)',
-            onClick: () => onRemoveSeat(),
-            isPrimary: false,
-          },
-        ]}
-        itemCount={itemCount}
-        page={page}
-        perPage={perPage}
-        onPageChange={onPageChange}
-        onClearAllFilters={onClearAllFilters}
-        ariaLabel={'Seats Administration users'}
-        isFiltered={isFiltered}
-        isRowChecked={({ row }) => isUserChecked(row)}
-        onCheck={({ row }, isChecked) => onCheckUser(row, isChecked)}
-        emptyStateNoData={
-          <EmptyStateNoAssignedSeat
-            totalSeats={totalSeats || 0}
-            onAddUsers={onAddUser}
-          />
-        }
-        emptyStateNoResults={
-          <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />
-        }
-      />
-    </div>
+        <Tbody>
+          {users === undefined && (
+            <TableSkeleton columns={Columns.length + 1} rows={3} />
+          )}
+          {data?.map((row, rowIndex) => (
+            <Tr key={row.id}>
+              <Td
+                select={{
+                  rowIndex,
+                  onSelect: (_event, isChecked) => onCheckUser(row, isChecked),
+                  isSelected: isUserChecked(row),
+                }}
+              />
+              {Columns.map((column) => (
+                <Td key={`${row.id}-${column}`} dataLabel={labels[column]}>
+                  {row[column]}
+                </Td>
+              ))}
+              {!isPicker && (
+                <Td isActionCell>
+                  <ActionsColumn
+                    items={[
+                      {
+                        title: 'Remove user',
+                        onClick: () => onRemoveSeat?.(row),
+                      },
+                    ]}
+                  />
+                </Td>
+              )}
+            </Tr>
+          ))}
+          {data?.length === 0 && (
+            <Tr>
+              <Td colSpan={Columns.length}>
+                <EmptyStateNoResults
+                  onClearAllFilters={() => setFilterValue('')}
+                />
+              </Td>
+            </Tr>
+          )}
+        </Tbody>
+      </TableComposable>
+      <Toolbar>
+        <Pagination
+          itemCount={itemCount || 0}
+          page={page}
+          perPage={perPage || 20}
+          onChange={onPageChange}
+          isCompact
+          variant="bottom"
+        />
+      </Toolbar>
+    </>
   );
-};
-
-const hackZIndex = {
-  actionProps: {
-    style: { zIndex: 9999 },
-  },
 };
