@@ -1,8 +1,4 @@
 import { Alert, Button, ButtonVariant, Modal } from '@patternfly/react-core';
-import {
-  usePaginationSearchParams,
-  useURLSearchParamsChips,
-} from '@rhoas/app-services-ui-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthenticatedUser, License, User } from '../client/service';
 import { useCallback, useState } from 'react';
@@ -26,20 +22,17 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     queryKey: ['subscriptions'],
     queryFn: () => service.get(user),
   });
-  const { page, perPage, setPagination, setPaginationQuery } =
-    usePaginationSearchParams();
-  const resetPaginationQuery = useCallback(
-    () => setPaginationQuery(1, perPage),
-    [perPage, setPaginationQuery]
-  );
-
-  const usernameChips = useURLSearchParamsChips('name', resetPaginationQuery);
+  // const { page, perPage, setPagination, setPaginationQuery } =
+  //   usePaginationSearchParams();
+  // const resetPaginationQuery = useCallback(
+  //   () => setPaginationQuery(1, perPage),
+  //   [perPage, setPaginationQuery]
+  // );
+  //
+  // const usernameChips = useURLSearchParamsChips('name', resetPaginationQuery);
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
-    queryKey: [
-      'availableUsers',
-      { page, perPage, usernames: usernameChips.chips },
-    ],
+    queryKey: ['availableUsers', { page: 1, perPage: 10, usernames: [] }],
     queryFn: () => service.seats(user, false),
   });
 
@@ -102,9 +95,9 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         totalSeats={subscriptions.data?.total}
         users={users.data}
         itemCount={users.data?.length}
-        page={page}
-        perPage={perPage}
-        onPageChange={setPagination}
+        page={1}
+        perPage={10}
+        onPageChange={() => {}}
         isUserChecked={(user) => checkedUsers.includes(user.id)}
         onCheckUser={(user, isChecked) => {
           setCheckedUsers(

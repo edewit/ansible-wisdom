@@ -6,9 +6,11 @@ import {
   MenuList,
   MenuToggle,
   MenuToggleCheckbox,
+  Pagination,
   Popper,
   SearchInput,
   Skeleton,
+  Spinner,
   Toolbar,
   ToolbarContent,
   ToolbarFilter,
@@ -26,12 +28,6 @@ import {
   Thead,
   Tr,
 } from '@patternfly/react-table';
-import type { TableViewProps } from '@rhoas/app-services-ui-components';
-import {
-  Loading,
-  Pagination,
-  useTranslation,
-} from '@rhoas/app-services-ui-components';
 import filter from 'lodash.filter';
 import orderBy from 'lodash.orderby';
 import { VoidFunctionComponent, useMemo, useState } from 'react';
@@ -58,25 +54,21 @@ export type UsersWithSeatTableProps = {
   setSelectedUser?: (users: User[]) => void;
   onRemoveSeat?: (row?: User) => void;
   isPicker?: boolean;
-} & Pick<
-  TableViewProps<User, ColumnTypes>,
-  'itemCount' | 'page' | 'perPage' | 'onPageChange'
->;
+  itemCount?: number;
+  page: number;
+  perPage: number;
+  onPageChange: (page: number, perPage: number) => void;
+};
 
 const TableSkeleton: VoidFunctionComponent<{
   columns: number;
   rows: number;
 }> = ({ columns, rows }) => {
-  const { t } = useTranslation();
   const skeletonCells = new Array(columns).fill(0).map((_, index) => {
     return (
       <Td key={`cell_${index}`}>
         <Skeleton
-          screenreaderText={
-            index === 0
-              ? t('common:skeleton_loader_screenreader_text')
-              : undefined
-          }
+          screenreaderText={index === 0 ? 'Loading content' : undefined}
         />
       </Td>
     );
@@ -192,6 +184,7 @@ export const UsersWithSeatTable = ({
     }
     return page!;
   }, [
+    users,
     startIndex,
     perPage,
     activeSortIndex,
@@ -201,7 +194,7 @@ export const UsersWithSeatTable = ({
   ]);
 
   if (users === null) {
-    return <Loading />;
+    return <Spinner />;
   }
   if (users?.length === 0 && filterValue !== '' && !isPicker) {
     return (
@@ -307,7 +300,8 @@ export const UsersWithSeatTable = ({
                   itemCount={itemCount || 0}
                   page={page}
                   perPage={perPage || 20}
-                  onChange={onPageChange}
+                  onSetPage={(_, page) => onPageChange(page, perPage)}
+                  onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
                   isCompact
                   variant="top"
                 />
@@ -390,7 +384,8 @@ export const UsersWithSeatTable = ({
           itemCount={itemCount || 0}
           page={page}
           perPage={perPage || 20}
-          onChange={onPageChange}
+          onSetPage={(_, page) => onPageChange(page, perPage)}
+          onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
           isCompact
           variant="bottom"
         />
