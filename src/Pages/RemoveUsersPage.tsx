@@ -1,7 +1,7 @@
 import { Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { License, User } from '../client/service';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useService } from '../Components/ServiceProvider';
 import { useHistory } from 'react-router-dom';
 import { PageParams } from './AddUsersPage';
@@ -21,7 +21,7 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
 
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
-    queryKey: ['assignedUsers', { page: 1, perPage: 10, usernames: [] }],
+    queryKey: ['assignedUsers', { page, perPage, usernames: [] }],
     queryFn: () => service.seats(user),
   });
 

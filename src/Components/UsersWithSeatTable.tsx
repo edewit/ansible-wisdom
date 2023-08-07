@@ -277,7 +277,7 @@ export const UsersWithSeatTable = ({
                   onSearch={(_, value) => setFilterValue(value)}
                   value={search}
                   onClear={() => {
-                    setFilterValue('');
+                    setSearch('');
                   }}
                 />
               </ToolbarFilter>
@@ -301,7 +301,7 @@ export const UsersWithSeatTable = ({
                   page={page}
                   perPage={perPage || 20}
                   onSetPage={(_, page) => onPageChange(page, perPage)}
-                  onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
+                  onPerPageSelect={(_, perPage) => onPageChange(1, perPage)}
                   isCompact
                   variant="top"
                 />
@@ -385,7 +385,7 @@ export const UsersWithSeatTable = ({
           page={page}
           perPage={perPage || 20}
           onSetPage={(_, page) => onPageChange(page, perPage)}
-          onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
+          onPerPageSelect={(_, perPage) => onPageChange(1, perPage)}
           isCompact
           variant="bottom"
         />
