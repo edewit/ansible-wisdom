@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { useService } from '../Components/ServiceProvider';
 import { useHistory } from 'react-router-dom';
 import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
+import { usePagination } from './usePagination';
 
 export type PageParams = {
   user: AuthenticatedUser;
@@ -22,14 +23,8 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     queryKey: ['subscriptions'],
     queryFn: () => service.get(user),
   });
-  // const { page, perPage, setPagination, setPaginationQuery } =
-  //   usePaginationSearchParams();
-  // const resetPaginationQuery = useCallback(
-  //   () => setPaginationQuery(1, perPage),
-  //   [perPage, setPaginationQuery]
-  // );
-  //
-  // const usernameChips = useURLSearchParamsChips('name', resetPaginationQuery);
+  const [page, perPage, setPagination] = usePagination();
+
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
     queryKey: ['availableUsers', { page: 1, perPage: 10, usernames: [] }],
@@ -95,9 +90,9 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         totalSeats={subscriptions.data?.total}
         users={users.data}
         itemCount={users.data?.length}
-        page={1}
-        perPage={10}
-        onPageChange={() => {}}
+        page={page}
+        perPage={perPage}
+        onPageChange={setPagination}
         isUserChecked={(user) => checkedUsers.includes(user.id)}
         onCheckUser={(user, isChecked) => {
           setCheckedUsers(
