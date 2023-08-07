@@ -1,7 +1,7 @@
 import { Alert, Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthenticatedUser, License, User } from '../client/service';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useService } from '../Components/ServiceProvider';
 import { useHistory } from 'react-router-dom';
 import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
@@ -27,7 +27,7 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
 
   const queryClient = useQueryClient();
   const users = useQuery<User[]>({
-    queryKey: ['availableUsers', { page: 1, perPage: 10, usernames: [] }],
+    queryKey: ['availableUsers', { page, perPage, usernames: [] }],
     queryFn: () => service.seats(user, false),
   });
 

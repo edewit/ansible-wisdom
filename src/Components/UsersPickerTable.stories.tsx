@@ -2,7 +2,6 @@ import { Page } from '@patternfly/react-core';
 import type { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { UsersPickerTable as UsersPickerTableComponent } from './UsersPickerTable';
-import { Columns, labels } from './UsersWithSeatTable';
 
 export default {
   component: UsersPickerTableComponent,
@@ -12,11 +11,6 @@ export default {
 } as Meta<typeof UsersPickerTableComponent>;
 
 const Template: StoryFn<typeof UsersPickerTableComponent> = (args) => {
-  // const [isColumnSortable] = useSortableSearchParams(
-  //   Columns,
-  //   labels,
-  //   'userName'
-  // );
   const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
   return (
     <Page>
