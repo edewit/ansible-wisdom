@@ -94,7 +94,6 @@ export const UsersPickerTable = ({
           perPage={perPage || 20}
           onChange={onPageChange}
           isCompact
-      ariaLabel={'Ansible Lightspeed with Watson Code Assistant users'}
         />
       </Toolbar>
     </>
