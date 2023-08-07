@@ -71,7 +71,7 @@ export const Routes = () => {
         serviceName={process.env.SERVICE_KEY!}
         baseUrl={process.env.BASE_URL}
       >
-        <Router basename={getBaseName(window.location.pathname) + '/seats'}>
+        <Router basename={getBaseName(window.location.pathname)}>
           <Switch>
             <Route path="/add-users">
               <UsersPage user={user} />

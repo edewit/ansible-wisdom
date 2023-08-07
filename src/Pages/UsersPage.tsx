@@ -4,7 +4,6 @@ import {
   Page,
   PageSection,
 } from '@patternfly/react-core';
-import { usePaginationSearchParams } from '@rhoas/app-services-ui-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -29,7 +28,12 @@ export const UsersPage = ({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(true);
 
-  const { page, perPage, setPagination } = usePaginationSearchParams();
+  const [{ page, perPage }, setPaginationState] = useState({
+    page: 1,
+    perPage: 10,
+  });
+  const setPagination = (page: number, perPage: number) =>
+    setPaginationState({ page, perPage });
 
   const service = useService();
   const queryClient = useQueryClient();

@@ -1,4 +1,4 @@
-import { Toolbar } from '@patternfly/react-core';
+import { Pagination, Toolbar } from '@patternfly/react-core';
 import {
   TableComposable,
   Tbody,
@@ -7,8 +7,6 @@ import {
   Thead,
   Tr,
 } from '@patternfly/react-table';
-import type { TableViewProps } from '@rhoas/app-services-ui-components';
-import { Pagination } from '@rhoas/app-services-ui-components';
 import { User } from '../client/service';
 import { EmptyStateNoResultsProps } from './EmptyStateNoResults';
 import { Columns, labels } from './UsersWithSeatTable';
@@ -21,16 +19,11 @@ export type UsersPickerTableProps = {
   onRemoveUsernameChip: (value: string) => void;
   onRemoveUsernameChips: () => void;
   onCheckUser: (row: User, isChecked: boolean) => void;
-} & Pick<
-  TableViewProps<User, (typeof Columns)[number]>,
-  | 'itemCount'
-  | 'page'
-  | 'perPage'
-  | 'onPageChange'
-  | 'isColumnSortable'
-  | 'onClearAllFilters'
-> &
-  EmptyStateNoResultsProps;
+  itemCount?: number;
+  page: number;
+  perPage: number;
+  onPageChange: (page: number, perPage: number) => void;
+} & EmptyStateNoResultsProps;
 
 export const UsersPickerTable = ({
   users,
@@ -50,7 +43,8 @@ export const UsersPickerTable = ({
           itemCount={itemCount || 0}
           page={page}
           perPage={perPage || 20}
-          onChange={onPageChange}
+          onSetPage={(_, page) => onPageChange(page, perPage)}
+          onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
           isCompact
           variant="top"
         />
@@ -92,7 +86,8 @@ export const UsersPickerTable = ({
           itemCount={itemCount || 0}
           page={page}
           perPage={perPage || 20}
-          onChange={onPageChange}
+          onSetPage={(_, page) => onPageChange(page, perPage)}
+          onPerPageSelect={(_, perPage) => onPageChange(page, perPage)}
           isCompact
         />
       </Toolbar>
