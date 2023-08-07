@@ -15,6 +15,7 @@ import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
 import { License, User } from '../client/service';
 import { ConfirmRemoveDialog } from '../Components/ConfirmRemoveDialog';
 import { PageParams } from './AddUsersPage';
+import { usePagination } from './usePagination';
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
@@ -28,12 +29,7 @@ export const UsersPage = ({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(true);
 
-  const [{ page, perPage }, setPaginationState] = useState({
-    page: 1,
-    perPage: 10,
-  });
-  const setPagination = (page: number, perPage: number) =>
-    setPaginationState({ page, perPage });
+  const [page, perPage, setPagination] = usePagination();
 
   const service = useService();
   const queryClient = useQueryClient();
