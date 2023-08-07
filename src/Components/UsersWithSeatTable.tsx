@@ -279,6 +279,7 @@ export const UsersWithSeatTable = ({
               >
                 <SearchInput
                   aria-label="Filter table based on column"
+                  placeholder={`Filter by ${labels[filterColumn]}`}
                   onChange={(_event, value) => setSearch(value)}
                   onSearch={(_, value) => setFilterValue(value)}
                   value={search}

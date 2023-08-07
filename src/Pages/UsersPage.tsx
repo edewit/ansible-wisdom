@@ -1,4 +1,4 @@
-import { Alert, Page, PageSection } from '@patternfly/react-core';
+import { Alert, AlertActionCloseButton, Page, PageSection } from '@patternfly/react-core';
 import { usePaginationSearchParams } from '@rhoas/app-services-ui-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -22,6 +22,7 @@ export const UsersPage = ({
   const history = useHistory();
   const [checkedUsers, setCheckedUsers] = useState<User[]>([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(true);
 
   const { page, perPage, setPagination } = usePaginationSearchParams();
 
@@ -83,13 +84,16 @@ export const UsersPage = ({
           onCancel={() => setConfirmOpen(false)}
         />
       )}
-      {cantAddUsers ? (
+      {cantAddUsers && alertOpen ? (
         <PageSection style={{ paddingBottom: 0 }}>
           <Alert
             title={
               "There are 0 seats left in your organization's subscription. Contact Red Hat to manage your Ansible Lightspeed with Watson Code Assistant license."
             }
             variant="warning"
+            actionClose={
+              <AlertActionCloseButton onClose={() => setAlertOpen(false)} />
+            }
           />
         </PageSection>
       ) : null}
