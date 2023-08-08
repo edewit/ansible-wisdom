@@ -17,7 +17,7 @@ export class EntitlementsService implements LicenseService {
   }
 
   private async requestHeader(user: AuthenticatedUser) {
-    return await header(user.token, this.baseUrl);
+    return await header(user.token, this.baseUrl + 'api/entitlements/v1/');
   }
 
   async get(user: AuthenticatedUser): Promise<License> {
@@ -54,7 +54,7 @@ export class EntitlementsService implements LicenseService {
       const header = await this.requestHeader(user);
       const result = await listPrincipals(
         { usernameOnly: false },
-        { ...header, baseUrl: 'https://console.stage.redhat.com/api/rbac/v1/' }
+        { ...header, baseUrl: this.baseUrl + 'api/rbac/v1/' }
       );
 
       return (result.data as Principal[]).map(
