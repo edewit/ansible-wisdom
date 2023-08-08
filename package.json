@@ -96,7 +96,7 @@
     "webpack-cli": "^5.1.4"
   },
   "insights": {
-    "appname": "seats-admin"
+    "appname": "seats-admin-ui"
   },
   "msw": {
     "workerDirectory": "public"

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: seats-admin-ui
+objects:
+  - apiVersion: cloud.redhat.com/v1alpha1
+    kind: Frontend
+    metadata:
+      name: seats-admin-ui
+    spec:
+      envName: ${ENV_NAME}
+      title: Seats admin
+      deploymentRepo: https://github.com/RedHatInsights/seats-admin
+      frontend:
+        paths:
+          - /apps/seats-admin-ui
+      image: ${IMAGE}:${IMAGE_TAG}
+      navItems:
+        - appId: seatsAdminUi
+          title: Seats admin
+          href: "/ansible/seats-administration"
+      module:
+        manifestLocation: /apps/seats-admin-ui/fed-mods.json
+        modules:
+          - id: seatsAdminUi
+            module: ./RootApp
+            routes:
+              - pathname: "/ansible/seats-administration"
+        moduleID: seats-admin-ui
+parameters:
+  - name: ENV_NAME
+    required: true
+  - name: IMAGE_TAG
+    required: true
+  - name: IMAGE
+    value: quay.io/cloudservices/seats-admin-ui
