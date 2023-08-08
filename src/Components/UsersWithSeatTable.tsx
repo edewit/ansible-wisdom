@@ -172,7 +172,7 @@ export const UsersWithSeatTable = ({
   const startIndex = (page - 1) * (perPage || 20);
 
   const data = useMemo<User[]>(() => {
-    let page = users?.slice(startIndex, startIndex + (perPage || 20));
+    let page = users?.slice(startIndex, startIndex + (perPage || 20)) || [];
     if (activeSortIndex !== undefined) {
       page = orderBy(page, Columns[activeSortIndex], activeSortDirection);
     }
@@ -182,7 +182,7 @@ export const UsersWithSeatTable = ({
         user[filterColumn].includes(filterValue)
       );
     }
-    return page!;
+    return page;
   }, [
     users,
     startIndex,
@@ -196,7 +196,7 @@ export const UsersWithSeatTable = ({
   if (users === null) {
     return <Spinner />;
   }
-  if (users?.length === 0 && filterValue !== '' && !isPicker) {
+  if (users?.length === 0 && filterValue === '' && !isPicker) {
     return (
       <EmptyStateNoAssignedSeat
         totalSeats={totalSeats || 0}
