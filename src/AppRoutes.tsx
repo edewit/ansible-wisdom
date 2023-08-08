@@ -1,8 +1,7 @@
 import { Bullseye, Spinner } from '@patternfly/react-core';
-import { getBaseName } from '@redhat-cloud-services/frontend-components-utilities/helpers';
 import { InvalidObject } from '@redhat-cloud-services/frontend-components/InvalidObject';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { addNotification } from '@redhat-cloud-services/frontend-components-notifications/redux';
@@ -13,7 +12,7 @@ import { UsersPage } from './Pages/UsersPage';
 import { AddUsersPage } from './Pages/AddUsersPage';
 import { RemoveUsersPage } from './Pages/RemoveUsersPage';
 
-export const Routes = () => {
+export const AppRoutes = () => {
   const [user, setUser] = useState<AuthenticatedUser>();
   const dispatch = useDispatch();
   const handleAlert = (
@@ -71,37 +70,41 @@ export const Routes = () => {
         serviceName={process.env.SERVICE_KEY!}
         baseUrl={process.env.BASE_URL}
       >
-        <Router basename={getBaseName(window.location.pathname)}>
-          <Switch>
-            <Route path="/add-users">
-              <UsersPage user={user} />
-              <AddUsersPage
-                user={user}
-                onSuccess={handleAlert}
-                onError={handleError}
-              />
-            </Route>
-            <Route path="/remove-users">
-              <UsersPage user={user} />
-              <RemoveUsersPage
-                user={user}
-                onSuccess={handleAlert}
-                onError={handleError}
-              />
-            </Route>
-            <Route path="/">
+        <Routes>
+          <Route
+            path="/"
+            element={
               <UsersPage
                 user={user}
                 onSuccess={handleAlert}
                 onError={handleError}
               />
-            </Route>
-            {/* Finally, catch all unmatched routes */}
-            <Route>
-              <InvalidObject />
-            </Route>
-          </Switch>
-        </Router>
+            }
+          >
+            <Route
+              path="add-users"
+              element={
+                <AddUsersPage
+                  user={user}
+                  onSuccess={handleAlert}
+                  onError={handleError}
+                />
+              }
+            />
+            <Route
+              path="remove-users"
+              element={
+                <RemoveUsersPage
+                  user={user}
+                  onSuccess={handleAlert}
+                  onError={handleError}
+                />
+              }
+            />
+          </Route>
+          {/* Finally, catch all unmatched routes */}
+          <Route element={<InvalidObject />} />
+        </Routes>
       </ServiceContextProvider>
     </Suspense>
   );

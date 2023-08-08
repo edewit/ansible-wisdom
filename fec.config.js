@@ -12,16 +12,23 @@ module.exports = {
   /**
    * Add additional webpack plugins
    */
-  plugins: [
-    new Dotenv(),
-  ],
+  plugins: [new Dotenv()],
   _unstableHotReload: process.env.HOT === 'true',
   moduleFederation: {
-    shared: [],
+    exclude: ['react-router-dom'],
+    shared: [
+      {
+        'react-router-dom': {
+          singleton: true,
+          import: false,
+          requiredVersion: '^6.3.0',
+        },
+      },
+    ],
   },
   routes: {
     '/v1alpha': {
-      host: 'https://ciam-authz-hw-ciam-authz--runtime-ext.apps.ext.spoke.preprod.us-east-1.aws.paas.redhat.com/'
+      host: 'https://ciam-authz-hw-ciam-authz--runtime-ext.apps.ext.spoke.preprod.us-east-1.aws.paas.redhat.com/',
     },
     '/aw-api': {
       host: 'http://localhost:3000',

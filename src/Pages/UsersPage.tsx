@@ -6,7 +6,8 @@ import {
 } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { useAppNavigate } from '../Components/AppLink';
 import { EmptyStateNoSubscription } from '../Components/EmptyStateNoSubscription';
 import { RemoveUsersModal } from '../Components/RemoveUsersModal';
 import { SeatsHeader } from '../Components/SeatsHeader';
@@ -24,7 +25,7 @@ export const UsersPage = ({
   onSuccess,
   onError,
 }: Optional<PageParams, 'onSuccess' | 'onError'>) => {
-  const history = useHistory();
+  const navigate = useAppNavigate();
   const [checkedUsers, setCheckedUsers] = useState<User[]>([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(true);
@@ -79,7 +80,7 @@ export const UsersPage = ({
       {negativeSeats && usersToRemove && (
         <RemoveUsersModal
           usersToRemove={usersToRemove}
-          onOk={() => history.push('/remove-users')}
+          onOk={() => navigate('/remove-users')}
         />
       )}
       {confirmOpen && (
@@ -113,7 +114,7 @@ export const UsersPage = ({
             perPage={perPage}
             onPageChange={setPagination}
             onAddUser={() => {
-              history.push('/add-users');
+              navigate('/add-users');
             }}
             isUserChecked={(user) => checkedUsers.includes(user)}
             onCheckUser={(user, isChecked) => {
@@ -131,6 +132,7 @@ export const UsersPage = ({
           />
         )}
       </PageSection>
+      <Outlet />
     </Page>
   );
 };

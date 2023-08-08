@@ -10,7 +10,7 @@ import {
   Title,
 } from '@patternfly/react-core';
 import { VoidFunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { AppLink } from './AppLink';
 
 export type RemoveUsersHeaderProps = {
   usersToRemove: number;
@@ -25,7 +25,9 @@ export const RemoveUsersHeader: VoidFunctionComponent<
       <PageSection variant={'light'}>
         <Breadcrumb className={'pf-u-pb-md'}>
           <BreadcrumbItem>
-            <Link to={'/'}>Ansible Lightspeed with Watson Code Assistant</Link>
+            <AppLink to={'/'}>
+              Ansible Lightspeed with Watson Code Assistant
+            </AppLink>
           </BreadcrumbItem>
           <BreadcrumbItem>Remove users</BreadcrumbItem>
         </Breadcrumb>
