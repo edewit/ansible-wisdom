@@ -1,4 +1,5 @@
 import {
+  Bullseye,
   Button,
   Menu,
   MenuContent,
@@ -194,7 +195,11 @@ export const UsersWithSeatTable = ({
   ]);
 
   if (users === null) {
-    return <Spinner />;
+    return (
+      <Bullseye>
+        <Spinner />
+      </Bullseye>
+    );
   }
   if (users?.length === 0 && filterValue === '' && !isPicker) {
     return (
@@ -368,7 +373,7 @@ export const UsersWithSeatTable = ({
               )}
             </Tr>
           ))}
-          {data?.length === 0 && (
+          {data?.length === 0 && filterValue !== '' && (
             <Tr>
               <Td colSpan={Columns.length}>
                 <EmptyStateNoResults
