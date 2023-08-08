@@ -52,7 +52,10 @@ export class EntitlementsService implements LicenseService {
       }));
     } else {
       const header = await this.requestHeader(user);
-      const result = await listPrincipals({ usernameOnly: false }, header);
+      const result = await listPrincipals(
+        { usernameOnly: false },
+        { ...header, baseUrl: 'https://console.stage.redhat.com/api/rbac/v1/' }
+      );
 
       return (result.data as Principal[]).map(
         ({ username, first_name, last_name }) => ({
