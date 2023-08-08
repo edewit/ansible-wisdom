@@ -10,7 +10,7 @@ import {
   Title,
 } from '@patternfly/react-core';
 import { VoidFunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { AppLink } from './AppLink';
 
 export type AddUsersHeaderProps = {
   seatsAvailable: number;
@@ -27,7 +27,9 @@ export const AddUsersHeader: VoidFunctionComponent<AddUsersHeaderProps> = ({
       <PageSection variant={'light'}>
         <Breadcrumb className={'pf-u-pb-md'}>
           <BreadcrumbItem>
-            <Link to={'/'}>Ansible Lightspeed with Watson Code Assistant</Link>
+            <AppLink to={'/'}>
+              Ansible Lightspeed with Watson Code Assistant
+            </AppLink>
           </BreadcrumbItem>
           <BreadcrumbItem>Add user(s)</BreadcrumbItem>
         </Breadcrumb>
@@ -42,7 +44,7 @@ export const AddUsersHeader: VoidFunctionComponent<AddUsersHeaderProps> = ({
               Add
             </Button>
             <Button variant={'link'}>
-              <Link to={'/'}>Cancel</Link>
+              <AppLink to={'/'}>Cancel</AppLink>
             </Button>
           </Split>
         </TextContent>

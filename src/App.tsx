@@ -7,7 +7,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Reducer } from 'redux';
 import './App.scss';
 
-import { Routes } from './Routes';
+import { AppRoutes } from './AppRoutes';
 
 const App = () => {
   const { updateDocumentTitle } = useChrome();
@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Fragment>
       <NotificationsPortal />
-      <Routes />
+      <AppRoutes />
     </Fragment>
   );
 };

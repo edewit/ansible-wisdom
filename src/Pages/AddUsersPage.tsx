@@ -2,8 +2,8 @@ import { Alert, Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthenticatedUser, License, User } from '../client/service';
 import { useState } from 'react';
+import { useAppNavigate } from '../Components/AppLink';
 import { useService } from '../Components/ServiceProvider';
-import { useHistory } from 'react-router-dom';
 import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
 import { usePagination } from './usePagination';
 
@@ -14,10 +14,10 @@ export type PageParams = {
 };
 
 export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
-  const history = useHistory();
+  const navigate = useAppNavigate();
   const service = useService();
 
-  const close = () => history.push('/');
+  const close = () => navigate('/');
 
   const subscriptions = useQuery<License>({
     queryKey: ['subscriptions'],

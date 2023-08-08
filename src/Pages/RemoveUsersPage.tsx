@@ -2,14 +2,14 @@ import { Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { License, User } from '../client/service';
 import { useState } from 'react';
+import { useAppNavigate } from '../Components/AppLink';
 import { useService } from '../Components/ServiceProvider';
-import { useHistory } from 'react-router-dom';
 import { PageParams } from './AddUsersPage';
 import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
 import { usePagination } from './usePagination';
 
 export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
-  const history = useHistory();
+  const navigate = useAppNavigate();
   const service = useService();
 
   const subscriptions = useQuery<License>({
@@ -48,7 +48,7 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     }
   );
 
-  const close = () => history.push('/');
+  const close = () => navigate('/');
 
   return (
     <Modal
