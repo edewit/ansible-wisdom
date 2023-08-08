@@ -5,6 +5,7 @@ module.exports = {
   debug: true,
   useProxy: true,
   proxyVerbose: true,
+  sassPrefix: '.seats-admin-ui, .seatsAdminUi',
   /**
    * Change to false after your app is registered in configuration files
    */
