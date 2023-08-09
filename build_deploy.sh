@@ -12,7 +12,6 @@ export APP_ROOT=$(pwd)
 #16 is the default Node version. Change this to override it.
 export NODE_BUILD_VERSION=16
 COMMON_BUILDER=https://raw.githubusercontent.com/RedHatInsights/insights-frontend-builder-common/master
-
 set -exv
 # source is preferred to | bash -s in this case to avoid a subshell
 source <(curl -sSL $COMMON_BUILDER/src/frontend-build.sh)
