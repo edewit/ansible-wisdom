@@ -8,6 +8,9 @@ objects:
     metadata:
       name: seats-admin-ui
     spec:
+      API:
+        versions:
+          - v1
       envName: ${ENV_NAME}
       title: Seats admin
       deploymentRepo: https://github.com/RedHatInsights/seats-admin
