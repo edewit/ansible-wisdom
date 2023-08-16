@@ -4,7 +4,6 @@ import {
   LicenseService,
   Pagination,
   TokenFunction,
-  User,
   UserResult,
   header,
 } from '../service';
