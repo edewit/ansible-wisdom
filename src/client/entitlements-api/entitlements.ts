@@ -2,7 +2,8 @@ import {
   AuthenticatedUser,
   License,
   LicenseService,
-  User,
+  Pagination,
+  UserResult,
   header,
 } from '../service';
 import { deleteSeatsById, getSeats, postSeats } from './entitlements-service';
@@ -20,11 +21,11 @@ export class EntitlementsService implements LicenseService {
     return await header(user.token, this.baseUrl + 'api/entitlements/v1/');
   }
 
-  async get(user: AuthenticatedUser): Promise<License> {
+  async get(user: AuthenticatedUser, pagination: Pagination): Promise<License> {
     const result = await getSeats(
       {
-        limit: 10,
-        offset: 0,
+        limit: pagination.perPage,
+        offset: pagination.page * pagination.perPage,
       },
       await this.requestHeader(user)
     );
@@ -38,18 +39,28 @@ export class EntitlementsService implements LicenseService {
 
   async seats(
     user: AuthenticatedUser,
+    pagination: Pagination,
     assigned: boolean | undefined = true
-  ): Promise<User[]> {
+  ): Promise<UserResult> {
     if (assigned) {
-      const result = await getSeats({}, await this.requestHeader(user));
+      const result = await getSeats(
+        {
+          limit: pagination.perPage,
+          offset: pagination.page * pagination.perPage,
+        },
+        await this.requestHeader(user)
+      );
 
-      return result.data.map(({ subscription_id, account_username }) => ({
-        id: subscription_id || '',
-        userName: account_username || '',
-        firstName: '',
-        lastName: '',
-        assigned: true,
-      }));
+      return {
+        users: result.data.map(({ subscription_id, account_username }) => ({
+          id: subscription_id || '',
+          userName: account_username || '',
+          firstName: '',
+          lastName: '',
+          assigned: true,
+        })),
+        count: result.meta?.count || 0,
+      };
     } else {
       const header = await this.requestHeader(user);
       const result = await listPrincipals(
@@ -57,15 +68,18 @@ export class EntitlementsService implements LicenseService {
         { ...header, baseUrl: this.baseUrl + 'api/rbac/v1/' }
       );
 
-      return (result.data as Principal[]).map(
-        ({ username, first_name, last_name }) => ({
-          id: username,
-          firstName: first_name || '',
-          lastName: last_name || '',
-          userName: username,
-          assigned: false,
-        })
-      );
+      return {
+        users: (result.data as Principal[]).map(
+          ({ username, first_name, last_name }) => ({
+            id: username,
+            firstName: first_name || '',
+            lastName: last_name || '',
+            userName: username,
+            assigned: false,
+          })
+        ),
+        count: result.meta?.count || 0,
+      };
     }
   }
 

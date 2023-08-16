@@ -1,4 +1,4 @@
-import { License, LicenseService, User } from '../service';
+import { License, LicenseService, UserResult } from '../service';
 
 type MockLicense = {
   totalSeats: number;
@@ -17,7 +17,7 @@ export class MockService implements LicenseService {
     };
   }
 
-  async seats(): Promise<User[]> {
+  async seats(): Promise<UserResult> {
     return await (await fetch('/aw-api/users')).json();
   }
 
