@@ -2,8 +2,10 @@ import {
   AuthenticatedUser,
   License,
   LicenseService,
+  Pagination,
   TokenFunction,
   User,
+  UserResult,
   header,
 } from '../service';
 import {
@@ -30,8 +32,9 @@ export class CiamAuthz implements LicenseService {
 
   async seats(
     { orgId, serviceId, token }: AuthenticatedUser,
+    _pagination: Pagination,
     assigned: boolean | undefined = true
-  ): Promise<User[]> {
+  ): Promise<UserResult> {
     const opts = await this.requestHeader(token);
     const result = await licenseServiceGetSeats(
       orgId,
@@ -39,15 +42,19 @@ export class CiamAuthz implements LicenseService {
       { filter: assigned ? 'assigned' : 'assignable' },
       opts
     );
-    return (
-      result.users?.map(({ id, firstName, lastName, username, assigned }) => ({
-        id: id || '',
-        firstName: firstName || '',
-        lastName: lastName || '',
-        userName: username || '',
-        assigned: !!assigned,
-      })) || []
-    );
+    return {
+      users:
+        result.users?.map(
+          ({ id, firstName, lastName, username, assigned }) => ({
+            id: id || '',
+            firstName: firstName || '',
+            lastName: lastName || '',
+            userName: username || '',
+            assigned: !!assigned,
+          })
+        ) || [],
+      count: result.users?.length || 0,
+    };
   }
 
   private async requestHeader(token: TokenFunction) {

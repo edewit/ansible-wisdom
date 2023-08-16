@@ -13,7 +13,7 @@ import { RemoveUsersModal } from '../Components/RemoveUsersModal';
 import { SeatsHeader } from '../Components/SeatsHeader';
 import { useService } from '../Components/ServiceProvider';
 import { UsersWithSeatTable } from '../Components/UsersWithSeatTable';
-import { License, User } from '../client/service';
+import { License, User, UserResult } from '../client/service';
 import { ConfirmRemoveDialog } from '../Components/ConfirmRemoveDialog';
 import { PageParams } from './AddUsersPage';
 import { usePagination } from './usePagination';
@@ -36,13 +36,13 @@ export const UsersPage = ({
   const queryClient = useQueryClient();
 
   const subscriptions = useQuery<License>({
-    queryKey: ['subscriptions'],
-    queryFn: () => service.get(user),
+    queryKey: ['subscriptions', { page, perPage }],
+    queryFn: () => service.get(user, { page, perPage }),
   });
 
-  const users = useQuery<User[]>({
+  const users = useQuery<UserResult>({
     queryKey: ['users', { page, perPage }],
-    queryFn: () => service.seats(user),
+    queryFn: () => service.seats(user, { page, perPage }),
   });
 
   const negativeSeats = (subscriptions.data?.available || 0) < 0;
@@ -107,8 +107,8 @@ export const UsersPage = ({
         {subscriptions.data?.total !== 0 && (
           <UsersWithSeatTable
             totalSeats={subscriptions.data?.total}
-            users={users.data}
-            itemCount={users.data?.length}
+            users={users.data?.users}
+            itemCount={users.data?.count}
             canAddUser={!cantAddUsers}
             page={page}
             perPage={perPage}

@@ -1,6 +1,6 @@
 import { Alert, Button, ButtonVariant, Modal } from '@patternfly/react-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AuthenticatedUser, License, User } from '../client/service';
+import { AuthenticatedUser, License, UserResult } from '../client/service';
 import { useState } from 'react';
 import { useAppNavigate } from '../Components/AppLink';
 import { useService } from '../Components/ServiceProvider';
@@ -19,16 +19,17 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
 
   const close = () => navigate('/');
 
-  const subscriptions = useQuery<License>({
-    queryKey: ['subscriptions'],
-    queryFn: () => service.get(user),
-  });
   const [page, perPage, setPagination] = usePagination();
 
+  const subscriptions = useQuery<License>({
+    queryKey: ['subscriptions', { page, perPage }],
+    queryFn: () => service.get(user, { page, perPage }),
+  });
+
   const queryClient = useQueryClient();
-  const users = useQuery<User[]>({
+  const users = useQuery<UserResult>({
     queryKey: ['availableUsers', { page, perPage, usernames: [] }],
-    queryFn: () => service.seats(user, false),
+    queryFn: () => service.seats(user, { page, perPage }, false),
   });
 
   const { mutate, isLoading } = useMutation(
@@ -88,8 +89,8 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
       <UsersWithSeatTable
         isPicker
         totalSeats={subscriptions.data?.total}
-        users={users.data}
-        itemCount={users.data?.length}
+        users={users.data?.users}
+        itemCount={users.data?.count}
         page={page}
         perPage={perPage}
         onPageChange={setPagination}

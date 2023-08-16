@@ -24,6 +24,16 @@ export type AuthenticatedUser = {
   token: TokenFunction;
 };
 
+export type Pagination = {
+  page: number;
+  perPage: number;
+};
+
+export type UserResult = {
+  users: User[];
+  count: number;
+};
+
 export const header = async (
   token: TokenFunction,
   baseUrl: string
@@ -38,9 +48,13 @@ export const header = async (
 };
 
 export interface LicenseService {
-  get(user: AuthenticatedUser): Promise<License>;
+  get(user: AuthenticatedUser, pagination: Pagination): Promise<License>;
 
-  seats(user: AuthenticatedUser, assigned?: boolean): Promise<User[]>;
+  seats(
+    user: AuthenticatedUser,
+    pagination: Pagination,
+    assigned?: boolean
+  ): Promise<UserResult>;
 
   assign(user: AuthenticatedUser, userIds: string[]): Promise<void>;
 
