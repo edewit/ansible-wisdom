@@ -37,6 +37,7 @@ export type ListPagination = {
 export type Seat = {
   subscription_id?: string;
   account_username?: string;
+  status?: string;
 };
 export type ListSeatsResponsePagination = ListPagination & {
   data: Seat[];
@@ -95,9 +96,11 @@ export function getServices(opts?: Oazapfts.RequestOpts) {
  */
 export function getSeats(
   {
+    excludeStatus,
     limit,
     offset,
   }: {
+    excludeStatus?: ('Active' | 'Deprovisioned')[];
     limit?: number;
     offset?: number;
   } = {},
@@ -116,6 +119,7 @@ export function getSeats(
     >(
       `/seats${QS.query(
         QS.explode({
+          excludeStatus,
           limit,
           offset,
         })
