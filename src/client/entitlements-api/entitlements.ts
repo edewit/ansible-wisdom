@@ -46,7 +46,7 @@ export class EntitlementsService implements LicenseService {
       const result = await getSeats(
         {
           limit: pagination.perPage,
-          offset: pagination.page * pagination.perPage,
+          offset: (pagination.page - 1) * pagination.perPage,
           excludeStatus: ['Deprovisioned'],
         },
         await this.requestHeader(user)
