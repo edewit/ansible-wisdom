@@ -25,15 +25,15 @@ export class EntitlementsService implements LicenseService {
     const result = await getSeats(
       {
         limit: pagination.perPage,
-        offset: pagination.page * pagination.perPage,
+        offset: (pagination.page - 1) * pagination.perPage,
       },
       await this.requestHeader(user)
     );
-    const available = result.allowed || 0;
-    const total = available - (result.consumed || 0);
+    const allowed = result.allowed || 0;
+    const consumed = result.consumed || 0;
     return {
-      available,
-      total,
+      available: allowed - consumed,
+      total: allowed,
     };
   }
 
@@ -53,11 +53,11 @@ export class EntitlementsService implements LicenseService {
       );
 
       return {
-        users: result.data.map(({ subscription_id, account_username }) => ({
-          id: subscription_id || '',
-          userName: account_username || '',
-          firstName: '',
-          lastName: '',
+        users: result.data.map((user) => ({
+          id: user.subscription_id || '',
+          userName: user.account_username || '',
+          firstName: user.first_name || '',
+          lastName: user.last_name || '',
           assigned: true,
         })),
         count: result.meta?.count || 0,
