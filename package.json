@@ -24,7 +24,8 @@
     "mock-server:negative-seats": "npm run mock-server:run -- --watch db-negative-seats.json",
     "mock-server:no-seats": "npm run mock-server:run -- --watch db-no-seats.json",
     "mock-server:some-seats": "npm run mock-server:run -- --watch db-some-seats.json",
-    "mock-server:empty-seats": "npm run mock-server:run -- --watch db-empty-seats.json"
+    "mock-server:empty-seats": "npm run mock-server:run -- --watch db-empty-seats.json",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@patternfly/react-core": "4.276.11",
@@ -74,6 +75,7 @@
     "babel-jest": "27.0.5",
     "babel-loader": "^8.3.0",
     "babel-plugin-transform-imports": "^2.0.0",
+    "cypress": "^12.17.4",
     "dotenv-webpack": "^8.0.1",
     "eslint": "8.18.0",
     "eslint-plugin-prettier": "^4.2.1",
