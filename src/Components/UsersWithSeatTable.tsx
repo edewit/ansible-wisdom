@@ -49,6 +49,7 @@ export type UsersWithSeatTableProps = {
   users: Array<User> | undefined | null;
   totalSeats: number | undefined;
   canAddUser?: boolean;
+  canRemove?: boolean;
   onAddUser?: () => void;
   isUserChecked: (user: User) => boolean;
   onCheckUser: (user: User, isChecked: boolean) => void;
@@ -152,6 +153,7 @@ export const UsersWithSeatTable = ({
   perPage,
   totalSeats,
   canAddUser = false,
+  canRemove = true,
   isUserChecked,
   onCheckUser,
   setSelectedUser,
@@ -293,7 +295,7 @@ export const UsersWithSeatTable = ({
               <Button onClick={onAddUser}>Assign user(s)</Button>
             </ToolbarItem>
           )}
-          {!isPicker && (
+          {!isPicker && canRemove && (
             <>
               <ToolbarItem>
                 <Button onClick={() => onRemoveSeat?.()} variant="secondary">

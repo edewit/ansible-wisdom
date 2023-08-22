@@ -44,6 +44,7 @@ export const AppRoutes = () => {
       if (user)
         setUser({
           orgId: user.identity.org_id,
+          isOrgAdmin: user.identity.user?.is_org_admin,
           serviceId: 'smarts',
           token: getToken,
         } as AuthenticatedUser);
