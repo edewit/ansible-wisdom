@@ -63,7 +63,7 @@ export const UsersPage = ({
     {
       onSuccess: () => {
         onSuccess && onSuccess('Successfully removed users');
-        queryClient.invalidateQueries({ queryKey: ['users', 'subscriptions'] });
+        queryClient.invalidateQueries();
       },
       onError: (error) => {
         onError && onError('there was an error: ' + error);

@@ -38,9 +38,7 @@ export const RemoveUsersPage = ({ user, onSuccess, onError }: PageParams) => {
     {
       onSuccess: () => {
         onSuccess('Successfully removed users');
-        queryClient.invalidateQueries({
-          queryKey: ['users', 'assignedUsers', 'subscriptions'],
-        });
+        queryClient.invalidateQueries();
       },
       onError: (error) => {
         onError('there was an error: ' + error);
