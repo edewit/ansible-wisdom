@@ -21,6 +21,7 @@ export type TokenFunction = () => Promise<string>;
 export type AuthenticatedUser = {
   orgId: string;
   serviceId: string;
+  isOrgAdmin: boolean;
   token: TokenFunction;
 };
 

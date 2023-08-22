@@ -110,6 +110,7 @@ export const UsersPage = ({
             users={users.data?.users}
             itemCount={users.data?.count}
             canAddUser={!cantAddUsers}
+            canRemove={user.isOrgAdmin}
             page={page}
             perPage={perPage}
             onPageChange={setPagination}
