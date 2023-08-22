@@ -32,6 +32,19 @@ ConfirmRemove1Users.args = {
   ],
 };
 
+export const ConfirmRemoveNoNameUsers = Template.bind({});
+ConfirmRemoveNoNameUsers.args = {
+  users: Array(2)
+    .fill(0)
+    .map((_, i) => ({
+      id: `${i}`,
+      userName: `cork.captain${i}`,
+      firstName: ``,
+      lastName: ``,
+      assigned: true,
+    })),
+};
+
 export const ConfirmRemoveMoreUsers = Template.bind({});
 ConfirmRemoveMoreUsers.args = {
   users: Array(23)
