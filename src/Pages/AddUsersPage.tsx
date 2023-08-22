@@ -38,9 +38,7 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
       onSuccess: () => {
         close();
         onSuccess('Successfully assigned users');
-        queryClient.invalidateQueries({
-          queryKey: ['users', 'availableUsers', 'subscriptions'],
-        });
+        queryClient.invalidateQueries();
       },
       onError: (error) => {
         onError('there was an error: ' + error);
