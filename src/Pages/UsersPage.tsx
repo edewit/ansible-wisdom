@@ -63,7 +63,7 @@ export const UsersPage = ({
     {
       onSuccess: () => {
         onSuccess && onSuccess('Successfully removed users');
-        queryClient.invalidateQueries({ queryKey: ['users'] });
+        queryClient.invalidateQueries({ queryKey: ['users', 'subscriptions'] });
       },
       onError: (error) => {
         onError && onError('there was an error: ' + error);
@@ -110,6 +110,7 @@ export const UsersPage = ({
             users={users.data?.users}
             itemCount={users.data?.count}
             canAddUser={!cantAddUsers}
+            canRemove={user.isOrgAdmin}
             page={page}
             perPage={perPage}
             onPageChange={setPagination}
