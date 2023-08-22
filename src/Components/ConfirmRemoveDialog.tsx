@@ -23,6 +23,14 @@ type ConfirmRemoveDialogProps = {
 
 const PAGE_SIZE = 5;
 
+function userToSring(user: User) {
+  if (user.firstName || user.lastName) {
+    return `${user.firstName} ${user.lastName}`;
+  } else {
+    return user.userName;
+  }
+}
+
 export const ConfirmRemoveDialog = ({
   users,
   onConfirm,
@@ -61,9 +69,7 @@ export const ConfirmRemoveDialog = ({
             <Tbody>
               {usersPage.map((user) => (
                 <Tr key={user.id}>
-                  <Td dataLabel="Name">
-                    {user.firstName} {user.lastName}
-                  </Td>
+                  <Td dataLabel="Name">{userToSring(user)}</Td>
                 </Tr>
               ))}
             </Tbody>
@@ -94,9 +100,7 @@ export const ConfirmRemoveDialog = ({
         <p className="pf-u-pt-md">
           {users.map((user, i) => (
             <>
-              <b>
-                {user.firstName} {user.lastName}
-              </b>
+              <b>{userToSring(user)}</b>
               {i !== users.length - 1 ? ', ' : ''}
             </>
           ))}
