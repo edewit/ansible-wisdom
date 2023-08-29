@@ -22,7 +22,7 @@ export default defineConfig({
   viewportHeight: 1000,
   e2e: {
     setupNodeEvents(on, config) {
-      const file = config.env.configFile || "stage";
+      const file = config.env.configFile || "prod";
       return getConfigurationByFile(file);      
     },
   },
