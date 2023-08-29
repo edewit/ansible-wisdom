@@ -292,14 +292,14 @@ export const UsersWithSeatTable = ({
           </ToolbarToggleGroup>
           {!isPicker && canAddUser && (
             <ToolbarItem>
-              <Button onClick={onAddUser}>Assign user(s)</Button>
+              <Button onClick={onAddUser}>Assign users</Button>
             </ToolbarItem>
           )}
           {!isPicker && canRemove && (
             <>
               <ToolbarItem>
                 <Button onClick={() => onRemoveSeat?.()} variant="secondary">
-                  Remove user(s)
+                  Remove users
                 </Button>
               </ToolbarItem>
               <ToolbarItem alignment={{ default: 'alignRight' }}>
