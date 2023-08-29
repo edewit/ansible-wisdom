@@ -48,7 +48,7 @@ export const ConfirmRemoveDialog = ({
       variant="small"
       actions={[
         <Button key="remove" variant="danger" onClick={() => onConfirm()}>
-          Remove user(s)
+          Remove users
         </Button>,
         <Button key="cancel" variant="link" onClick={() => onCancel()}>
           Cancel
