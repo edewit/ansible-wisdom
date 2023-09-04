@@ -1,0 +1,44 @@
+name: Cypress tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  # have the ability to trigger this workflow manually
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Cypress tests
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: add prod to hosts file
+      run: echo 127.0.0.1 prod.foo.redhat.com | sudo tee -a /etc/hosts 
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v5
+      with:
+        env: password=${{ secrets.CYPRESS_PASSWORD }}
+        config-file: cypress.config.ts
+        wait-on: 'https://prod.foo.redhat.com:1337/beta/ansible/seats-administration'
+        build: npm run build
+        start: npm run start:prod:beta
+    
+    - name: Upload Cypress screenshots test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-screenshots-results
+        path: cypress/screenshots
+      if: ${{ always() }}
+    
+    - name: Upload Cypress videos test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-videos-results
+        path: cypress/videos
+      if: ${{ always() }}
