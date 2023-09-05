@@ -20,6 +20,7 @@ export default defineConfig({
   videoUploadOnPasses: false,  
   viewportWidth: 1600,
   viewportHeight: 1000,
+  chromeWebSecurity: false,
   e2e: {
     setupNodeEvents(on, config) {
       const file = config.env.configFile || "prod";

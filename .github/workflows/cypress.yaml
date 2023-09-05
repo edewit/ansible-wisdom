@@ -19,11 +19,10 @@ jobs:
 
     - name: add prod to hosts file
       run: echo 127.0.0.1 prod.foo.redhat.com | sudo tee -a /etc/hosts 
-
+    
     - name: Cypress run
       uses: cypress-io/github-action@v5
       with:
-        env: password=${{ secrets.CYPRESS_PASSWORD }}
         config-file: cypress.config.ts
         wait-on: 'https://prod.foo.redhat.com:1337/beta/ansible/seats-administration'
         build: npm run build
