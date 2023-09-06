@@ -32,7 +32,6 @@ jobs:
         browser: chrome
         record: true
         config-file: cypress.config.ts
-        wait-on: 'https://prod.foo.redhat.com:1337/beta/ansible/seats-administration'
     
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
