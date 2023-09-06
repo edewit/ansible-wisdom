@@ -22,10 +22,11 @@ jobs:
     
     - name: disable authorized TLS
       run: export NODE_TLS_REJECT_UNAUTHORIZED='0'
-      
+
     - name: Cypress run
-      uses: cypress-io/github-action@v5
+      uses: cypress-io/github-action@v6
       with:
+        browser: chrome
         config-file: cypress.config.ts
         wait-on: 'https://prod.foo.redhat.com:1337/beta/ansible/seats-administration'
         build: npm run build
