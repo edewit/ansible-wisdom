@@ -20,14 +20,19 @@ jobs:
     - name: add prod to hosts file
       run: echo 127.0.0.1 prod.foo.redhat.com | sudo tee -a /etc/hosts 
     
+    - name: Install root dependencies
+      uses: bahmutov/npm-install@v1
+
+    - name: Start server in the background
+      run: npm run start:prod:beta &
+
     - name: Cypress run
       uses: cypress-io/github-action@v6
       with:
         browser: chrome
+        record: true
         config-file: cypress.config.ts
         wait-on: 'https://prod.foo.redhat.com:1337/beta/ansible/seats-administration'
-        build: npm run build
-        start: npm run start:prod:beta
     
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
