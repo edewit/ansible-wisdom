@@ -20,9 +20,6 @@ jobs:
     - name: add prod to hosts file
       run: echo 127.0.0.1 prod.foo.redhat.com | sudo tee -a /etc/hosts 
     
-    - name: disable authorized TLS
-      run: export NODE_TLS_REJECT_UNAUTHORIZED='0'
-
     - name: Cypress run
       uses: cypress-io/github-action@v6
       with:
@@ -45,3 +42,4 @@ jobs:
         name: cypress-videos-results
         path: cypress/videos
       if: ${{ always() }}
+

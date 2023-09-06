@@ -8,3 +8,4 @@ describe('Navigate to the Prod Seats Administration page as lightspeed-org-admin
     cy.get('.pf-l-level > div > p').should('include.text', 'This group contains all users assigned seats within your organization.');
   })
 })
+
