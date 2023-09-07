@@ -26,6 +26,10 @@ jobs:
     - name: Start server in the background
       run: npm run start:prod:beta &
 
+    - name: Sleep for 60 seconds
+      run: sleep 60s
+      shell: bash
+
     - name: Cypress run
       uses: cypress-io/github-action@v6
       with:
