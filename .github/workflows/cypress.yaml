@@ -31,6 +31,7 @@ jobs:
       with:
         browser: chrome
         record: true
+        wait-on: https://prod.foo.redhat.com:1337/ansible/seats-administration
         config: env={passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}, passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}}
         config-file: cypress-github.config.ts
     
