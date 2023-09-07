@@ -23,7 +23,7 @@ export default defineConfig({
   chromeWebSecurity: false,
   e2e: {
     setupNodeEvents(on, config) {
-      const file = config.env.configFile || "prod";
+      const file = config.env.configFile;
       return getConfigurationByFile(file);      
     },
   },
