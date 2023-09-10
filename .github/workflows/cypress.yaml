@@ -23,8 +23,8 @@ jobs:
     - name: Install root dependencies
       uses: bahmutov/npm-install@v1
 
-    - name: Start server in the background
-      run: npm run start:prod:beta &
+    - name: Start server
+      run: npm run start:prod:beta
 
     - name: Sleep for 60 seconds
       run: sleep 60s
