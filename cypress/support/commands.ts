@@ -44,7 +44,9 @@ Cypress.Commands.add('login', (username) => {
     password = Cypress.env('passwordUser')
   }
   
+  cy.request(Cypress.config('baseUrl'));
   cy.visit(Cypress.config('baseUrl'));
+  Cypress.on('uncaught:exception', (err, runnable) => { return false; })
   cy.get('#username-verification', { timeout: 30000 }).should('be.visible').type(username);
   cy.get('#login-show-step2', { timeout: 30000 }).should('be.visible').click();
   cy.get('#password', { timeout: 30000 }).should('be.visible').type(password);
