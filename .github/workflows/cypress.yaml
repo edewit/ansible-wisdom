@@ -24,7 +24,9 @@ jobs:
       uses: bahmutov/npm-install@v1
 
     - name: Start server
-      run: npm run start:prod:beta
+      run: | 
+        npm --version
+        npm run start:prod:beta &
 
     - name: Sleep for 60 seconds
       run: sleep 60s
@@ -32,6 +34,8 @@ jobs:
 
     - name: Cypress run
       uses: cypress-io/github-action@v6
+      env:
+        DEBUG: 'cypress:*'
       with:
         browser: chrome
         record: true
