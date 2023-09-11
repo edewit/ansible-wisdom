@@ -28,20 +28,12 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Start server
-      run: | 
-        npm --version
-        npm run start:prod:beta &
-
-    - name: Sleep for 120 seconds
-      run: sleep 120s
-      shell: bash
-
     - name: Cypress run
       uses: cypress-io/github-action@v6
       env:
         DEBUG: 'cypress:*'
       with:
+        start: npm run start:prod:beta
         browser: chrome
         record: true
         config: env={passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}, passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}}
