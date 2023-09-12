@@ -13,6 +13,9 @@ jobs:
   build:
     name: Cypress tests
     runs-on: ubuntu-20.04
+    env:
+      passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
+      passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
 
     steps:
     - uses: actions/checkout@v3
@@ -31,9 +34,9 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v6
       env:
-        CYPRESS_passwordAdmin: '${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}'
-        CYPRESS_passwordUser: '${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}'
-      with:
+        CYPRESS_passwordAdmin: $passwordAdmin
+        CYPRESS_passwordUser: $passwordUser
+      with:  
         start: npm run start:prod:beta
         browser: chrome
         record: true
