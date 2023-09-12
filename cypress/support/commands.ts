@@ -46,8 +46,13 @@ Cypress.Commands.add('login', (username) => {
   
   cy.request(Cypress.config('baseUrl'));
   cy.visit(Cypress.config('baseUrl'));
-  cy.get('#username-verification', { timeout: 30000 }).should('be.visible').type(username);
-  cy.get('#login-show-step2', { timeout: 30000 }).should('be.visible').click();
-  cy.get('#password', { timeout: 30000 }).should('be.visible').type(password);
+  cy.get('#username-verification').as('usernameField');
+  cy.get('@usernameField').should('be.visible');
+  cy.get('@usernameField').type(username);
+  cy.get('#login-show-step2').as('step2');
+  cy.get('@step2').click().should('be.visible');
+  cy.get('#password').as('passwordField');
+  cy.get('@passwordField').should('be.visible');
+  cy.get('@passwordField').type(password);
   cy.get('#rh-password-verification-submit-button').click();
 });
