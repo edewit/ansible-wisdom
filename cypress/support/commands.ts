@@ -51,9 +51,9 @@ function setCookiesForUILogin() {
 Cypress.Commands.add('login', (username) => {
   let password = ""
   if (username == "lightspeed-org-admin") {
-    password = Cypress.env('passwordAdmin')
+    password = Cypress.env('passwordAdmin') as string
   } else {
-    password = Cypress.env('passwordUser')
+    password = Cypress.env('passwordUser') as string
   }
   if (password == null || password == "") {
     cy.log('>>>>>> Password is null or empty! <<<<<<')
