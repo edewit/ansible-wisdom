@@ -13,9 +13,6 @@ jobs:
   build:
     name: Cypress tests
     runs-on: ubuntu-20.04
-    env:
-      CYPRESS_passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
-      CYPRESS_passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
 
     steps:
     - uses: actions/checkout@v3
@@ -38,6 +35,7 @@ jobs:
         browser: chrome
         record: true
         config-file: cypress-github.config.ts
+        env: CYPRESS_passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}, CYPRESS_passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
     
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
