@@ -31,8 +31,8 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v6
       env:
-        CYPRESS_passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
-        CYPRESS_passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
+        CYPRESS_passwordAdmin: '${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}'
+        CYPRESS_passwordUser: '${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}'
       with:
         start: npm run start:prod:beta
         browser: chrome
