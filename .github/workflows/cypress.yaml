@@ -30,8 +30,6 @@ jobs:
 
     - name: Cypress run
       uses: cypress-io/github-action@v6
-      env:
-        DEBUG: 'cypress:*'
       with:
         start: npm run start:prod:beta
         browser: chrome
