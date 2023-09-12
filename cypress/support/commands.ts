@@ -36,6 +36,8 @@
 //   }
 // }
 
+import './login';
+
 Cypress.Commands.add('login', (username) => {
   let password = ""
   if (username == "lightspeed-org-admin") {
@@ -46,6 +48,7 @@ Cypress.Commands.add('login', (username) => {
   if (password == null) {
     cy.log('Password is null!')
   }
+  setCookiesForUILogin();
   cy.request(Cypress.config('baseUrl'));
   cy.visit(Cypress.config('baseUrl'));
   cy.get('#username-verification').as('usernameField');
