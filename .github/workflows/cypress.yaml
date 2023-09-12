@@ -34,8 +34,8 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v6
       env:
-        CYPRESS_passwordAdmin: $passwordAdmin
-        CYPRESS_passwordUser: $passwordUser
+        CYPRESS_passwordAdmin: echo $passwordAdmin
+        CYPRESS_passwordUser: echo $passwordUser
       with:  
         start: npm run start:prod:beta
         browser: chrome
