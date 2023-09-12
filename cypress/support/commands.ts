@@ -55,8 +55,8 @@ Cypress.Commands.add('login', (username) => {
   } else {
     password = Cypress.env('passwordUser')
   }
-  if (password == null) {
-    cy.log('Password is null!')
+  if (password == null || password == "") {
+    cy.log('>>>>>> Password is null or empty! <<<<<<')
   }
   setCookiesForUILogin();
   cy.request(Cypress.config('baseUrl'));
