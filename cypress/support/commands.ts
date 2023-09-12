@@ -43,7 +43,9 @@ Cypress.Commands.add('login', (username) => {
   } else {
     password = Cypress.env('passwordUser')
   }
-  
+  if (password == null) {
+    cy.log('Password is null!')
+  }
   cy.request(Cypress.config('baseUrl'));
   cy.visit(Cypress.config('baseUrl'));
   cy.get('#username-verification').as('usernameField');
@@ -53,6 +55,6 @@ Cypress.Commands.add('login', (username) => {
   cy.get('@step2').click().should('be.visible');
   cy.get('#password').as('passwordField');
   cy.get('@passwordField').should('be.visible');
-  cy.get('@passwordField').type('test');
+  cy.get('@passwordField').type(password);
   cy.get('#rh-password-verification-submit-button').click();
 });

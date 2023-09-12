@@ -34,7 +34,7 @@ jobs:
         start: npm run start:prod:beta
         browser: chrome
         record: true
-        config: env={passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}, passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}}
+        env: passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}, passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
         config-file: cypress-github.config.ts
     
     - name: Upload Cypress screenshots test results
