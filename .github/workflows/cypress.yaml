@@ -29,7 +29,7 @@ jobs:
       run: npm ci
 
     - name: Cypress run
-      uses: cypress-io/github-action@v6
+      uses: cypress-io/github-action@v2
       with:
         env: configFile=ci
         start: npm run start:prod:beta
