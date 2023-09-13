@@ -31,14 +31,11 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v4
       with:
-        env: configFile=ci
+        command: npx cypress run --env passwordAdmin=${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }},passwordUser=${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
         start: npm run start:prod:beta
         browser: chrome
         record: true
         config-file: cypress-github.config.ts
-      env: 
-        CYPRESS_passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
-        CYPRESS_passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
 
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
