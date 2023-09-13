@@ -49,15 +49,16 @@ function setCookiesForUILogin() {
 }
 
 Cypress.Commands.add('login', (username) => {
-  let password = ""
+  let password = "";
   if (username == "lightspeed-org-admin") {
-    password = Cypress.env('passwordAdmin')
+    password = Cypress.env('passwordAdmin');
   } else {
-    password = Cypress.env('passwordUser')
+    password = Cypress.env('passwordUser');
   }
-  if (password == null || password == "") {
-    cy.log('>>>>>> Password is null or empty! <<<<<<')
-  }
+  cy.log('---------------------------');
+  cy.log(typeof password);
+  cy.log('---------------------------');
+
   setCookiesForUILogin();
   cy.request(Cypress.config('baseUrl'));
   cy.visit(Cypress.config('baseUrl'));

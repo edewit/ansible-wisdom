@@ -36,6 +36,7 @@ jobs:
       env:
         CYPRESS_passwordAdmin: ${{ env.passwordAdmin }}
         CYPRESS_passwordUser: ${{ env.passwordUser }}
+        DEBUG: 'cypress:*'
       with:  
         start: npm run start:prod:beta
         browser: chrome
