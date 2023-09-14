@@ -1,0 +1,54 @@
+name: Cypress tests
+on:
+  push:
+    branches:
+      - main
+  # have the ability to trigger this workflow manually
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Cypress tests
+    runs-on: ubuntu-20.04
+    env:
+      CYPRESS_PASSWORD_ADMIN: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
+      CYPRESS_PASSWORD_USER: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: add prod to hosts file
+      run: echo 127.0.0.1 prod.foo.redhat.com | sudo tee -a /etc/hosts 
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.5.1'
+        
+    - name: Install dependencies and run server at the background
+      run: | 
+        npm ci
+        npm run start:prod:beta &
+
+    - name: Sleep for 120 seconds
+      run: sleep 120s
+      shell: bash
+
+    - name: Cypress install & run
+      run: |
+        npm install cypress --save-dev
+        npx cypress run --config-file cypress-github.config.ts --browser chrome
+
+    - name: Upload Cypress screenshots test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-screenshots-results
+        path: cypress/screenshots
+      if: ${{ always() }}
+
+    - name: Upload Cypress videos test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-videos-results
+        path: cypress/videos
+      if: ${{ always() }}

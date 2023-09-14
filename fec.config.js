@@ -4,6 +4,7 @@ module.exports = {
   appUrl: '/ansible/seats-administration',
   debug: true,
   useProxy: true,
+  useAgent: false,
   proxyVerbose: true,
   sassPrefix: '.seats-admin-ui, .seatsAdminUi',
   /**
