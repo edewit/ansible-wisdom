@@ -8,6 +8,9 @@ on:
       - main
   # have the ability to trigger this workflow manually
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      # Defaults
 
 jobs:
   build:
