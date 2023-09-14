@@ -14,8 +14,8 @@ jobs:
     name: Cypress tests
     runs-on: ubuntu-20.04
     env:
-      CYPRESS_PASSWORD_ADMIN: "testing_password"
-      CYPRESS_PASSWORD_USER: "testing_password"
+      CYPRESS_PASSWORD_ADMIN: "${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}"
+      CYPRESS_PASSWORD_USER: "${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}"
 
     steps:
     - uses: actions/checkout@v3
