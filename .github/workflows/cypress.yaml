@@ -14,8 +14,8 @@ jobs:
     name: Cypress tests
     runs-on: ubuntu-20.04
     env:
-      CYPRESS_passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
-      CYPRESS_passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
+      passwordAdmin: ${{ secrets.LIGHTSPEED_ORG_ADMIN_PASSWORD }}
+      passwordUser: ${{ secrets.LIGHTSPEED_TEST_USER_PASSWORD }}
 
     steps:
     - uses: actions/checkout@v3
@@ -40,7 +40,7 @@ jobs:
     - name: Cypress install & run
       run: |
         npm install cypress --save-dev
-        npx cypress run -e --config-file cypress-github.config.ts CYPRESS_passwordAdmin=$CYPRESS_passwordAdmin CYPRESS_passwordUser=$CYPRESS_passwordUser --browser chrome --record
+        npx cypress run --config-file cypress-github.config.ts --browser chrome --record
 
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
