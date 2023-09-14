@@ -9,8 +9,13 @@ on:
   # have the ability to trigger this workflow manually
   workflow_dispatch:
   workflow_call:
-    inputs:
-      # Defaults
+    secrets:
+      LIGHTSPEED_ORG_ADMIN_PASSWORD:
+        description: 'an org admin password for login'
+        required: true
+      LIGHTSPEED_TEST_USER_PASSWORD:
+        description: 'a user password for login'
+        required: true
 
 jobs:
   build:
