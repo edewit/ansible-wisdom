@@ -40,7 +40,7 @@ jobs:
     - name: Cypress install & run
       run: |
         npm install cypress --save-dev
-        npx cypress run --config-file cypress-github.config.ts CYPRESS_passwordAdmin=$CYPRESS_passwordAdmin CYPRESS_passwordUser=$CYPRESS_passwordUser --browser chrome --record
+        npx cypress run -e --config-file cypress-github.config.ts CYPRESS_passwordAdmin=$CYPRESS_passwordAdmin CYPRESS_passwordUser=$CYPRESS_passwordUser --browser chrome --record
 
     - name: Upload Cypress screenshots test results
       uses: actions/upload-artifact@v3
@@ -48,7 +48,7 @@ jobs:
         name: cypress-screenshots-results
         path: cypress/screenshots
       if: ${{ always() }}
-    
+
     - name: Upload Cypress videos test results
       uses: actions/upload-artifact@v3
       with:
