@@ -66,6 +66,6 @@ Cypress.Commands.add('login', (username) => {
   cy.get('@step2').click().should('be.visible');
   cy.get('#password').as('passwordField');
   cy.get('@passwordField').should('be.visible');
-  cy.get('@passwordField').type(password);
+  cy.get('@passwordField').type(password, {log:false});
   cy.get('#rh-password-verification-submit-button').click();
 });
