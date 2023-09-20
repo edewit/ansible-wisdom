@@ -55,9 +55,6 @@ Cypress.Commands.add('login', (username) => {
   } else {
     password = Cypress.env('PASSWORD_USER');
   }
-  cy.log('---------------------------');
-  cy.log(typeof password);
-  cy.log('---------------------------');
 
   setCookiesForUILogin();
   cy.request(Cypress.config('baseUrl'));
