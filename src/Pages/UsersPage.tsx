@@ -31,6 +31,7 @@ export const UsersPage = ({
   const [alertOpen, setAlertOpen] = useState(true);
 
   const [page, perPage, setPagination] = usePagination();
+  const [search, setSearch] = useState<Record<string, string>>({});
 
   const service = useService();
   const queryClient = useQueryClient();
@@ -41,8 +42,8 @@ export const UsersPage = ({
   });
 
   const users = useQuery<UserResult>({
-    queryKey: ['users', { page, perPage }],
-    queryFn: () => service.seats(user, { page, perPage }),
+    queryKey: ['users', { page, perPage, search }],
+    queryFn: () => service.seats(user, { page, perPage }, true, search),
   });
 
   const negativeSeats = (subscriptions.data?.available || 0) < 0;
@@ -113,6 +114,7 @@ export const UsersPage = ({
             canRemove={user.isOrgAdmin}
             page={page}
             perPage={perPage}
+            onSearch={setSearch}
             onPageChange={setPagination}
             onAddUser={() => {
               navigate('/add-users');

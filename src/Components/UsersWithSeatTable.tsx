@@ -60,6 +60,7 @@ export type UsersWithSeatTableProps = {
   page: number;
   perPage: number;
   onPageChange: (page: number, perPage: number) => void;
+  onSearch?: (search: Record<string, string>) => void;
 };
 
 const TableSkeleton: VoidFunctionComponent<{
@@ -161,6 +162,7 @@ export const UsersWithSeatTable = ({
   onRemoveSeat,
   onAddUser,
   isPicker = false,
+  onSearch,
 }: UsersWithSeatTableProps) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
   const [activeSortDirection, setActiveSortDirection] = useState<
@@ -180,7 +182,7 @@ export const UsersWithSeatTable = ({
       page = orderBy(page, Columns[activeSortIndex], activeSortDirection);
     }
 
-    if (filterValue !== '') {
+    if (onSearch === undefined && filterValue !== '') {
       page = filter(page, (user: User) =>
         user[filterColumn].includes(filterValue)
       );
@@ -281,7 +283,10 @@ export const UsersWithSeatTable = ({
                   aria-label="Filter table based on column"
                   placeholder={`Filter by ${labels[filterColumn]}`}
                   onChange={(_event, value) => setSearch(value)}
-                  onSearch={(_, value) => setFilterValue(value)}
+                  onSearch={(_, value) => {
+                    setFilterValue(value);
+                    onSearch?.({ [filterColumn]: value });
+                  }}
                   value={search}
                   onClear={() => {
                     setSearch('');

@@ -40,6 +40,7 @@ export type Seat = {
   status?: string;
   first_name?: string;
   last_name?: string;
+  email?: string;
 };
 export type ListSeatsResponsePagination = ListPagination & {
   data: Seat[];
@@ -116,12 +117,18 @@ export function getServices(
 export function getSeats(
   {
     status,
-    excludeStatus,
+    accountUsername,
+    firstName,
+    lastName,
+    email,
     limit,
     offset,
   }: {
     status?: ('Active' | 'Deprovisioned')[];
-    excludeStatus?: ('Active' | 'Deprovisioned')[];
+    accountUsername?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
     limit?: number;
     offset?: number;
   } = {},
@@ -141,7 +148,10 @@ export function getSeats(
       `/seats${QS.query(
         QS.explode({
           status,
-          excludeStatus,
+          accountUsername,
+          firstName,
+          lastName,
+          email,
           limit,
           offset,
         })
