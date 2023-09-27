@@ -54,7 +54,8 @@ export interface LicenseService {
   seats(
     user: AuthenticatedUser,
     pagination: Pagination,
-    assigned?: boolean
+    assigned?: boolean,
+    search?: Record<string, string>
   ): Promise<UserResult>;
 
   assign(user: AuthenticatedUser, userIds: string[]): Promise<void>;

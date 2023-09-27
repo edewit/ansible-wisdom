@@ -40,7 +40,8 @@ export class EntitlementsService implements LicenseService {
   async seats(
     user: AuthenticatedUser,
     pagination: Pagination,
-    assigned: boolean | undefined = true
+    assigned: boolean | undefined = true,
+    search?: Record<string, string>
   ): Promise<UserResult> {
     if (assigned) {
       const result = await getSeats(
@@ -48,6 +49,8 @@ export class EntitlementsService implements LicenseService {
           limit: pagination.perPage,
           offset: (pagination.page - 1) * pagination.perPage,
           status: ['Active'],
+          accountUsername: search?.['userName'],
+          ...search,
         },
         await this.requestHeader(user)
       );
