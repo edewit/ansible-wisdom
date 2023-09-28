@@ -177,9 +177,12 @@ export const UsersWithSeatTable = ({
   const startIndex = (page - 1) * (perPage || 20);
 
   const data = useMemo<User[]>(() => {
-    let page = users?.slice(startIndex, startIndex + (perPage || 20)) || [];
-    if (activeSortIndex !== undefined) {
-      page = orderBy(page, Columns[activeSortIndex], activeSortDirection);
+    let page = users || [];
+    if (users && users.length > startIndex) {
+      page = users.slice(startIndex, startIndex + (perPage || 20)) || [];
+      if (activeSortIndex !== undefined) {
+        page = orderBy(page, Columns[activeSortIndex], activeSortDirection);
+      }
     }
 
     if (onSearch === undefined && filterValue !== '') {

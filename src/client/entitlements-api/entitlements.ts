@@ -68,7 +68,13 @@ export class EntitlementsService implements LicenseService {
     } else {
       const header = await this.requestHeader(user);
       const result = await listPrincipals(
-        { usernameOnly: false },
+        {
+          usernameOnly: false,
+          limit: pagination.perPage,
+          usernames: search?.['userName'],
+          matchCriteria: 'partial',
+          offset: (pagination.page - 1) * pagination.perPage,
+        },
         { ...header, baseUrl: this.baseUrl + 'api/rbac/v1/' }
       );
 
