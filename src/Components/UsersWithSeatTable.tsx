@@ -217,9 +217,15 @@ export const UsersWithSeatTable = ({
     );
   }
 
+  const clearAllFilters = () => {
+    setFilterValue('');
+    setSearch('');
+    onSearch?.({});
+  };
+
   return (
     <>
-      <Toolbar clearAllFilters={() => setFilterValue('')}>
+      <Toolbar clearAllFilters={clearAllFilters}>
         <ToolbarContent>
           {!isPicker && (
             <ToolbarItem>
@@ -291,9 +297,7 @@ export const UsersWithSeatTable = ({
                     onSearch?.({ [filterColumn]: value });
                   }}
                   value={search}
-                  onClear={() => {
-                    setSearch('');
-                  }}
+                  onClear={clearAllFilters}
                 />
               </ToolbarFilter>
             </ToolbarGroup>
@@ -386,9 +390,7 @@ export const UsersWithSeatTable = ({
           {data?.length === 0 && filterValue !== '' && (
             <Tr>
               <Td colSpan={Columns.length}>
-                <EmptyStateNoResults
-                  onClearAllFilters={() => setFilterValue('')}
-                />
+                <EmptyStateNoResults onClearAllFilters={clearAllFilters} />
               </Td>
             </Tr>
           )}

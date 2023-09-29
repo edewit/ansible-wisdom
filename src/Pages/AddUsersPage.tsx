@@ -16,6 +16,7 @@ export type PageParams = {
 export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const navigate = useAppNavigate();
   const service = useService();
+  const [search, setSearch] = useState<Record<string, string>>({});
 
   const close = () => navigate('/');
 
@@ -28,8 +29,8 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
 
   const queryClient = useQueryClient();
   const users = useQuery<UserResult>({
-    queryKey: ['availableUsers', { page, perPage, usernames: [] }],
-    queryFn: () => service.seats(user, { page, perPage }, false),
+    queryKey: ['availableUsers', { page, perPage, search }],
+    queryFn: () => service.seats(user, { page, perPage }, false, search),
   });
 
   const { mutate, isLoading } = useMutation(
@@ -100,6 +101,7 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
               : checkedUsers.filter((u) => u !== user.id)
           );
         }}
+        onSearch={setSearch}
       />
     </Modal>
   );
