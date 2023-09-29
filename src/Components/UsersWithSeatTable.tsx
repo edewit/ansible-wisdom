@@ -212,7 +212,7 @@ export const UsersWithSeatTable = ({
     return (
       <EmptyStateNoAssignedSeat
         totalSeats={totalSeats || 0}
-        onAddUsers={() => onAddUser?.()}
+        onAddUsers={canAddUser ? onAddUser : undefined}
       />
     );
   }
