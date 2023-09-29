@@ -10,7 +10,7 @@ import type { VoidFunctionComponent } from 'react';
 
 export type EmptyStateNoAssignedSeatProps = {
   totalSeats: number;
-  onAddUsers: () => void;
+  onAddUsers?: () => void;
 };
 
 export const EmptyStateNoAssignedSeat: VoidFunctionComponent<
@@ -27,15 +27,21 @@ export const EmptyStateNoAssignedSeat: VoidFunctionComponent<
         seats.
       </Title>
       <EmptyStateBody>
-        Please add users by using the button below.
+        {onAddUsers ? (
+          <>Please add users by using the button below.</>
+        ) : (
+          <>Please contact your org admin to adjust seat entitlements</>
+        )}
       </EmptyStateBody>
-      <Button
-        ouiaId="button-create"
-        variant="primary"
-        onClick={() => onAddUsers()}
-      >
-        Add users
-      </Button>
+      {onAddUsers && (
+        <Button
+          ouiaId="button-create"
+          variant="primary"
+          onClick={() => onAddUsers()}
+        >
+          Add users
+        </Button>
+      )}
     </EmptyState>
   );
 };
