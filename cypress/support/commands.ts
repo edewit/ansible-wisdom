@@ -72,31 +72,32 @@ Cypress.Commands.add('login', (username) => {
 
 
 Cypress.Commands.add('assign_seat', (username) => {
-  cy.get('.pf-c-button.pf-m-primary').as('assign_button');
+  cy.get('.pf-c-button.pf-m-primary', {timeout: 30000}).as('assign_button');
   cy.get('@assign_button').click();
-  cy.contains('tr', username).find('input').should('be.visible');
-  cy.contains('tr', username).find('input').check();
+  cy.get('[data-cy="users-table-modal"] tr').as('users-table-modal').should('be.visible');
+  cy.get('@users-table-modal').contains('tr', username).find('input').should('be.visible');
+  cy.get('@users-table-modal').contains('tr', username).find('input').check();
   cy.get('.pf-c-button.pf-m-primary.pf-m-progress').as('assign_button');
   cy.get('@assign_button').should('be.visible');
   cy.get('@assign_button').click();
 });
 
 Cypress.Commands.add('unassign_seat', (username) => {
-  cy.get('input.pf-c-text-input-group__text-input').as('search_box');
+  cy.get('[data-cy="search-input"]', {timeout: 30000}).as('search_box');
   cy.get('@search_box').should('be.visible');
   cy.get('@search_box').type(username);
   cy.get('.pf-c-button.pf-m-control').as('submit_search');
   cy.get('@submit_search').click();
   cy.contains('tr', username).find('input').should('be.visible');
   cy.contains('tr', username).find('input').check();
-  cy.get('.pf-c-button.pf-m-secondary').as('remove_users');
+  cy.get('[data-cy="remove-users-button"]').as('remove_users')
   cy.get('@remove_users').click();
   cy.get('.pf-c-modal-box__body').as('remove_text');
   cy.get('@remove_text').should('include.text', 'Are you sure you want to remove the user(s) below from Ansible Lightspeed with IBM watsonx Code Assistant?');
   cy.get('.pf-c-button.pf-m-danger').as('remove_user_button');
   cy.get('@remove_user_button').click();
-  cy.get('.pf-c-title.pf-m-lg').as('no_result_text');
+  cy.get('.pf-c-empty-state__content > .pf-c-title').as('no_result_text');
   cy.get('@no_result_text').should('include.text', 'No results found');
-  cy.get('button#remove_group_pf-random-id-4.pf-c-button.pf-m-plain').as('clear_filter');
+  cy.get('button#remove_group_pf-random-id-6.pf-c-button.pf-m-plain').as('clear_filter');
   cy.get('@clear_filter').click({ multiple: true }, { force: true });
 });
