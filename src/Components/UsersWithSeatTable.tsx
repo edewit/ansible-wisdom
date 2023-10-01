@@ -61,6 +61,7 @@ export type UsersWithSeatTableProps = {
   perPage: number;
   onPageChange: (page: number, perPage: number) => void;
   onSearch?: (search: Record<string, string>) => void;
+  modalFlag: boolean;
 };
 
 const TableSkeleton: VoidFunctionComponent<{
@@ -163,6 +164,7 @@ export const UsersWithSeatTable = ({
   onAddUser,
   isPicker = false,
   onSearch,
+  modalFlag = false,
 }: UsersWithSeatTableProps) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
   const [activeSortDirection, setActiveSortDirection] = useState<
@@ -298,6 +300,7 @@ export const UsersWithSeatTable = ({
                   }}
                   value={search}
                   onClear={clearAllFilters}
+                  data-cy={modalFlag ? 'search-input-modal' : 'search-input'}
                 />
               </ToolbarFilter>
             </ToolbarGroup>
@@ -310,7 +313,11 @@ export const UsersWithSeatTable = ({
           {!isPicker && canRemove && (
             <>
               <ToolbarItem>
-                <Button onClick={() => onRemoveSeat?.()} variant="secondary">
+                <Button
+                  onClick={() => onRemoveSeat?.()}
+                  variant="secondary"
+                  data-cy="remove-users-button"
+                >
                   Remove users
                 </Button>
               </ToolbarItem>
@@ -329,7 +336,10 @@ export const UsersWithSeatTable = ({
           )}
         </ToolbarContent>
       </Toolbar>
-      <TableComposable aria-label="Ansible Lightspeed with IBM watsonx Code Assistant users">
+      <TableComposable
+        aria-label="Ansible Lightspeed with IBM watsonx Code Assistant users"
+        data-cy={modalFlag ? 'users-table-modal' : 'users-table'}
+      >
         <Thead>
           <Tr>
             <Th />

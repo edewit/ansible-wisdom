@@ -102,6 +102,7 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
           );
         }}
         onSearch={setSearch}
+        modalFlag={true}
       />
     </Modal>
   );
