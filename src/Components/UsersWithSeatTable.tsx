@@ -61,7 +61,6 @@ export type UsersWithSeatTableProps = {
   perPage: number;
   onPageChange: (page: number, perPage: number) => void;
   onSearch?: (search: Record<string, string>) => void;
-  modalFlag: boolean;
 };
 
 const TableSkeleton: VoidFunctionComponent<{
@@ -164,7 +163,6 @@ export const UsersWithSeatTable = ({
   onAddUser,
   isPicker = false,
   onSearch,
-  modalFlag = false,
 }: UsersWithSeatTableProps) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
   const [activeSortDirection, setActiveSortDirection] = useState<
@@ -300,7 +298,7 @@ export const UsersWithSeatTable = ({
                   }}
                   value={search}
                   onClear={clearAllFilters}
-                  data-cy={modalFlag ? 'search-input-modal' : 'search-input'}
+                  data-cy={isPicker ? 'search-input-modal' : 'search-input'}
                 />
               </ToolbarFilter>
             </ToolbarGroup>
@@ -338,7 +336,7 @@ export const UsersWithSeatTable = ({
       </Toolbar>
       <TableComposable
         aria-label="Ansible Lightspeed with IBM watsonx Code Assistant users"
-        data-cy={modalFlag ? 'users-table-modal' : 'users-table'}
+        data-cy={isPicker ? 'users-table-modal' : 'users-table'}
       >
         <Thead>
           <Tr>
