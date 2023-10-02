@@ -225,7 +225,7 @@ export const UsersWithSeatTable = ({
 
   return (
     <>
-      <Toolbar clearAllFilters={clearAllFilters}>
+      <Toolbar clearAllFilters={clearAllFilters} data-cy="users-table-toolbar">
         <ToolbarContent>
           {!isPicker && (
             <ToolbarItem>

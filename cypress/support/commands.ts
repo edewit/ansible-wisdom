@@ -98,6 +98,6 @@ Cypress.Commands.add('unassign_seat', (username) => {
   cy.get('@remove_user_button').click();
   cy.get('.pf-c-empty-state__content > .pf-c-title').as('no_result_text');
   cy.get('@no_result_text').should('include.text', 'No results found');
-  cy.get('button#remove_group_pf-random-id-6.pf-c-button.pf-m-plain').as('clear_filter');
-  cy.get('@clear_filter').click({ multiple: true }, { force: true });
+  cy.get('[data-cy="users-table-toolbar"] > :nth-child(2) > :nth-child(2) > .pf-c-button').as('clear_filter');
+  cy.get('@clear_filter').click();
 });
