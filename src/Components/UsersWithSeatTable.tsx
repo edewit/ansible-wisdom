@@ -283,8 +283,8 @@ export const UsersWithSeatTable = ({
               </ToolbarItem>
               <ToolbarFilter
                 chips={filterValue !== '' ? [filterValue] : ([] as string[])}
-                deleteChip={() => setFilterValue('')}
-                deleteChipGroup={() => setFilterValue('')}
+                deleteChip={clearAllFilters}
+                deleteChipGroup={clearAllFilters}
                 categoryName={labels[filterColumn]}
                 widths={isPicker ? { default: '500px' } : undefined}
               >
