@@ -36,7 +36,11 @@ Cypress.Commands.add('login', (username) => {
 });
 
 
+<<<<<<< HEAD
 Cypress.Commands.add('assign_one_seat', (username) => {
+=======
+Cypress.Commands.add('assign_seat', (username) => {
+>>>>>>> fbdec5f (Test sorting in seat admin page with a non-admin user)
   cy.get('.pf-c-button.pf-m-primary', { timeout: 30000 }).as('assign_button');
   cy.get('@assign_button').click();
   cy.get('[data-cy="users-table-modal"] tr').as('users-table-modal').should('be.visible');
@@ -118,6 +122,7 @@ Cypress.Commands.add('unassign_one_seat', (username) => {
   cy.get('@clear_filter').click();
 });
 
+<<<<<<< HEAD
 Cypress.Commands.add('filter_by', (option, value) => {
   cy.get('.pf-c-menu-toggle__text').click()
   cy.get('.pf-c-menu__item').contains(option).click()
@@ -130,4 +135,15 @@ Cypress.Commands.add('filter_by', (option, value) => {
   cy.get('[data-cy="users-table-toolbar"] > :nth-child(2) > :nth-child(2) > .pf-c-button').as('clear_filter');
   cy.get('@clear_filter').click();
 
+=======
+Cypress.Commands.add('sorting', (selector, order) => {
+  const collator = new Intl.Collator('en-US', { ignorePunctuation: true });
+
+  cy.get(selector)
+    .then(($cell) => Cypress._.map($cell, (el) => el.innerText))
+    .then((list) => {
+      const sortedList = [...list].sort((a, b) => order === "asc" ? collator.compare(a, b) : collator.compare(b, a));
+      expect(list).to.deep.equal(sortedList);
+    });
+>>>>>>> fbdec5f (Test sorting in seat admin page with a non-admin user)
 });
