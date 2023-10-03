@@ -9,14 +9,13 @@ describe('Navigate to the Prod Seats Administration page as lightspeed-org-admin
     cy.get('.pf-l-level > div > p').should('include.text', 'This group contains all users assigned seats within your organization.');
   })
 
-  it('test the search box in the users list', () => {
+  it('filter by', () => {
     cy.get('.pf-c-title', { timeout: 30000 }).as('title');
     cy.get('[data-cy="users-table"]').as('users_table').should('be.visible')
-    cy.get('.pf-c-text-input-group__text-input').type('lightspeed-org-admin{enter}')
-    cy.get('@users_table').find('tbody [data-label="Username"]').each(($e1, index, $list) =>{
-      expect($list).length(1)
-      expect($e1.text()).to.equal('lightspeed-org-admin')
-    })
+
+    cy.filter_by('Username', 'lightspeed-jane-doe')
+    cy.filter_by('First name', 'Jane')
+    cy.filter_by('Last name', 'Doe')
   })
 })
 

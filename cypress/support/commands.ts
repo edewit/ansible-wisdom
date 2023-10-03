@@ -66,13 +66,13 @@ Cypress.Commands.add('login', (username) => {
   cy.get('@step2').click().should('be.visible');
   cy.get('#password').as('passwordField');
   cy.get('@passwordField').should('be.visible');
-  cy.get('@passwordField').type(password, {log:false});
+  cy.get('@passwordField').type(password, { log: false });
   cy.get('#rh-password-verification-submit-button').click();
 });
 
 
 Cypress.Commands.add('assign_seat', (username) => {
-  cy.get('.pf-c-button.pf-m-primary', {timeout: 30000}).as('assign_button');
+  cy.get('.pf-c-button.pf-m-primary', { timeout: 30000 }).as('assign_button');
   cy.get('@assign_button').click();
   cy.get('[data-cy="users-table-modal"] tr').as('users-table-modal').should('be.visible');
   cy.get('@users-table-modal').contains('tr', username).find('input').should('be.visible');
@@ -83,7 +83,7 @@ Cypress.Commands.add('assign_seat', (username) => {
 });
 
 Cypress.Commands.add('unassign_seat', (username) => {
-  cy.get('[data-cy="search-input"]', {timeout: 30000}).as('search_box');
+  cy.get('[data-cy="search-input"]', { timeout: 30000 }).as('search_box');
   cy.get('@search_box').should('be.visible');
   cy.get('@search_box').type(username);
   cy.get('.pf-c-button.pf-m-control').as('submit_search');
@@ -100,4 +100,18 @@ Cypress.Commands.add('unassign_seat', (username) => {
   cy.get('@no_result_text').should('include.text', 'No results found');
   cy.get('[data-cy="users-table-toolbar"] > :nth-child(2) > :nth-child(2) > .pf-c-button').as('clear_filter');
   cy.get('@clear_filter').click();
+});
+
+Cypress.Commands.add('filter_by', (option, value) => {
+  cy.get('.pf-c-menu-toggle__text').click()
+  cy.get('.pf-c-menu__item').contains(option).click()
+  cy.get('.pf-c-text-input-group__text-input').type(value + '{enter}')
+  cy.get('@users_table').find(`tbody [data-label="${option}"]`).each(($e1, index, $list) => {
+    expect($list).length(1)
+    expect($e1.text()).to.equal(value)
+  })
+
+  cy.get('[data-cy="users-table-toolbar"] > :nth-child(2) > :nth-child(2) > .pf-c-button').as('clear_filter');
+  cy.get('@clear_filter').click();
+
 });
