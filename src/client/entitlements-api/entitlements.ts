@@ -94,20 +94,16 @@ export class EntitlementsService implements LicenseService {
   }
 
   async assign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
-    await Promise.all(
-      userIds.map(async (id) =>
-        postSeats({ account_username: id }, await this.requestHeader(user))
-      )
-    );
+    for (const id of userIds) {
+      await postSeats({ account_username: id }, await this.requestHeader(user));
+    }
     return Promise.resolve();
   }
 
   async unAssign(user: AuthenticatedUser, userIds: string[]): Promise<void> {
-    await Promise.all(
-      userIds.map(async (id) =>
-        deleteSeatsById(id, await this.requestHeader(user))
-      )
-    );
+    for (const id of userIds) {
+      await deleteSeatsById(id, await this.requestHeader(user));
+    }
     return Promise.resolve();
   }
 }
