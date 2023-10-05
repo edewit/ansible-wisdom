@@ -60,7 +60,7 @@ export const ConfirmRemoveDialog = ({
       with IBM watsonx Code Assistant?
       {users.length > 1 ? (
         <>
-          <TableComposable variant="compact">
+          <TableComposable variant="compact" data-cy="remove-users-list">
             <Thead>
               <Tr>
                 <Th>Name</Th>
