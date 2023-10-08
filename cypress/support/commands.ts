@@ -1,40 +1,5 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
 
 function setCookiesForUILogin() {
   Cypress.Cookies.debug(true);
@@ -71,7 +36,7 @@ Cypress.Commands.add('login', (username) => {
 });
 
 
-Cypress.Commands.add('assign_seat', (username) => {
+Cypress.Commands.add('assign_one_seat', (username) => {
   cy.get('.pf-c-button.pf-m-primary', { timeout: 30000 }).as('assign_button');
   cy.get('@assign_button').click();
   cy.get('[data-cy="users-table-modal"] tr').as('users-table-modal').should('be.visible');
@@ -82,7 +47,58 @@ Cypress.Commands.add('assign_seat', (username) => {
   cy.get('@assign_button').click();
 });
 
-Cypress.Commands.add('unassign_seat', (username) => {
+Cypress.Commands.add('assign_multiple_seats', (users: string[]) => {
+  cy.get('.pf-c-button.pf-m-primary', { timeout: 30000 }).as('assign_button');
+  cy.get('@assign_button').click();
+  cy.get('[data-cy="users-table-modal"] tr').as('users-table-modal').should('be.visible');
+  users.forEach(username => {
+    cy.get('@users-table-modal').contains('tr', username).find('input').should('be.visible');
+    cy.get('@users-table-modal').contains('tr', username).find('input').check();
+  })
+  cy.get('.pf-c-button.pf-m-primary.pf-m-progress').as('assign_button');
+  cy.get('@assign_button').should('be.visible');
+  cy.get('@assign_button').click();
+});
+
+Cypress.Commands.add('unassign_multiple_seats', (users: string[]) => {
+  // Find the users in the users list
+  cy.get('[data-cy="users-table"] tr').as('users-table').should('be.visible');
+  users.forEach(username => {
+    cy.get('@users-table').contains('tr', username).find('input').should('be.visible');
+    cy.get('@users-table').contains('tr', username).find('input').check();
+  })
+
+  // Click on Remove Users button
+  cy.get('[data-cy="remove-users-button"]', { timeout: 30000 }).as('remove_users');
+  cy.get('@remove_users').should('be.visible');
+  cy.get('@remove_users').click();
+
+  // Check the Remove users popup
+  cy.get('.pf-c-modal-box__body').as('remove_text');
+  cy.get('@remove_text').should('include.text', 'Are you sure you want to remove the user(s) below from Ansible Lightspeed with IBM watsonx Code Assistant?');
+  cy.get('[data-cy="remove-users-list"] tbody [data-label="Name"]').each(($e1, index, $list) => {
+    expect(users).to.include($e1.text().replace(' ', '-'))
+  })
+
+  // Click the remove users danger button
+  cy.get('.pf-c-button.pf-m-danger').as('remove_user_button');
+  cy.get('@remove_user_button').click();
+
+  // Search the users that was removed are not in the list
+  cy.get('[data-cy="search-input"]', { timeout: 30000 }).as('search_box');
+  cy.get('@search_box').should('be.visible');
+  users.forEach(username => {
+    cy.get('@search_box').type(username);
+    cy.get('.pf-c-button.pf-m-control').as('submit_search');
+    cy.get('@submit_search').click();
+    cy.get('.pf-c-empty-state__content > .pf-c-title').as('no_result_text');
+    cy.get('@no_result_text').should('include.text', 'No results found');
+    cy.get('[data-cy="users-table-toolbar"] > :nth-child(2) > :nth-child(2) > .pf-c-button').as('clear_filter');
+    cy.get('@clear_filter').click();
+  })
+});
+
+Cypress.Commands.add('unassign_one_seat', (username) => {
   cy.get('[data-cy="search-input"]', { timeout: 30000 }).as('search_box');
   cy.get('@search_box').should('be.visible');
   cy.get('@search_box').type(username);
