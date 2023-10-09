@@ -1,5 +1,5 @@
 describe('Navigate to the Seats Administration page as lightspeed-test-user-2', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login('lightspeed-test-user-2');
   });
 
@@ -9,7 +9,7 @@ describe('Navigate to the Seats Administration page as lightspeed-test-user-2', 
     cy.get('.pf-l-level > div > p').should('include.text', 'This group contains all users assigned seats within your organization.');
   })
 
-  it.only('sorting', () => {
+  it('sorting', () => {
     const dataList = new Array;
     const allowed = 30
     for (var i = 0; i < allowed; i++) {
