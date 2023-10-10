@@ -61,6 +61,10 @@ Cypress.Commands.add('assign_multiple_seats', (users: string[]) => {
 });
 
 Cypress.Commands.add('unassign_multiple_seats', (users: string[]) => {
+  // Confirm Remove users button is disabled
+  cy.get('[data-cy="remove-users-button"]', { timeout: 30000 }).as('remove_users');
+  cy.get('@remove_users').should('be.disabled')
+
   // Find the users in the users list
   cy.get('[data-cy="users-table"] tr').as('users-table').should('be.visible');
   users.forEach(username => {
@@ -68,9 +72,10 @@ Cypress.Commands.add('unassign_multiple_seats', (users: string[]) => {
     cy.get('@users-table').contains('tr', username).find('input').check();
   })
 
+  // Confirm Remove users button is enabled
+  cy.get('@remove_users').should('be.enabled').should('be.visible')
+
   // Click on Remove Users button
-  cy.get('[data-cy="remove-users-button"]', { timeout: 30000 }).as('remove_users');
-  cy.get('@remove_users').should('be.visible');
   cy.get('@remove_users').click();
 
   // Check the Remove users popup
@@ -100,14 +105,15 @@ Cypress.Commands.add('unassign_multiple_seats', (users: string[]) => {
 
 Cypress.Commands.add('unassign_one_seat', (username) => {
   cy.get('[data-cy="search-input"]', { timeout: 30000 }).as('search_box');
+  cy.get('[data-cy="remove-users-button"]').as('remove_users')
+  cy.get('@remove_users').should('be.disabled')
   cy.get('@search_box').should('be.visible');
   cy.get('@search_box').type(username);
   cy.get('.pf-c-button.pf-m-control').as('submit_search');
   cy.get('@submit_search').click();
   cy.contains('tr', username).find('input').should('be.visible');
   cy.contains('tr', username).find('input').check();
-  cy.get('[data-cy="remove-users-button"]').as('remove_users')
-  cy.get('@remove_users').click();
+  cy.get('@remove_users').should('be.enabled').click()
   cy.get('.pf-c-modal-box__body').as('remove_text');
   cy.get('@remove_text').should('include.text', 'Are you sure you want to remove the user(s) below from Ansible Lightspeed with IBM watsonx Code Assistant?');
   cy.get('.pf-c-button.pf-m-danger').as('remove_user_button');
