@@ -131,3 +131,14 @@ Cypress.Commands.add('filter_by', (option, value) => {
   cy.get('@clear_filter').click();
 
 });
+
+Cypress.Commands.add('sorting', (selector, order) => {
+  const collator = new Intl.Collator('en-US', { ignorePunctuation: true });
+
+  cy.get(selector)
+    .then(($cell) => Cypress._.map($cell, (el) => el.innerText))
+    .then((list) => {
+      const sortedList = [...list].sort((a, b) => order === "asc" ? collator.compare(a, b) : collator.compare(b, a));
+      expect(list).to.deep.equal(sortedList);
+    });
+});
