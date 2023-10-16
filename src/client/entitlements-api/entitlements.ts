@@ -63,7 +63,7 @@ export class EntitlementsService implements LicenseService {
           lastName: user.last_name || '',
           assigned: true,
         })),
-        count: result.meta?.count || 0,
+        count: result.consumed || 0,
       };
     } else {
       const header = await this.requestHeader(user);
