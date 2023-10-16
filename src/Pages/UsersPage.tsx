@@ -132,6 +132,7 @@ export const UsersPage = ({
               if (user) setCheckedUsers([user]);
               setConfirmOpen(true);
             }}
+            isRemovedDisabled={checkedUsers.length ? false : true}
           />
         )}
       </PageSection>

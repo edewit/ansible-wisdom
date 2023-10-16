@@ -61,6 +61,7 @@ export type UsersWithSeatTableProps = {
   perPage: number;
   onPageChange: (page: number, perPage: number) => void;
   onSearch?: (search: Record<string, string>) => void;
+  isRemovedDisabled?: boolean;
 };
 
 const TableSkeleton: VoidFunctionComponent<{
@@ -163,6 +164,7 @@ export const UsersWithSeatTable = ({
   onAddUser,
   isPicker = false,
   onSearch,
+  isRemovedDisabled,
 }: UsersWithSeatTableProps) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number | undefined>();
   const [activeSortDirection, setActiveSortDirection] = useState<
@@ -315,6 +317,7 @@ export const UsersWithSeatTable = ({
                   onClick={() => onRemoveSeat?.()}
                   variant="secondary"
                   data-cy="remove-users-button"
+                  isDisabled={isRemovedDisabled}
                 >
                   Remove users
                 </Button>
