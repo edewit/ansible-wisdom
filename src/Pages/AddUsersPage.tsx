@@ -13,6 +13,12 @@ export type PageParams = {
   onError: (message: string) => void;
 };
 
+type ErrorType = {
+  data?: { error?: string };
+};
+
+const QUOTA_MESSAGE = /QuotaAuthorization.*:/g;
+
 export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const navigate = useAppNavigate();
   const service = useService();
@@ -41,8 +47,13 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         onSuccess('Successfully assigned users');
         queryClient.invalidateQueries();
       },
-      onError: (error) => {
-        onError('there was an error: ' + error);
+      onError: (error: ErrorType) => {
+        //TODO remove this error handling once server has better error message
+        let errorMessage = error?.data?.error || error?.toString();
+        if (errorMessage.match(QUOTA_MESSAGE)) {
+          errorMessage = errorMessage.replaceAll(QUOTA_MESSAGE, '');
+        }
+        onError('Error: ' + errorMessage);
       },
     }
   );
