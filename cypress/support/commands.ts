@@ -148,3 +148,55 @@ Cypress.Commands.add('sorting', (selector, order) => {
       expect(list).to.deep.equal(sortedList);
     });
 });
+
+Cypress.Commands.add('mockUsers', (qty) => {
+  const dataList = new Array;
+  for (var i = 0; i < qty; i++) {
+    dataList[i] = {
+      "account_username": "lightspeed-test-user-" + i,
+      "first_name": "Test" + i,
+      "last_name": "Test" + i,
+      "status": "Active",
+    }
+  }
+
+  cy.intercept('GET', '/api/entitlements/v1/seats*', {
+    allowed: qty,
+    consumed: qty,
+    data: dataList
+  }).as('mockUsers');
+  cy.wait('@mockUsers')
+
+});
+
+Cypress.Commands.add('pagination', () => {
+  cy.get('[data-cy="users-table"]').as('users_table').should('be.visible')
+
+  cy.get('.pf-c-pagination__nav > :nth-child(1) > .pf-c-button').as('previous-nav')
+  cy.get('.pf-c-pagination__nav > :nth-child(2) > .pf-c-button').as('next-nav')
+  cy.wait(1000)
+
+  cy.get('@previous-nav').should('be.disabled')
+  cy.get('@next-nav').should('be.enabled')
+
+  //Pagination 10 per page
+  cy.get('@users_table').find('tbody [data-label="Username"]').should('have.length', 10)
+  cy.get('.pf-c-options-menu__toggle-text > :nth-child(1)').should('include.text', '1 - 10')
+  cy.get('@next-nav').click()
+
+  //Pagination 20 per page
+  cy.get('#options-menu-bottom-toggle').click()
+  cy.get(':nth-child(2) > .pf-c-options-menu__menu-item').click()
+  cy.get('@users_table').find('tbody [data-label="Username"]').should('have.length', 20)
+  cy.get('.pf-c-options-menu__toggle-text > :nth-child(1)').should('include.text', '1 - 20')
+  cy.get('@next-nav').click()
+
+  //Pagination 50 per page
+  cy.get('#options-menu-bottom-toggle').click()
+  cy.get(':nth-child(3) > .pf-c-options-menu__menu-item').click()
+  cy.get('@users_table').find('tbody [data-label="Username"]').should('have.length', 50)
+  cy.get('.pf-c-options-menu__toggle-text > :nth-child(1)').should('include.text', '1 - 50')
+  cy.get('@next-nav').should('be.disabled')
+
+
+});
