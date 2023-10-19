@@ -17,8 +17,6 @@ type ErrorType = {
   data?: { error?: string };
 };
 
-const QUOTA_MESSAGE = /QuotaAuthorization.*:/g;
-
 export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
   const navigate = useAppNavigate();
   const service = useService();
@@ -48,11 +46,7 @@ export const AddUsersPage = ({ user, onSuccess, onError }: PageParams) => {
         queryClient.invalidateQueries();
       },
       onError: (error: ErrorType) => {
-        //TODO remove this error handling once server has better error message
-        let errorMessage = error?.data?.error || error?.toString();
-        if (errorMessage.match(QUOTA_MESSAGE)) {
-          errorMessage = errorMessage.replaceAll(QUOTA_MESSAGE, '');
-        }
+        const errorMessage = error?.data?.error || error?.toString();
         onError('Error: ' + errorMessage);
       },
     }
