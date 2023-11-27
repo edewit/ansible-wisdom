@@ -37,8 +37,14 @@ describe('Navigate to the Prod Seats Administration page as lightspeed-org-admin
     cy.get('[data-cy="users-table"]').as('users_table').should('be.visible')
 
     cy.filter_by('Username', 'lightspeed-jane-doe')
+    cy.filter_by('Username', ' lightspeed-jane-doe')
+    cy.filter_by('Username', 'lightspeed-jane-doe ')
     cy.filter_by('First name', 'Jane')
+    cy.filter_by('First name', ' Jane')
+    cy.filter_by('First name', 'Jane ')
     cy.filter_by('Last name', 'Doe')
+    cy.filter_by('Last name', ' Doe')
+    cy.filter_by('Last name', 'Doe ')
   })
 })
 

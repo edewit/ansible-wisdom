@@ -187,9 +187,9 @@ export const UsersWithSeatTable = ({
       }
     }
 
-    if (onSearch === undefined && filterValue !== '') {
+    if (onSearch === undefined && filterValue !== undefined && filterValue.trim() !== '') {
       page = filter(page, (user: User) =>
-        user[filterColumn].includes(filterValue)
+        user[filterColumn].includes(filterValue.trim())
       );
     }
     return page;
@@ -296,7 +296,7 @@ export const UsersWithSeatTable = ({
                   onChange={(_event, value) => setSearch(value)}
                   onSearch={(_, value) => {
                     setFilterValue(value);
-                    onSearch?.({ [filterColumn]: value });
+                    onSearch?.({ [filterColumn]: value?.trim() });
                   }}
                   value={search}
                   onClear={clearAllFilters}
